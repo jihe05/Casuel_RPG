@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,41 +5,57 @@ using UnityEngine.InputSystem;
 
 public class Move : MonoBehaviour
 {
-    public float speed = 3f;
-    private Vector3 moveInput;
     private Animator animator;
+    
+
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        
+        animator = GetComponent<Animator>();   
     }
-
-    public void OnMove(InputValue inputValue)
+    private void Update()
     {
-        Debug.Log("°£´ç!");
-        animator.SetBool("isMove", true);
-        moveInput = inputValue.Get<Vector2>();
-
-    }
-
-
-    private void FixedUpdate()
-    {
-        Debug.Log($"X¿Í Y :{moveInput.x},{moveInput.y}");
-
-        Vector3 movement = new Vector2(moveInput.x, moveInput.y) * speed * Time.fixedDeltaTime;
-
-        animator.SetFloat("MoveX", moveInput.x);
-        animator.SetFloat("MoveY", moveInput.y);
-
-        if (moveInput.x == 0 && moveInput.y == 0)
+        animator.SetBool("isMove", false);
+        if (Input.GetKey(KeyCode.W))
         {
-            animator.SetBool("isMove", false);
+            animator.SetBool("isMove", true);
+            animator.SetFloat("MoveX", 0);
+            animator.SetFloat("MoveY", 3);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            animator.SetBool("isMove", true);
+            animator.SetFloat("MoveX", 0);
+            animator.SetFloat("MoveY", -3);
+
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            animator.SetBool("isMove", true);
+            animator.SetFloat("MoveX", -3);
+            animator.SetFloat("MoveY", 0);
+
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            animator.SetBool("isMove", true);
+            animator.SetFloat("MoveX", 3);
+            animator.SetFloat("MoveY", 0);
+
         }
 
+        if (Input.GetKey(KeyCode.Space))
+        {
+            animator.SetBool("Jump", true);
+        
+        }
+        else
+        {
+            animator.SetBool("Jump", false);
+        }
+
+
     }
 
-   
 
 }
