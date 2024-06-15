@@ -7,8 +7,6 @@ public class Move : MonoBehaviour
 {
     private Animator animator;
     
-
-
     private void Awake()
     {
         animator = GetComponent<Animator>();   
