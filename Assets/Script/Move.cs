@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-
 public class Move : MonoBehaviour
 {
     private Animator animator;
@@ -55,5 +53,14 @@ public class Move : MonoBehaviour
 
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("F"))
+        {
+
+           UImanger.Instance.OpenAndCloseShop();
+           
+        }
+    }
 
 }
