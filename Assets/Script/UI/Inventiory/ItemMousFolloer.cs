@@ -15,6 +15,7 @@ public class ItemMousFolloer : MonoBehaviour
         //현재 게임 오브젝트의 최상위 부모의 Canvers컴포넌트를 가져와 할당
         Canvas = transform.root.GetComponent<Canvas>();
 
+        //자식인 오브젝트의 스크립트 가져와 할당
         Item = GetComponentInChildren<UIinventoryItem>();
     }
 

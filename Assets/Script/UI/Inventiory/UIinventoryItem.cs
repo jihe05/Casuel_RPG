@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIinventoryItem : MonoBehaviour
+public class UIinventoryItem : MonoBehaviour , IPointerClickHandler , IBeginDragHandler , IEndDragHandler ,IDragHandler, IDropHandler
 {
     [SerializeField]
     private Image ItemImage;
@@ -15,6 +15,7 @@ public class UIinventoryItem : MonoBehaviour
     [SerializeField]
     private Image borderImage;//테두리
 
+   
     //항목을 클릭 시, 아이템 드랍 시 , 아이템 드래그 시작 시, 아이템 드래그 종료 시,마우스 오른쪽 버튼 클릭 시
     public event Action<UIinventoryItem> OnItemClicked,
         OnItemDroppedOn, OnItemBegingDrag, OnItemEndDrag , OnRightMouseBtnClick;
@@ -64,38 +65,12 @@ public class UIinventoryItem : MonoBehaviour
         borderImage.enabled = true;
     }
 
-    //드래그를 시작할때 호출
-    public void OnBeginDrag()
-    { 
-        if (empty)
-            return;
-        //비어있지 않은 경우에만 이벤트 실행
-        OnItemBegingDrag?.Invoke(this);
-    }
-
-
-    //드래그 종료
-    public void OnEndDrag()
+  
+    
+    //클릭시 이벤트 처리
+    public void OnPointerClick(PointerEventData pointerData)
     {
-        OnItemEndDrag?.Invoke(this);
-    }
 
-    //드랍
-    public void OnDrop()
-    { 
-       OnItemDroppedOn?.Invoke(this);
-    }
-
-    //클릭 시 이벤트를 처리 
-    public void OnPointerClick(BaseEventData data)
-    {
-        
-        if (empty)
-            return;
-        
-        //이벤트 데이터르 포인트 이벤트 데이터로 캐스팅
-        PointerEventData pointerData = (PointerEventData)data;
-      
         //버튼을 클릭했을때
         if (pointerData.button == PointerEventData.InputButton.Right)
         {
@@ -109,5 +84,29 @@ public class UIinventoryItem : MonoBehaviour
         }
     }
 
+    //드래그 시작
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (empty)
+            return;
+        //비어있지 않은 경우에만 이벤트 실행
+        OnItemBegingDrag?.Invoke(this);
+    }
 
+    //드래그 종료
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        OnItemEndDrag?.Invoke(this);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+       
+    }
+
+    //드랍
+    public void OnDrop(PointerEventData eventData)
+    {
+        OnItemDroppedOn?.Invoke(this);
+    }
 }

@@ -14,18 +14,26 @@ public class UIinventory : MonoBehaviour
      private RectTransform contentPanel;//배치될 패널
 
     [SerializeField]
-    private UIInventoryDescription itemDescription;
+    private UIInventoryDescription inventoryItemUIDescription;
+
+    [SerializeField]
+    private ItemMousFolloer MousFolloer;
 
     List<UIinventoryItem> _listOfUIItme = new List<UIinventoryItem>();
 
-    public Sprite image;
-    public int quantity;
-    public string title, description;
+    private event Action<int> 
+        OnDescriptionRequested, OnItemactionRequsted, OnStartDragging;
+
+    public event Action<int, int> OnSwapItems;
+
+    //currentlyDraggedItemIndex : 현재 드래그 중인 아이템 인덱스
+    private int currentlyDraggedItemIndex = -1;
 
     private void Awake()
     {
         Hide();
-        itemDescription.ResetDescription();
+        MousFolloer.Toggle(false);
+        inventoryItemUIDescription.ResetDescription();
     }
 
     //UI Size초기화 
@@ -34,7 +42,7 @@ public class UIinventory : MonoBehaviour
         //인벤토리의 크기 만큼 반복
         for (int i = 0; i < inventorysize; i++)
         {
-            //item의 정보 가져오기
+            //inventoryItemUI의 정보 가져오기
             UIinventoryItem uiItme = Instantiate(itmePrefab, Vector3.zero, Quaternion.identity);
 
             //생성될 위치
@@ -53,47 +61,103 @@ public class UIinventory : MonoBehaviour
     
     }
 
-    private void HendleshowItemActions(UIinventoryItem item)
+    //인덱스의 위치한 아이템의 데이터를 업데이트 
+    public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
+    {
+        if (_listOfUIItme.Count > itemIndex)
+        {
+            //아이템의 이미지와 수량을 업데이트
+            _listOfUIItme[itemIndex].setData(itemImage, itemQuantity);
+        }
+    }
+    
+       
+    
+
+    //아이템 작업 표시
+    private void HendleshowItemActions(UIinventoryItem inventoryItemUI)
     {
 
     }
 
-    private void HandleEndDrag(UIinventoryItem item)
+    //드래그 종료
+    private void HandleEndDrag(UIinventoryItem inventoryItemUI)
     {
-
+        ResetDraggedItem();
     }
 
-    private void HandleSwap(UIinventoryItem item)
-    {
 
+    //교체 처리
+    private void HandleSwap(UIinventoryItem inventoryItemUI)
+    {
+        int index = _listOfUIItme.IndexOf(inventoryItemUI);
+        if (index == -1)
+        {
+            return;
+        }
+
+        OnSwapItems?.Invoke(currentlyDraggedItemIndex, index);
     }
 
-    private void HandleBeginDrag(UIinventoryItem item)
+    private void ResetDraggedItem()
     {
-
+        MousFolloer.Toggle(false);
+        currentlyDraggedItemIndex = -1;
     }
 
-    private void HandleItemSelection(UIinventoryItem item)
+    //드래그 시작 처리
+    private void HandleBeginDrag(UIinventoryItem inventoryItemUI)
     {
-        Debug.Log("item : " + item.name);
-        itemDescription.SetDescription(image, title, description);
-        _listOfUIItme[0].Select();
+        //IndexOf : 처음으로 나타나는 인덱스 반환
+        int index = _listOfUIItme.IndexOf(inventoryItemUI);
+        if (index == -1)
+            return;
+        currentlyDraggedItemIndex = index;
+        HandleItemSelection(inventoryItemUI);
+        OnStartDragging?.Invoke(index);
+    }
+
+    public void CreateDraggedItem(Sprite sprite, int quantity)
+    {
+        MousFolloer.Toggle(true);
+        MousFolloer.SetData(sprite, quantity);
+    }
+
+    //아이템 선택 처리
+    private void HandleItemSelection(UIinventoryItem inventoryItemUI)
+    {
+        int index = _listOfUIItme.IndexOf(inventoryItemUI);
+        if (index == -1)
+            return;
+        OnDescriptionRequested?.Invoke(index);
     }
 
     public void Show()
     { 
       gameObject.SetActive(true);
+      ResetSelection();
 
-      //아이템 설명 메서드 호출 
-      itemDescription.ResetDescription();
+    }
 
-       _listOfUIItme[0].setData(image, quantity);
+    private void ResetSelection()
+    {
+        //아이템 설명 메서드 호출 
+        inventoryItemUIDescription.ResetDescription();
+        DeselecAllItes();
+    }
 
+    private void DeselecAllItes()
+    {
+        foreach (UIinventoryItem item in _listOfUIItme)
+        { 
+          item.Deselect();
+        }
     }
 
     public void Hide()
     {
         gameObject.SetActive(false);
+        ResetDraggedItem();
     }
 
 
