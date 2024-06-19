@@ -36,8 +36,10 @@ public class UIinventory : MonoBehaviour
         {
             //item의 정보 가져오기
             UIinventoryItem uiItme = Instantiate(itmePrefab, Vector3.zero, Quaternion.identity);
+
             //생성될 위치
             uiItme.transform.SetParent(contentPanel);
+
             //추가
             _listOfUIItme.Add(uiItme);
             uiItme.OnItemClicked += HandleItemSelection;
@@ -73,7 +75,9 @@ public class UIinventory : MonoBehaviour
 
     private void HandleItemSelection(UIinventoryItem item)
     {
+        Debug.Log("item : " + item.name);
         itemDescription.SetDescription(image, title, description);
+        _listOfUIItme[0].Select();
     }
 
     public void Show()
@@ -83,7 +87,7 @@ public class UIinventory : MonoBehaviour
       //아이템 설명 메서드 호출 
       itemDescription.ResetDescription();
 
-        _listOfUIItme[0].setData(image, quantity);
+       _listOfUIItme[0].setData(image, quantity);
 
     }
 

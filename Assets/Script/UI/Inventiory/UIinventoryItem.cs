@@ -30,14 +30,13 @@ public class UIinventoryItem : MonoBehaviour
 
     private void Awake()
     {
-      
         ResetData();
         Deselect();
     }
 
     //아이템 데이터를 초기화하며 슬롯을 비움
     public void ResetData()
-    {
+    {  
         this.ItemImage.gameObject.SetActive(false);
         empty = true;
     }
@@ -48,6 +47,7 @@ public class UIinventoryItem : MonoBehaviour
         this.ItemImage.gameObject.SetActive(true);
         this.ItemImage.sprite = sprite;
         this.CountText.text = quantity + "";
+        empty = false;
 
     }
 
@@ -89,17 +89,18 @@ public class UIinventoryItem : MonoBehaviour
     //클릭 시 이벤트를 처리 
     public void OnPointerClick(BaseEventData data)
     {
+        
         if (empty)
             return;
         
         //이벤트 데이터르 포인트 이벤트 데이터로 캐스팅
         PointerEventData pointerData = (PointerEventData)data;
-
+      
         //버튼을 클릭했을때
         if (pointerData.button == PointerEventData.InputButton.Right)
-        { 
+        {
             //버튼 클릭 이벤트 발생
-           OnRightMouseBtnClick?.Invoke(this);
+            OnRightMouseBtnClick?.Invoke(this);
         }
         else
         {
