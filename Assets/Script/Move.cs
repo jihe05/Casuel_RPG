@@ -55,12 +55,11 @@ public class Move : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("F"))
+        if (other.CompareTag("WeaPon"))
         {
-
            UImanger.Instance.OpenAndCloseShop();
-           
         }
+    
     }
 
 }
