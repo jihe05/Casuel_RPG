@@ -83,17 +83,20 @@ namespace Ivnentory.UI
         }
 
         //아이템 설명 업데이트
-        internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description)
+        internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, string itemHp, string itemXp, string itemStamina)
         {
             //아이템 설명UI 업데이트
             itemUIDescription.SetDescription(itemImage, name, description);
+            itemUIDescription.SetEfficacy(name, itemHp , itemXp, itemStamina);
+
             //모든 아이템 테두리 비활성화 메서드 호출
             DeselecAllItes();
-            //지전된 아이템의 테두리 활성화 
+
+            //지정된 아이템의 테두리 활성화 
             _listOfUIItme[itemIndex].Select();
         }
 
-
+        //__________________________________________________________________________
         //인덱스의 위치한 아이템의 데이터를 업데이트 
         public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
         {
@@ -103,7 +106,7 @@ namespace Ivnentory.UI
                 _listOfUIItme[itemIndex].setData(itemImage, itemQuantity);
             }
         }
-
+        //__________________________________________________________________________
 
 
 

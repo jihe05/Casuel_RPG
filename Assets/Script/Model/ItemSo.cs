@@ -10,6 +10,7 @@ namespace Inventory.Model
     public class ItemSo : ScriptableObject// 재사용 가능한 데이터 컨테이너를 만들기 위해 사용
     {
         // : 자동구현 속성을 가지게 된 SerializeField
+
         //아이템 스택 가능 여부
         [field: SerializeField]
         public bool IsStackable { get; set; }
@@ -34,8 +35,20 @@ namespace Inventory.Model
         [field: SerializeField]
         public Sprite ItemImage { get; set; }
 
+        //가격
         [field: SerializeField]
         public int ItemCoin { get; set; }
+
+        [field: SerializeField]
+        public string ItemHp { get; set; }
+
+        [field: SerializeField]
+        public string ItemXp { get; set; }
+
+        [field: SerializeField]
+        public string ItemStamina { get; set; }
+
+
 
 
     }

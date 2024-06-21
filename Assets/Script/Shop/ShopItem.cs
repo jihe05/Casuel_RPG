@@ -1,0 +1,51 @@
+using Inventory.UI;
+using System;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+public class ShopItem : MonoBehaviour , IPointerClickHandler
+{
+    [SerializeField]
+    private Image Itemimage;//아이템 이미지
+
+    [SerializeField]
+    private Text ItemPrice;//아이템 가격
+
+    //클릭 , 드랍
+    public event Action<ShopItem> OnItemClicked, InItemDroppedOn;
+
+
+    private void Start()
+    {
+        //크기 초기화
+       gameObject.transform.localScale = Vector3.one;
+    }
+
+    public void SetItemData(Sprite sprite, int itePrice)
+    { 
+        Itemimage.sprite = sprite;
+        ItemPrice.text = itePrice.ToString("N0");
+
+      
+    }
+
+
+    //클릭 이벤트 처리
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            OnItemClicked?.Invoke(this);
+
+        }
+    }
+
+
+    public void OnDrop(PointerEventData evenData)
+    {
+        InItemDroppedOn.Invoke(this);
+
+
+    }
+}

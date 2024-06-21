@@ -14,11 +14,18 @@ namespace Ivnentory
         private UIinventory InventoryUI;
 
         [SerializeField]
+        private ShopInven ShopUI;
+
+        [SerializeField]
         private InventorySo InventoryData;
 
-        public List<InventoryItem> InventoryItems = new List<InventoryItem>();
+        [SerializeField]
+        private ShopSo shopData;
 
-               
+        public List<InventoryItem> InventoryItems = new List<InventoryItem>();
+        public List<ShopInvenItem> ShopItems = new List<ShopInvenItem>();
+
+
         private void Start()
         {
             PrepareUI();
@@ -43,6 +50,18 @@ namespace Ivnentory
             
         }
 
+        private void PrepareShopData()
+        {
+            //shop업데이트
+            shopData.OnShopUpdata += UpdateShopUI;
+
+            foreach (ShopInvenItem item in ShopItems)
+            {
+                shopData.Additem(item);
+            }
+
+        }
+
         //인벤토리 UI를 현재 인벤토리 상태로 업데이이트하는 메서드 
         private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoruState)
         {
@@ -54,6 +73,16 @@ namespace Ivnentory
                 InventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);   
             }
         }
+
+        //인벤토리 UI를 현재 인벤토리 상태로 업데이이트하는 메서드 
+        private void UpdateShopUI(Dictionary<int, ShopInvenItem> ShopState)
+        {
+            foreach (var item in ShopState)
+            {
+                ShopUI.UpdateData(item.Key, item.Value.shopItem.ItemImage, item.Value.coin);
+            }
+        }
+
 
         //UI를 준비하고 이벤트 핸들러 설정하는 메서드
         private void PrepareUI()
@@ -95,45 +124,76 @@ namespace Ivnentory
         //설정 요청 처리 
         private void HandleDescriptionRequest(int itemIndex)
         {
-            
+            //인벤토리 데이터에서 해당 인덱스의 아이템을 가져옴
             InventoryItem inventoryItme = InventoryData.GetItemAt(itemIndex);
+
+            //아이템이 비어 있는지 확인
             if (inventoryItme.IsEmpty)
             {
-
+                //비어있으면 초기화 
                 InventoryUI.ResetSelection();
                 return;
 
             }
-
+            //아니면 아이템의 정보를 가져와 
             ItemSo item = inventoryItme.item;
-            InventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.name, item.Description);
+            //설명 표시
+            InventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.name, item.Description , item.ItemHp, item.ItemXp, item.ItemStamina);
+
+
         }
+
 
         public void Update()
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
-                if (InventoryUI.isActiveAndEnabled == false)
-                {
-                    //활성화
-                    InventoryUI.Show();
+                InventoyrOnAndOf();
 
-                    //현재 인벤토리 상태를 딕셔너리 현태로 반환하는 메서드 호출
-                    foreach (var item in InventoryData.GetCurrentInventorystate())
-                    {
-                        //이벤토리 UI에 데이터 업데이트(인벤스롯의 인덱스, 인벤 아이템 이미지, 인벤 아이템 수량)
-                        InventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
-                    }
+            }
+           
+        }
 
-                }
-                else
+        public void InventoyrOnAndOf()
+        {
+            if (InventoryUI.isActiveAndEnabled == false)
+            {
+                //활성화
+                InventoryUI.Show();
+
+                //현재 인벤토리 상태를 딕셔너리 현태로 반환하는 메서드 호출
+                foreach (var item in InventoryData.GetCurrentInventorystate())
                 {
-                    //비활성화
-                    InventoryUI.Hide();
+                    //이벤토리 UI에 데이터 업데이트(인벤스롯의 인덱스, 인벤 아이템 이미지, 인벤 아이템 수량)
+                    InventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
                 }
 
             }
+            else
+            {
+                //비활성화
+                InventoryUI.Hide();
+            }
         }
+
+        public void ShopInvenOnAndOf()
+        {
+            if (ShopUI.isActiveAndEnabled == false)
+            { 
+               ShopUI.Show();
+
+                foreach (var item in shopData.GetCurrentShopstate())
+                {
+                    ShopUI.UpdateData(item.Key, item.Value.shopItem.ItemImage, item.Value.coin);
+                
+                }
+            
+            }
+        
+        }
+
+
+
 
     }
 }

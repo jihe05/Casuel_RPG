@@ -17,7 +17,7 @@ namespace Inventory.Model
 
         //인벤토리 크리를 나타내는 속성, 기본값 10
         [field: SerializeField]
-        public int Size { get; private set; } = 20;
+        public int Size { get; private set; } = 10;
 
         public event Action<Dictionary<int, InventoryItem>> OnInventoryUpdated;
 
@@ -43,26 +43,44 @@ namespace Inventory.Model
         //아이템을 추가하는 메서드
         public int AddItem(ItemSo item, int quantity)
         {
-            if (item.IsStackable == false)
+            for (int i = 0; i < inventoryItems.Count; i++)
             {
-                for (int i = 0; i < inventoryItems.Count; i++)
+                if (inventoryItems[i].IsEmpty)
                 {
-                    while (quantity > 0 && IsInventoryFull() == false)
+                    inventoryItems[i] = new InventoryItem
                     {
-                       quantity -= AddItemToFirstFreeSlot(item, 1);
-                        
-                    }
-                    InformAboutChange();
+                        item = item,
+                        quantity = quantity
+
+                    };
                     return quantity;
-                   
                 }
             }
-            //아이템 스택을 추가하여 저장하는 메서드 호출
-            quantity = AddStackedleItem(item, quantity);
-            InformAboutChange();//딕셔너리 형태 변환
             return quantity;
+
+            /*
+               if (item.IsStackable == false)
+            { 
+               for (int i = 0; i < inventoryItems.Count; i++)
+                {
+                    if (IsInventoryFull())
+                        return quantity;
+                    while (quantity > 0 && IsInventoryFull() == false)
+                    { 
+                    
+                    }
+                    return quantity;
+                }
+            
+            }
+            quantity = AddStakableItem(item, quantity);
+            InformAboutChange();
+            return quantity;
+             */
+
         }
 
+        /*
         //주어진 아이템을 첫 번째 빈 슬롯에 추가하는 메서드 
         private int AddItemToFirstFreeSlot(ItemSo item, int quantity)
         {
@@ -86,7 +104,8 @@ namespace Inventory.Model
             }
             return 0;
         }
-
+        */
+        /*
         //인벤토리가 가득 찼느지 여부 확인
         private bool IsInventoryFull()
             //빈슬롯리 없으면 true 있으면 false
@@ -136,8 +155,7 @@ namespace Inventory.Model
             }
             return quantity;
         }
-
-
+        */
 
         //현재 인벤토리 상태를 딕셔너리 형태로 반환하는 메서드
         public Dictionary<int, InventoryItem> GetCurrentInventorystate()
@@ -182,7 +200,7 @@ namespace Inventory.Model
     {
         //아이템 수량
         public int quantity;
-        //아이템 정보
+        //아이템 정보  
         public ItemSo item;
 
         //아이템 비어 있는지 여부를 반환하는 읽기 전용 속성
@@ -208,4 +226,7 @@ namespace Inventory.Model
         };
 
     }
+
+
+
 }

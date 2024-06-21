@@ -1,3 +1,4 @@
+using Ivnentory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,27 +7,21 @@ using UnityEngine.UI;
 public class UImanger : MonoBehaviour
 {
     public static UImanger Instance { get; private set; }
+   
 
-    public GameObject ShopPanel;
-    public int PlayerCoin =100000;
+    public Text Text_playercoin;
 
     private void Awake()
     {
         Instance = this;
+        
     }
 
-    public void OpenAndCloseShop()
+    public void UpdataCoin(int coin)
     {
-        bool isActive = transform.gameObject.activeSelf;
+     
+       Text_playercoin.text = coin.ToString("N0");
 
-        transform.parent.gameObject.SetActive(!isActive);
-
-    }
-
-    public void Coin(int coin)
-    {
-       PlayerCoin = coin;
-       
 
     }
 
