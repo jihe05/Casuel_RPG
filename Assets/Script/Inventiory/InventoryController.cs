@@ -30,6 +30,7 @@ namespace Ivnentory
         {
             PrepareUI();
             PrepareInventorydata();
+            PrepareShopData();
         }
 
         //인벤토리 데이터 준비
@@ -57,7 +58,8 @@ namespace Ivnentory
 
             foreach (ShopInvenItem item in ShopItems)
             {
-                shopData.Additem(item);
+
+               shopData.AddItem(item);
             }
 
         }
@@ -77,6 +79,7 @@ namespace Ivnentory
         //인벤토리 UI를 현재 인벤토리 상태로 업데이이트하는 메서드 
         private void UpdateShopUI(Dictionary<int, ShopInvenItem> ShopState)
         {
+           
             foreach (var item in ShopState)
             {
                 ShopUI.UpdateData(item.Key, item.Value.shopItem.ItemImage, item.Value.coin);
@@ -87,17 +90,19 @@ namespace Ivnentory
         //UI를 준비하고 이벤트 핸들러 설정하는 메서드
         private void PrepareUI()
         {
-            
             InventoryUI.InitalizeInventoryUI(InventoryData.Size);//크기 초기화 
+            ShopUI.InitShopUI();
 
             //이벤트 핸들러 설정(설정 요청 처리 / 아이템 교체 처리 / 드래그 처리 / 아이템 작업 요청)
             InventoryUI.OnDescriptionRequested += HandleDescriptionRequest;
             InventoryUI.OnSwapItems += HandleSwapItems;
             InventoryUI.OnStartDragging += HandleDragging;
             InventoryUI.OnItemactionRequsted += HandleItemActionRequset;
+
+            ShopUI.OnStartEnter += HandleShopEnter;
         }
 
-
+      
         //아이템 작업 표시 
         private void HandleItemActionRequset(int itemIndex)
         {
@@ -115,11 +120,15 @@ namespace Ivnentory
             InventoryUI.CreateDraggedItem(inventoryItem.item.ItemImage, inventoryItem.quantity);
         }
 
+      
+
+
         //아이템 교체 처리 
         private void HandleSwapItems(int itemIndex_1, int itemIndex_2)
         {
             InventoryData.SwapItems(itemIndex_1, itemIndex_2);
         }
+
 
         //설정 요청 처리 
         private void HandleDescriptionRequest(int itemIndex)
@@ -139,6 +148,14 @@ namespace Ivnentory
             ItemSo item = inventoryItme.item;
             //설명 표시
             InventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.name, item.Description , item.ItemHp, item.ItemXp, item.ItemStamina);
+
+
+        }
+
+        // 상점 항목 선택 후 설명  호출 처리
+        private void HandleShopEnter(int itemIndex)
+        {
+            ShopInvenItem shopInvenItem = shopData.GetCurrentShopstate();
 
 
         }
@@ -179,15 +196,21 @@ namespace Ivnentory
         public void ShopInvenOnAndOf()
         {
             if (ShopUI.isActiveAndEnabled == false)
-            { 
-               ShopUI.Show();
+            {
+                ShopUI.Show();
 
                 foreach (var item in shopData.GetCurrentShopstate())
                 {
+                    Debug.Log(123);
                     ShopUI.UpdateData(item.Key, item.Value.shopItem.ItemImage, item.Value.coin);
-                
+
                 }
-            
+
+            }
+            else 
+            {
+
+                ShopUI.Hide();
             }
         
         }

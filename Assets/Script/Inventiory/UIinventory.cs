@@ -96,7 +96,9 @@ namespace Ivnentory.UI
             _listOfUIItme[itemIndex].Select();
         }
 
-        //__________________________________________________________________________
+     
+
+
         //인덱스의 위치한 아이템의 데이터를 업데이트 
         public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
         {
@@ -106,7 +108,6 @@ namespace Ivnentory.UI
                 _listOfUIItme[itemIndex].setData(itemImage, itemQuantity);
             }
         }
-        //__________________________________________________________________________
 
 
 

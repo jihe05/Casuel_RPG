@@ -51,7 +51,7 @@ public class ShopSo : ScriptableObject
 
         for (int i = 0; i < shopitmes.Count; i++)
         {
-            returnValeu[i] = shopitmes[i];
+            returnValeu[i] = shopitmes[i];//인벤토리 상ㅋ태를 딕셔너리의 추가
 
         }
         return returnValeu;

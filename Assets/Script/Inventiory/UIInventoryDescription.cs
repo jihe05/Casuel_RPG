@@ -34,7 +34,7 @@ namespace Inventory.UI
             stats.text = string.Empty;
 
         }
-
+        
         //설명 참조
         public void SetDescription(Sprite sprite, string itmeName, string itemDescription)
         {

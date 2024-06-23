@@ -1,9 +1,13 @@
+using Ivnentory;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Move : MonoBehaviour
 {
     private Animator animator;
+
+    public InventoryController inventoryController;
+
     
     private void Awake()
     {
@@ -57,17 +61,18 @@ public class Move : MonoBehaviour
     {
         if (other.CompareTag("WeaPon"))
         {
-           UImanger.Instance.OpenAndCloseShop();
+            inventoryController.ShopInvenOnAndOf();
         }
 
         if (other.CompareTag("Food"))
         {
-            UImanger.Instance.OpenAndCloseShop();
+         inventoryController.ShopInvenOnAndOf();
         }
+        
 
         if (other.CompareTag("Potion"))
         {
-            UImanger.Instance.OpenAndCloseShop();
+            inventoryController.ShopInvenOnAndOf();
         }
 
 

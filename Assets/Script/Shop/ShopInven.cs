@@ -13,23 +13,24 @@ public class ShopInven : MonoBehaviour
     private RectTransform contentPanel;
 
     [SerializeField]
-    private UIInventoryDescription itemUIDescription;
+    private UIShopDescription uIShopDescription;
+
+    [SerializeField]
+    private GameObject Goj_Stats;
 
     //인벤토리 UI항목 리스트
      private List<ShopItem> _listOfUIItme = new List<ShopItem>();
 
-    //이벤트(설명 요청시)
-    public event Action<int> OnDescriptionRequested;
 
-
-    private void OnEnable()
+    private void Awake()
     {
-        
-
-
-
+        Hide();
+        Goj_Stats.SetActive(false);
+        uIShopDescription.ResetShopDescription();
 
     }
+
+  
 
     //프리팹 생성
     public void InitShopUI()
@@ -56,17 +57,19 @@ public class ShopInven : MonoBehaviour
     {
         if (_listOfUIItme.Count > itemIndex)
         {
+            //아이템의 가격과 이미지 업데이트
             _listOfUIItme[itemIndex].SetItemData(itemImage, itemCoin);
         }
     }
 
 
-    private void HandleItemSlelction(ShopItem shopItemUI)
+    public void HandleItemSlelction(ShopItem shopItemUI)
     {
         int index = _listOfUIItme.IndexOf(shopItemUI);
 
-        OnDescriptionRequested?.Invoke(index);
+        OnStartEnter?.Invoke(index);
     }
+
 
 
     //활성화 될을때
