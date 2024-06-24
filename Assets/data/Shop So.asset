@@ -13,14 +13,20 @@ MonoBehaviour:
   m_Name: Shop So
   m_EditorClassIdentifier: 
   shopitmes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - coin: 200
+    shopItem: {fileID: 11400000, guid: c1b89ddcfd5773d4e9d5979d0426b37e, type: 2}
+  - coin: 42
+    shopItem: {fileID: 11400000, guid: 57a6cc0a8d539684e8f94839dbbc8c83, type: 2}
+  - coin: 200
+    shopItem: {fileID: 11400000, guid: 5bae84a89a8b1754f860ba8b2238f7a8, type: 2}
+  - coin: 5
+    shopItem: {fileID: 11400000, guid: c1b89ddcfd5773d4e9d5979d0426b37e, type: 2}
+  - coin: 452
+    shopItem: {fileID: 11400000, guid: a49171581f33e624898687a293ecdb86, type: 2}
+  - coin: 52
+    shopItem: {fileID: 11400000, guid: 57a6cc0a8d539684e8f94839dbbc8c83, type: 2}
+  - coin: 42
+    shopItem: {fileID: 11400000, guid: 5bae84a89a8b1754f860ba8b2238f7a8, type: 2}
+  - coin: 542
+    shopItem: {fileID: 11400000, guid: a49171581f33e624898687a293ecdb86, type: 2}
   <Size>k__BackingField: 8

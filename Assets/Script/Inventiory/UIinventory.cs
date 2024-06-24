@@ -40,8 +40,7 @@ namespace Ivnentory.UI
 
         private void Awake()
         {
-            //false로 초기화 
-            Hide();
+        
             MousFolloer.Toggle(false);
             itemUIDescription.ResetDescription();
         }

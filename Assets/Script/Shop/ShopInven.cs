@@ -21,10 +21,11 @@ public class ShopInven : MonoBehaviour
     //인벤토리 UI항목 리스트
      private List<ShopItem> _listOfUIItme = new List<ShopItem>();
 
+    internal Action<int> OnStartEnter;
 
     private void Awake()
     {
-        Hide();
+       
         Goj_Stats.SetActive(false);
         uIShopDescription.ResetShopDescription();
 
@@ -42,7 +43,7 @@ public class ShopInven : MonoBehaviour
             //생성될 위치 
             shopItem.transform.SetParent(contentPanel);
 
-            Debug.Log("설정");
+           
             _listOfUIItme.Add(shopItem);
 
             //아이템 선택처리
@@ -57,6 +58,7 @@ public class ShopInven : MonoBehaviour
     {
         if (_listOfUIItme.Count > itemIndex)
         {
+            Debug.Log(123);
             //아이템의 가격과 이미지 업데이트
             _listOfUIItme[itemIndex].SetItemData(itemImage, itemCoin);
         }
@@ -75,6 +77,7 @@ public class ShopInven : MonoBehaviour
     //활성화 될을때
     public void Show()
     {
+        Debug.Log("활성화");
         gameObject.SetActive(true);
         //ResetSelection();
     }
@@ -83,6 +86,7 @@ public class ShopInven : MonoBehaviour
     //비활성화 상태
     public void Hide()
     {
+        Debug.Log("활성화");
         gameObject.SetActive(false);
         //ResetDraggedItem();//드래그 종료 메서드
     }

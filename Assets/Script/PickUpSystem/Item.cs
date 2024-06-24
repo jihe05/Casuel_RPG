@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    //아아템 정보 
     [field: SerializeField]
     public ItemSo InventoryItem { get; private set; }
 
+    //개수는 1개
     [field: SerializeField]
     public int Quantity { get; set; } = 1;
 
-    [SerializeField]
-    private AudioSource AudioSource;
-
-    [SerializeField]
-    private float duration = 0.3f;
 
     private void Start()
     {

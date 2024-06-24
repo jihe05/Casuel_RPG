@@ -1,20 +1,28 @@
 using Ivnentory;
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Move : MonoBehaviour
 {
-    private Animator animator;
 
-    public InventoryController inventoryController;
+
+
+    //현재 상태 정의 
+    private IPlayerState _playerState;
+
+    //입력 콜백 액션 (인풋시스템의 호출의 따라 액션)
+    private Action<InputAction.CallbackContext> _inpuctCallback;
+
 
     
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();   
-    }
+
+   
+
     private void Update()
     {
+        /*
         animator.SetBool("isMove", false);
         if (Input.GetKey(KeyCode.W))
         {
@@ -53,30 +61,37 @@ public class Move : MonoBehaviour
         {
             animator.SetBool("Jump", false);
         }
+        */
 
+       
+
+        //초기상태를 Idel로 설정
+        ChageState(new IdleState(this));
 
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void ChageState(IPlayerState newState)
     {
-        if (other.CompareTag("WeaPon"))
-        {
-            inventoryController.ShopInvenOnAndOf();
-        }
-
-        if (other.CompareTag("Food"))
-        {
-         inventoryController.ShopInvenOnAndOf();
-        }
-        
-
-        if (other.CompareTag("Potion"))
-        {
-            inventoryController.ShopInvenOnAndOf();
-        }
-
-
-
+        _playerState?.ExitState();//현재 상태 종료
+        _playerState = newState;//새로운 상태 변경
+        _playerState.EnterState();//새로운 상태 진입
     }
+
+    //입력 콜백 바인딩/ 해제 바인딩
+    public void BindinputCallback(bool isBind, Action<InputAction.CallbackContext> callback)
+    {
+        if (isBind)
+        {
+            _inpuctCallback += callback;//콜백 추가 
+
+        }
+        else
+        {
+            
+            _inpuctCallback -= callback;// 콜백제거
+        }
+    
+    }
+   
 
 }

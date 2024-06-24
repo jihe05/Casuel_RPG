@@ -155,7 +155,8 @@ namespace Ivnentory
         // 상점 항목 선택 후 설명  호출 처리
         private void HandleShopEnter(int itemIndex)
         {
-            ShopInvenItem shopInvenItem = shopData.GetCurrentShopstate();
+            Debug.Log("들어옴");
+           // ShopInvenItem shopInvenItem = shopData.GetCurrentShopstate();
 
 
         }
@@ -197,11 +198,13 @@ namespace Ivnentory
         {
             if (ShopUI.isActiveAndEnabled == false)
             {
+                Debug.Log("열기");
                 ShopUI.Show();
 
                 foreach (var item in shopData.GetCurrentShopstate())
                 {
-                    Debug.Log(123);
+                   Debug.Log("이미지 : " + item.Value.shopItem.ToString());
+                   
                     ShopUI.UpdateData(item.Key, item.Value.shopItem.ItemImage, item.Value.coin);
 
                 }
@@ -216,7 +219,26 @@ namespace Ivnentory
         }
 
 
+        public void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("WeaPon"))
+            {
+               ShopInvenOnAndOf();
+            }
 
+            if (other.CompareTag("Food"))
+            {
+                Debug.Log("음식");
+                ShopInvenOnAndOf();
+            }
+
+
+            if (other.CompareTag("Potion"))
+            {
+               ShopInvenOnAndOf();
+            }
+
+        }
 
     }
 }
