@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 
 public interface IPlayerState
 {
@@ -11,76 +7,159 @@ public interface IPlayerState
     void ExitState();
     void ExtcuteOnUpdate();
 
-    void OnInputCallback(InputAction.CallbackContext context);
+   
 }
 
-//모든 생태가 구현되야 하는 메서드 정의
-public class StatePlayerBase : IPlayerState
-{
-    public virtual void EnterState() 
-    {
-
-    }
-    public virtual void ExitState()
-    { 
-    
-    }
-    public virtual void ExtcuteOnUpdate()
-    {
-    
-    }
-
-    public virtual void OnInputCallback(InputAction.CallbackContext context) 
-    {
-        
-    }
-
-}
 
 //플레이어의 대기 상태 
-public class IdleState : StatePlayerBase
-{  
-    //플레이어의 행동을 관리하는 인스턴스
-   private readonly Move _playerMove;
+public class IdleState : IPlayerState
+{
+
+    private readonly Move _playerMove;
 
     //생성자 : 플레이어 인스턴스 초기화 
     public IdleState(Move playerMove)
     {
-        this._playerMove = playerMove;
+        _playerMove = playerMove;
     }
 
-    public override void EnterState()
+    public void EnterState()
     {
-        _playerMove.BindinputCallback(true, OnInputCallback);//입력 콜백을 바인딩
+        _playerMove.animator_Player.SetBool("isMove" , false);
+        _playerMove.animator_Player.SetFloat("MoveX", 0);
+        _playerMove.animator_Player.SetFloat("MoveY", 0);
     }
 
-    public override void ExitState()
+
+    public void ExtcuteOnUpdate()
     {
-        
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKey(KeyCode.A))
+        {
+            _playerMove.ChangeState(new WalkState(_playerMove));
+        }
+        else
+        {
+            _playerMove.ChangeState(new IdleState(_playerMove));
+        }
     }
 
-    public override void OnInputCallback(InputAction.CallbackContext context)
+    public void ExitState()
     {
-          
+
+    }
+
+}
+
+//걷기
+public class WalkState : IPlayerState
+{
+
+    private readonly Move _playerMove;
+    public WalkState(Move playerMove)
+    { 
+      _playerMove = playerMove;
+    }
+    
+      
+    public void EnterState()
+    {
+        Debug.Log("애니메이션");
+        _playerMove.animator_Player.SetBool("isMove", true);
+        _playerMove.animator_Player.SetFloat("MoveX", 0);
+        _playerMove.animator_Player.SetFloat("MoveY", 3);
+    }
+
+    public void ExitState()
+    {
+      
+    }
+
+    public void ExtcuteOnUpdate()
+    {
+      
+
+    }
+
+
+}
+
+//달리기
+public class RunState : IPlayerState
+{
+
+    private readonly Move _playerMove;
+    public RunState(Move playerMove)
+    {
+        _playerMove = playerMove;
+    }
+
+    public void EnterState()
+    {
+
+    }
+
+    public void ExitState()
+    {
+
+    }
+
+    public void ExtcuteOnUpdate()
+    {
+
+
     }
 }
-public class AtKState : StatePlayerBase
-{ 
+
+//점프 
+public class JumpState : IPlayerState
+{
+
+    private readonly Move _playerMove;
+    public JumpState(Move playerMove)
+    {
+        _playerMove = playerMove;
+    }
+
+    public void EnterState()
+    {
+
+    }
+
+    public void ExitState()
+    {
+
+    }
+
+    public void ExtcuteOnUpdate()
+    {
 
 
+    }
 }
 
-public class JumpState : StatePlayerBase
-{ 
+//공격 상태 
+public class AtKState : IPlayerState
+{
 
+    private readonly Move _playerMove;
+    public AtKState(Move playerMove)
+    {
+        _playerMove = playerMove;
+    }
+    public void EnterState()
+    {
+
+    }
+
+    public void ExitState()
+    {
+
+    }
+
+    public void ExtcuteOnUpdate()
+    {
+
+
+    }
 
 }
-
-public class RunState : StatePlayerBase
-{ 
-
-
-}
-
-
-

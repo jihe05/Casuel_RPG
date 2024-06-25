@@ -164,6 +164,7 @@ namespace Ivnentory
 
         public void Update()
         {
+            
             if (Input.GetKeyDown(KeyCode.I))
             {
                 InventoyrOnAndOf();
