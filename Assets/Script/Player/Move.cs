@@ -1,3 +1,4 @@
+using System;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
@@ -123,6 +124,7 @@ public class Move : MonoBehaviour
 
     private void Start()
     {
+        isGround = characterController.isGrounded;
         ChangeState(new IdleState(this));
     }
 
@@ -142,12 +144,37 @@ public class Move : MonoBehaviour
 
     }
 
+    public void PlayerMove(Vector3 direction)
+    {
+        Vector3 move = direction * moveSpeed;
 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            move *= moveSpeed;
+        }
+        move.y = verticalVelocity;
+        characterController.Move(move * Time.deltaTime);
+    }
 
-   
+    public void handleJump()
+    {
+        isGround = characterController.isGrounded;
+
+        if (isGround && verticalVelocity < 0)
+        { 
+          verticalVelocity = 0f;
+            animator_Player.SetBool("Jump", false);
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && isGround)
+        {
+            verticalVelocity = jumpForce;
+            animator_Player.SetBool("Jumo", true);
+        }
+
+        verticalVelocity += gravity * Time.deltaTime;
     
-
-
+    
+    }
 
 
 }
