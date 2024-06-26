@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,18 +35,26 @@ public class IdleState : IPlayerState
 
     public void ExtcuteOnUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+
+       // _playerMove.handleJump();
+
+        _playerMove.PlayerMove(Vector3.zero);
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             _playerMove.ChangeState(new WalkState(_playerMove));
         }
-        else if(Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
             _playerMove.ChangeState(new JumpState(_playerMove));
         }
+     
     }
+                
 
     public void ExitState()
     {
+        
 
     }
 
@@ -63,8 +73,8 @@ public class WalkState : IPlayerState
       
     public void EnterState()
     {
-    
         _playerMove.animator_Player.SetBool("isMove", true);
+    
         
     }
 
@@ -73,7 +83,7 @@ public class WalkState : IPlayerState
         Vector3 direction = Vector3.zero;
 
         if (Input.GetKey(KeyCode.W))
-        {
+        { 
             _playerMove.animator_Player.SetFloat("MoveX", 0);
             _playerMove.animator_Player.SetFloat("MoveY", 3);
             direction += _playerMove.transform.forward;
@@ -99,9 +109,10 @@ public class WalkState : IPlayerState
         }
         else
         {
-            _playerMove.ChangeState(new IdleState(_playerMove));
+           _playerMove.ChangeState(new IdleState(_playerMove));
         }
 
+    
         // 이동 로직 호출
         _playerMove.PlayerMove(direction);
 
@@ -111,45 +122,21 @@ public class WalkState : IPlayerState
 
     public void ExitState()
     {
-      
+        _playerMove.animator_Player.SetBool("isMove", false);
     }
 
 
 
 }
 
-//달리기
-public class RunState : IPlayerState
-{
-
-    private readonly Move _playerMove;
-    public RunState(Move playerMove)
-    {
-        this._playerMove = playerMove;
-    }
-
-    public void EnterState()
-    {
-
-    }
-
-    public void ExitState()
-    {
-
-    }
-
-    public void ExtcuteOnUpdate()
-    {
-
-
-    }
-}
 
 //점프 
 public class JumpState : IPlayerState
 {
 
     private readonly Move _playerMove;
+    
+
     public JumpState(Move playerMove)
     {
         this._playerMove = playerMove;
@@ -157,17 +144,28 @@ public class JumpState : IPlayerState
 
     public void EnterState()
     {
-
-    }
-
-    public void ExitState()
-    {
-
+        _playerMove.animator_Player.SetBool("Jump", true);
+        
     }
 
     public void ExtcuteOnUpdate()
     {
+        Vector3 direction = Vector3.zero;
 
+        // 점프 및 이동 처리
+        _playerMove.PlayerMove(direction);
+
+        if (_playerMove.characterController.isGrounded)
+        {
+            _playerMove.ChangeState(new IdleState(_playerMove));
+        }
+       
+        
+    }
+
+    public void ExitState()
+    {
+        _playerMove.animator_Player.SetBool("Jump", false);
 
     }
 }
@@ -177,24 +175,48 @@ public class AtKState : IPlayerState
 {
 
     private readonly Move _playerMove;
+  
+
+
     public AtKState(Move playerMove)
     {
         this._playerMove = playerMove;
     }
     public void EnterState()
     {
+        _playerMove.animator_Player.SetTrigger("Attack");
+       
+    }
+
+   
+    public void ExtcuteOnUpdate()
+    {
+        _playerMove.PlayerMove(Vector3.zero);
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                _playerMove.ChangeState(new WalkState(_playerMove));
+            }
+            else
+            {
+                _playerMove.ChangeState(new IdleState(_playerMove));
+              
+            }
+            
+        }
+     
+
 
     }
 
     public void ExitState()
     {
-
+        
     }
 
-    public void ExtcuteOnUpdate()
-    {
+    
 
-
-    }
 
 }

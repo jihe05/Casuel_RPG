@@ -5,19 +5,24 @@ using UnityEngine;
 public class Move : MonoBehaviour
 {
     public float moveSpeed = 10f;
-    public float jumpForce = 5f;
-    public float gravity = -0.5f;
+    public float jumpForce = 10f;
+    public float gravity = -23f;
+    private int count =0;
+   
 
-    private float verticalVelocity;
-    private bool isGround;
 
-    private CharacterController characterController;
+    private float verticalVelocity;//수직속도
+    private bool isGrounded;
+
+    public CharacterController characterController;
     public Animator animator_Player;
+
     private IPlayerState currentState;
 
 
     private void Awake()
     {
+        animator_Player = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
     }
 
@@ -124,13 +129,36 @@ public class Move : MonoBehaviour
 
     private void Start()
     {
-        isGround = characterController.isGrounded;
+        
         ChangeState(new IdleState(this));
     }
 
     private void Update()
     {
         currentState?.ExtcuteOnUpdate();
+
+        // 마우스 클릭 시 공격 상태로 전환
+        if (Input.GetMouseButtonDown(0) && !(currentState is AtKState))
+        {
+            ChangeState(new AtKState(this));
+            PlayerAttackCount();
+        }
+
+    }
+
+    private void PlayerAttackCount()
+    {
+        if (count <= 2)
+        {
+            count++;
+          
+
+        }
+        else
+        {
+            count = 0;
+        }
+        animator_Player.SetInteger("AttackCount", count);
 
     }
 
@@ -141,40 +169,60 @@ public class Move : MonoBehaviour
         currentState = newState;
         currentState.EnterState();
 
-
     }
+
+
 
     public void PlayerMove(Vector3 direction)
     {
+       
         Vector3 move = direction * moveSpeed;
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            move *= moveSpeed;
+            move *= 2;
         }
+
+        if (characterController.isGrounded)
+        {
+            if (verticalVelocity < 0)
+            {
+                verticalVelocity = 0f;
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                verticalVelocity = jumpForce;
+                animator_Player.SetBool("Jump", true);
+              
+            }
+          
+        }
+        else
+        {
+            animator_Player.SetBool("Jump", false);
+            verticalVelocity += gravity * Time.deltaTime;   
+        }
+
         move.y = verticalVelocity;
         characterController.Move(move * Time.deltaTime);
     }
 
-    public void handleJump()
-    {
-        isGround = characterController.isGrounded;
 
-        if (isGround && verticalVelocity < 0)
-        { 
-          verticalVelocity = 0f;
-            animator_Player.SetBool("Jump", false);
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && isGround)
-        {
-            verticalVelocity = jumpForce;
-            animator_Player.SetBool("Jumo", true);
-        }
+   
+    //public void handleJump()
+    //{
+    //    isGrounded = characterController.isGrounded;
 
-        verticalVelocity += gravity * Time.deltaTime;
-    
-    
-    }
+    //    if (isGrounded && verticalVelocity < 0)
+    //    {
+    //        verticalVelocity = 0f;
+    //        animator_Player.SetBool("Jump", false);
+    //    }
+       
+    //    verticalVelocity += gravity * Time.deltaTime;
+
+
+    //}
 
 
 }
