@@ -9,12 +9,11 @@ public class Move : MonoBehaviour
     public float gravity = -23f;
     private int count =0;
    
-
-
     private float verticalVelocity;//수직속도
-    private bool isGrounded;
+  
 
     public CharacterController characterController;
+
     public Animator animator_Player;
 
     private IPlayerState currentState;
@@ -22,7 +21,6 @@ public class Move : MonoBehaviour
 
     private void Awake()
     {
-        animator_Player = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
     }
 
@@ -129,12 +127,12 @@ public class Move : MonoBehaviour
 
     private void Start()
     {
-        
         ChangeState(new IdleState(this));
     }
 
     private void Update()
     {
+
         currentState?.ExtcuteOnUpdate();
 
         // 마우스 클릭 시 공격 상태로 전환
@@ -149,15 +147,10 @@ public class Move : MonoBehaviour
     private void PlayerAttackCount()
     {
         if (count <= 2)
-        {
             count++;
-          
-
-        }
         else
-        {
             count = 0;
-        }
+        
         animator_Player.SetInteger("AttackCount", count);
 
     }
@@ -207,22 +200,19 @@ public class Move : MonoBehaviour
         characterController.Move(move * Time.deltaTime);
     }
 
+    public void OnAnimatorPlayer(GameObject player)
+    {
+        Debug.Log("호출");
+        animator_Player = player.GetComponent<Animator>();
 
-   
-    //public void handleJump()
-    //{
-    //    isGrounded = characterController.isGrounded;
-
-    //    if (isGrounded && verticalVelocity < 0)
-    //    {
-    //        verticalVelocity = 0f;
-    //        animator_Player.SetBool("Jump", false);
-    //    }
-       
-    //    verticalVelocity += gravity * Time.deltaTime;
-
-
-    //}
-
+        if (animator_Player != null)
+        {
+            Debug.Log(321);
+        }
+        else
+        {
+            Debug.LogWarning("Animator component not found on the player object.");
+        }
+    }
 
 }

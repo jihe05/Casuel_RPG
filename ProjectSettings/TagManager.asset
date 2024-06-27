@@ -7,6 +7,7 @@ TagManager:
   - WeaPon
   - Food
   - Potion
+  - Guide
   layers:
   - Default
   - TransparentFX
