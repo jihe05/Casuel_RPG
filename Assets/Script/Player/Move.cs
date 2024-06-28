@@ -1,6 +1,7 @@
 using System;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class Move : MonoBehaviour
 {
@@ -16,12 +17,15 @@ public class Move : MonoBehaviour
 
     public Animator animator_Player;
 
+    Monstermove monstermove;
+
     private IPlayerState currentState;
 
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        monstermove = GetComponent<Monstermove>();
     }
 
     /*
@@ -214,5 +218,20 @@ public class Move : MonoBehaviour
             Debug.LogWarning("Animator component not found on the player object.");
         }
     }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (collision.collider.CompareTag("Monster"))
+            {
+                
+                PlayerManager.instance.PlayerTrgger();
+
+            }
+        }
+    }
+
+  
 
 }

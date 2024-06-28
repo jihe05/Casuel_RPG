@@ -1,30 +1,32 @@
 using Inventory.Model;
-using Ivnentory;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class UImanger : MonoBehaviour
 {
+    public static UImanger Instance { get; private set; }
 
-    
+
+    private void Awake()
+    {
+        Instance = this;
+        StartCoin();
+        PlayerHpData();
+        MonsterHpData();
+    }
+
+   
     //___________________Coin_________________________
 
-    public static UImanger Instance { get; private set; }
+
 
     [Header("-Coin-")]
     public Text Text_playercoin;
 
     public int Coin = 10000;
 
-    private void Awake()
-    {
-        Instance = this;
-        StartCoin();
-    }
 
     public void StartCoin()
     {
@@ -32,7 +34,7 @@ public class UImanger : MonoBehaviour
 
     }
 
-    public void UpdataCoinAndImage(int _coin , Sprite itemImage)
+    public void BayCoinAndImage(int _coin , Sprite itemImage)
     {
         if (_coin < Coin  && Coin != 0)
         {
@@ -51,6 +53,15 @@ public class UImanger : MonoBehaviour
 
         }
       
+
+    }
+
+    public void CoinAndImage(int _coin)
+    {
+     
+       Coin += _coin;
+     
+        Text_playercoin.text = Coin.ToString("N0");
 
     }
 
@@ -192,10 +203,52 @@ public class UImanger : MonoBehaviour
     }
 
 
+    //_________________________________________________________
 
+    //__________________playerHp_______________________________
+
+    public Slider Player_HpSlidebar;
+    public float PlayerMaxHp = 10000;
+
+    private void PlayerHpData()
+    {
+        Player_HpSlidebar.minValue = 0f;
+        Player_HpSlidebar.maxValue = PlayerMaxHp;
+        Player_HpSlidebar.value = PlayerMaxHp;
+    }
+
+
+    public void PlayerSliderbar(float Ap)
+    { 
+         Player_HpSlidebar.value -= Ap;
+    
+    }
 
 
     //_________________________________________________________
+
+    //__________________MonsterHp_______________________________
+
+    public Slider Monster_HpSlidebar;
+    public float MonsterMaxHp = 100;
+
+    private void MonsterHpData()
+    {
+        Monster_HpSlidebar.minValue = 0f;
+        Monster_HpSlidebar.maxValue = MonsterMaxHp;
+        Monster_HpSlidebar.value = MonsterMaxHp;
+    }
+
+    public void MonsterSliderbar(float Ap)
+    {
+        Debug.Log("Monster_HpSlidebar.value ; " + Monster_HpSlidebar.value);
+        Debug.Log("Ap:" + Ap);
+        Monster_HpSlidebar.value -= Ap;
+        Debug.Log("Monster_HpSlidebar.value2:" + Monster_HpSlidebar.value);
+    }
+
+    //_________________________________________________________
+
 
 }
 

@@ -59,7 +59,7 @@ public class ShopItem : MonoBehaviour , IPointerClickHandler
 
         Debug.Log(sprite.ToString());
 
-        UImanger.Instance.UpdataCoinAndImage(coin  , sprite);
+        UImanger.Instance.BayCoinAndImage(coin  , sprite);
 
 
     }
