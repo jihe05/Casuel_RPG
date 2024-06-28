@@ -1,0 +1,223 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class Monstermove : MonoBehaviour
+{
+    public Transform Target;
+    NavMeshAgent nmAgent;
+    Animator anim;
+    public GameObject Particle;
+    public GameObject Slime;
+
+    float MonsterHP = 100;
+    float MonsterAp = 100;
+    public float lostDistance = 0;
+
+    enum State
+    {
+        IDLE,
+        CHASE,
+        ATTACK,
+        KILLED
+    }
+
+    State state;
+
+    private void Awake()
+    {
+        nmAgent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        state = State.IDLE;
+        StartCoroutine(StateMachine());
+    }
+
+    IEnumerator StateMachine()
+    {
+        while (MonsterHP > 0)
+        {
+            yield return StartCoroutine(state.ToString());
+            Debug.Log("state.ToString() :" + state.ToString());
+        }
+
+        // HP가 0 이하일 때 KILLED 상태로 전환
+        if (MonsterHP <= 0)
+        {
+            ChangeState(State.KILLED);
+            yield return StartCoroutine(state.ToString());
+        }
+    }
+
+    IEnumerator IDLE()
+    {
+        Debug.Log("IDLE");
+        var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+
+        if (!curAnimStateInfo.IsName("Idle"))
+            anim.Play("Idle", 0, 0);
+
+        int dir = Random.Range(0f, 1f) > 0.5f ? 1 : -1;
+        float lookSpeed = Random.Range(25f, 40f);
+
+        for (float i = 0; i < curAnimStateInfo.length; i += Time.deltaTime)
+        {
+            transform.localEulerAngles = new Vector3(0f, transform.localEulerAngles.y + (dir) * Time.deltaTime * lookSpeed, 0f);
+            yield return null;
+        }
+    }
+
+    IEnumerator CHASE()
+    {
+        Debug.Log("CHASE");
+        var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+
+        if (!curAnimStateInfo.IsName("Walk"))
+        {
+            Debug.Log("걷기 시작");
+            anim.Play("Walk", 0, 0);
+            yield return null;
+        }
+
+        while (state == State.CHASE)
+        {
+            nmAgent.SetDestination(Target.position);
+
+            if (nmAgent.remainingDistance <= nmAgent.stoppingDistance)
+            {
+                ChangeState(State.ATTACK); // 목표에 도달하면 공격 상태로 변경
+                yield break; // CHASE 상태 종료
+            }
+            else if (nmAgent.remainingDistance < lostDistance)
+            {
+              
+                Target = null;
+                nmAgent.SetDestination(transform.position);
+                ChangeState(State.IDLE); // 목표를 잃어버리면 대기 상태로 변경
+                yield break; // CHASE 상태 종료
+            }
+
+            yield return null; // 다음 프레임까지 대기
+        }
+    }
+
+    IEnumerator ATTACK()
+    {
+        Debug.Log("ATTACK");
+        var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+
+        if (!curAnimStateInfo.IsName("Attack"))
+        {
+            anim.Play("Attack", 0, 0); // 공격 애니메이션 실행
+            PlayerManager.instance.PlayerUpdateHp(MonsterAp);
+
+        }
+
+        // 공격 애니메이션이 끝날 때까지 대기
+        while (curAnimStateInfo.normalizedTime < 1.0f)
+        {
+            yield return null;
+            curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        }
+
+        // 공격 애니메이션이 끝난 후에만 상태를 변경
+        yield return new WaitForSeconds(0.5f); // 공격 간격 조절
+
+        // 거리가 멀어지면 추적 상태로 변경
+        if (nmAgent.remainingDistance > nmAgent.stoppingDistance)
+        {
+           
+            ChangeState(State.CHASE);
+        }
+        else
+        {
+            // 다시 공격 상태로 돌아가기
+            ChangeState(State.ATTACK);
+        }
+    }
+
+    IEnumerator KILLED()
+    {
+        Debug.Log("KILLED");
+        var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+
+        if (!curAnimStateInfo.IsName("Die"))
+        {
+            anim.Play("Die", 0, 0); // 죽음 애니메이션 실행
+        }
+
+        // 죽음 애니메이션이 끝날 때까지 대기
+        while (curAnimStateInfo.normalizedTime < 1.0f)
+        {
+            yield return null;
+            curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+          
+        }
+        Slime.SetActive(false);
+        Particle.SetActive(true);
+        yield return new WaitForSeconds(1.0f); 
+        Destroy(gameObject); // 몬스터 삭제
+         UImanger.Instance.CoinAndImage(500);
+
+    }
+
+
+    void ChangeState(State newState)
+    {
+        Debug.Log("스탯바뀜: " + newState);
+        state = newState;
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (!other.CompareTag("Player"))
+        {
+            Debug.Log("닿지 않음");
+            return;
+        }
+        else
+        {
+            Debug.Log("닿음");
+            Target = other.transform;
+            nmAgent.SetDestination(Target.position);
+            ChangeState(State.CHASE);
+        }
+    }
+
+    private void Update()
+    {
+        if (Target == null)
+            return;
+
+        // 목표를 바라보도록 회전
+        Vector3 direction = (Target.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+
+        // 목표를 계속 추적
+        nmAgent.SetDestination(Target.position);
+
+        if (MonsterHP == 0 && state != State.KILLED)
+        {
+            Debug.Log("쥬금");
+            ChangeState(State.KILLED);
+        }
+    }
+
+    public void MonsterUpdateHp(float Ap)
+    {
+        Debug.Log("PAp : " + Ap);
+        MonsterHP -= Ap;
+        Debug.Log("MHp : " + MonsterHP);
+
+        UImanger.Instance.MonsterSliderbar(Ap);
+    }
+
+}
+
+
+

@@ -7,6 +7,8 @@ TagManager:
   - WeaPon
   - Food
   - Potion
+  - Guide
+  - Monster
   layers:
   - Default
   - TransparentFX
