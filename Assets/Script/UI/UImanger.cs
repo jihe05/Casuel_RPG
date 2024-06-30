@@ -42,10 +42,9 @@ public class UImanger : MonoBehaviour
             _coin = Coin;
             Text_playercoin.text = _coin.ToString("N0");
 
-            Debug.Log("1");
+           
             InventoryUpdate(itemImage);
-            Debug.Log("5");
-  
+           
         }
         else
         {
@@ -78,15 +77,15 @@ public class UImanger : MonoBehaviour
 
     private void InventoryUpdate(Sprite itemImage)
     {
-        Debug.Log("2");
+      
         Item item = itemImage.GetComponent<Item>();
-        Debug.Log("3");
+       
 
         if (item != null)
         {
-            Debug.Log("4");
+           
             int reminder = inventoryData.AddItem(item.InventoryItem, item.Quantity);
-            Debug.Log("reminder : " + reminder);
+         
             item.Quantity = reminder;
 
         }
@@ -112,9 +111,7 @@ public class UImanger : MonoBehaviour
     {
         // 현재 위치를 가져옵니다.
         Vector3 currentPosition = Selectcamera.transform.position;
-
-        Debug.Log("currentPosition.x" + currentPosition.x);
-
+      
         if (currentPosition.x <= -64)
             return;
         else
@@ -241,14 +238,34 @@ public class UImanger : MonoBehaviour
 
     public void MonsterSliderbar(float Ap)
     {
-        Debug.Log("Monster_HpSlidebar.value ; " + Monster_HpSlidebar.value);
-        Debug.Log("Ap:" + Ap);
         Monster_HpSlidebar.value -= Ap;
-        Debug.Log("Monster_HpSlidebar.value2:" + Monster_HpSlidebar.value);
+      
     }
 
     //_________________________________________________________
 
+
+    //__________________Active_______________________________
+
+    public void OnClickButtonActive(GameObject gameObject)
+    {
+
+        if (gameObject.active == false)
+        {
+            gameObject.SetActive(true);
+
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+    
+    }
+
+
+
+
+    //_________________________________________________________
 
 }
 

@@ -47,7 +47,7 @@ public class ItemMousFolloer : MonoBehaviour
     //ÀüÈ¯ (²¨Áü / ÄÑÁü)
     public void Toggle(bool val)
     {
-        Debug.Log($"item toggle {val}");
+       
         gameObject.SetActive(val);
     
     }

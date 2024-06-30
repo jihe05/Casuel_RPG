@@ -206,17 +206,8 @@ public class Move : MonoBehaviour
 
     public void OnAnimatorPlayer(GameObject player)
     {
-        Debug.Log("»£√‚");
         animator_Player = player.GetComponent<Animator>();
 
-        if (animator_Player != null)
-        {
-            Debug.Log(321);
-        }
-        else
-        {
-            Debug.LogWarning("Animator component not found on the player object.");
-        }
     }
 
     private void OnCollisionStay(Collision collision)

@@ -44,7 +44,6 @@ public class ShopInven : MonoBehaviour
             //생성될 위치 
             shopItem.transform.SetParent(contentPanel);
 
-            Debug.Log("설정");
             _listOfUIItme.Add(shopItem);
 
             //아이템 선택처리

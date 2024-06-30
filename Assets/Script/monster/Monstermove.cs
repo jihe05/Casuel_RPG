@@ -42,7 +42,7 @@ public class Monstermove : MonoBehaviour
         while (MonsterHP > 0)
         {
             yield return StartCoroutine(state.ToString());
-            Debug.Log("state.ToString() :" + state.ToString());
+           
         }
 
         // HP∞° 0 ¿Ã«œ¿œ ∂ß KILLED ªÛ≈¬∑Œ ¿¸»Ø
@@ -55,7 +55,7 @@ public class Monstermove : MonoBehaviour
 
     IEnumerator IDLE()
     {
-        Debug.Log("IDLE");
+       
         var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
         if (!curAnimStateInfo.IsName("Idle"))
@@ -73,12 +73,12 @@ public class Monstermove : MonoBehaviour
 
     IEnumerator CHASE()
     {
-        Debug.Log("CHASE");
+       
         var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
         if (!curAnimStateInfo.IsName("Walk"))
         {
-            Debug.Log("∞»±‚ Ω√¿€");
+           
             anim.Play("Walk", 0, 0);
             yield return null;
         }
@@ -107,7 +107,7 @@ public class Monstermove : MonoBehaviour
 
     IEnumerator ATTACK()
     {
-        Debug.Log("ATTACK");
+      
         var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
         if (!curAnimStateInfo.IsName("Attack"))
@@ -142,7 +142,7 @@ public class Monstermove : MonoBehaviour
 
     IEnumerator KILLED()
     {
-        Debug.Log("KILLED");
+       
         var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
         if (!curAnimStateInfo.IsName("Die"))
@@ -168,7 +168,6 @@ public class Monstermove : MonoBehaviour
 
     void ChangeState(State newState)
     {
-        Debug.Log("Ω∫≈»πŸ≤Ò: " + newState);
         state = newState;
     }
 
@@ -176,12 +175,10 @@ public class Monstermove : MonoBehaviour
     {
         if (!other.CompareTag("Player"))
         {
-            Debug.Log("¥Í¡ˆ æ ¿Ω");
             return;
         }
         else
         {
-            Debug.Log("¥Í¿Ω");
             Target = other.transform;
             nmAgent.SetDestination(Target.position);
             ChangeState(State.CHASE);
@@ -203,17 +200,16 @@ public class Monstermove : MonoBehaviour
 
         if (MonsterHP == 0 && state != State.KILLED)
         {
-            Debug.Log("¡Í±›");
+            
             ChangeState(State.KILLED);
         }
     }
 
     public void MonsterUpdateHp(float Ap)
     {
-        Debug.Log("PAp : " + Ap);
+      
         MonsterHP -= Ap;
-        Debug.Log("MHp : " + MonsterHP);
-
+      
         UImanger.Instance.MonsterSliderbar(Ap);
     }
 

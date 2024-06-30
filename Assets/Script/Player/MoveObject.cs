@@ -20,7 +20,7 @@ public class MoveObject : MonoBehaviour
         {
             move.OnAnimatorPlayer(gameObject);
             newParent.GetComponent<Move>().enabled = true;
-            Debug.Log("gameObject" , gameObject);
+         
         }
         else
         {

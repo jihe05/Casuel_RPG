@@ -199,12 +199,12 @@ namespace Ivnentory
         {
             if (ShopUI.isActiveAndEnabled == false)
             {
-                Debug.Log("열기");
+               
                 ShopUI.Show();
 
                 foreach (var item in shopData.GetCurrentShopstate())
                 {
-                   Debug.Log("이미지 : " + item.Value.shopItem.ToString());
+                  
                    
                     ShopUI.UpdateData(item.Key, item.Value.shopItem.ItemImage, item.Value.coin);
 
@@ -229,7 +229,7 @@ namespace Ivnentory
 
             if (other.CompareTag("Food"))
             {
-                Debug.Log("음식");
+               
                 ShopInvenOnAndOf();
             }
 
