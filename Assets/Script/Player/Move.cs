@@ -1,7 +1,9 @@
 using System;
+using Unity.VisualScripting;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.SceneManagement;
 
 public class Move : MonoBehaviour
 {
@@ -19,114 +21,20 @@ public class Move : MonoBehaviour
 
     Monstermove monstermove;
 
+    public Camera camera;    
+
     private IPlayerState currentState;
 
 
     private void Awake()
     {
+        Debug.Log(123);
+        DontDestroyOnLoad(gameObject);
         characterController = GetComponent<CharacterController>();
         monstermove = GetComponent<Monstermove>();
     }
 
-    /*
-    public float moveSpeed = 5f;
-  
-    public float jumpForce = 5f;
-
-    public float gravity = -0.5f;
-
-    private float VerticalValocity;
-
-    private bool isGround; 
-
-    private CharacterController characterController;
-    private Animator animator;
-
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        characterController = GetComponent<CharacterController>();
-    }
-
-    private void Update()
-    {
-        
-        Vector3 move = Vector3.zero;
-
-
-
-        // 쉬프트 키가 눌렸는지 여부를 확인
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            moveSpeed = 7.5f;
-        }
-        else 
-        {
-            moveSpeed = 5;        
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            animator.SetBool("isMove", true);
-            animator.SetFloat("MoveX", 0);
-            animator.SetFloat("MoveY", 3);
-
-            move += transform.forward;
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            animator.SetBool("isMove", true);
-            animator.SetFloat("MoveX", 0);
-            animator.SetFloat("MoveY", -3);
-
-            move += -transform.forward;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            animator.SetBool("isMove", true);
-            animator.SetFloat("MoveX", -3);
-            animator.SetFloat("MoveY", 0);
-
-            move += -transform.right;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            animator.SetBool("isMove", true);
-            animator.SetFloat("MoveX", 3);
-            animator.SetFloat("MoveY", 0);
-
-            move += transform.right;
-        }
-        else
-        {
-            animator.SetBool("isMove", false);
-        }
-
-     
-        isGround =characterController.isGrounded;
-        if (isGround)
-        {
-            Debug.Log("땅이야");
-        }
-        if (isGround && VerticalValocity < 0)
-        { 
-           VerticalValocity = 0f;
-            animator.SetBool("Jump", false);
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && isGround)
-        {
-            VerticalValocity = jumpForce;
-            animator.SetBool("Jump", true);
-        }
-        VerticalValocity += gravity + Time.deltaTime;
-        move.y = VerticalValocity;
-
-        characterController.Move(move * moveSpeed * Time.deltaTime);
-        
-    }
-
-    */
+   
 
 
     private void Start()
@@ -223,6 +131,37 @@ public class Move : MonoBehaviour
         }
     }
 
-  
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("BosEvent"))
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            Debug.Log(transform.position);
+            characterController.enabled = false;
+            SceneManager.LoadScene("Bosmap");
+        }
+    }
+
+    // 씬이 로드된 후 호출
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Bosmap")
+        {
+            // 여기서 씬이 완전히 로드된 후 오브젝트의 위치와 회전을 설정
+            Invoke("SetPlayerPositionAndRotation", 0.01f);
+            SceneManager.sceneLoaded -= OnSceneLoaded; // 이벤트 핸들러 제거
+        }
+    }
+
+    private void SetPlayerPositionAndRotation()
+    {
+        transform.position = new Vector3(38f, -12f, 144.5f);
+        transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+        camera.clearFlags = CameraClearFlags.SolidColor;
+        camera.backgroundColor = Color.black;
+        characterController.enabled = true;
+        Debug.Log(transform.position);
+    }
 
 }

@@ -229,7 +229,6 @@ namespace Ivnentory
 
             if (other.CompareTag("Food"))
             {
-               
                 ShopInvenOnAndOf();
             }
 
@@ -238,6 +237,7 @@ namespace Ivnentory
             {
                ShopInvenOnAndOf();
             }
+
 
         }
 

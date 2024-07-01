@@ -9,6 +9,7 @@ TagManager:
   - Potion
   - Guide
   - Monster
+  - BosEvent
   layers:
   - Default
   - TransparentFX
