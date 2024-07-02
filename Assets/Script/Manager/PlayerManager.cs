@@ -9,7 +9,8 @@ public class PlayerManager : MonoBehaviour
 
     public GameObject player;
 
-   public Monstermove monstermove;
+    public Monstermove monstermove;
+    Bossmove Bossmove;
 
     public float Player_Hp = 10000;
     public float Player_Ap = 20;
@@ -17,18 +18,31 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+      
     }
 
     public void PlayerUpdateHp(float Ap)
     {
         Player_Hp -= Ap;
-
+        PlayerPrefs.SetFloat("Player_Hp", Player_Hp);
         UImanger.Instance.PlayerSliderbar(Ap);
     }
 
-    public void PlayerTrgger()
+    public void PlayerMonsterTrgger()
     {
         monstermove.MonsterUpdateHp(Player_Ap);
     }
-    
+    public void PlayerBossTrgger()
+    {
+      
+        Bossmove = FindObjectOfType<Bossmove>();
+        Bossmove.UpdateHp(Player_Ap);
+    }
+
+
 }

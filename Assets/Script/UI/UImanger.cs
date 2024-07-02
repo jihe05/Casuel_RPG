@@ -11,6 +11,7 @@ public class UImanger : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         Instance = this;
         StartCoin();
         PlayerHpData();
@@ -159,7 +160,7 @@ public class UImanger : MonoBehaviour
                 moveObject.MoveToNewParentButton(newParent);
 
                 SelectCharacterPanel.gameObject.SetActive(false);
-                Debug.Log(222);
+               
             }
         }
     }
@@ -174,6 +175,7 @@ public class UImanger : MonoBehaviour
 
     //____________________________________________________________________
 
+    [Header("-changePlayer-")]
     //_____________________changePlayer_________________________
 
     public GameObject WomanPlayer;
@@ -202,6 +204,7 @@ public class UImanger : MonoBehaviour
 
     //_________________________________________________________
 
+    [Header("-playerHp-")]
     //__________________playerHp_______________________________
 
     public Slider Player_HpSlidebar;
@@ -212,18 +215,20 @@ public class UImanger : MonoBehaviour
         Player_HpSlidebar.minValue = 0f;
         Player_HpSlidebar.maxValue = PlayerMaxHp;
         Player_HpSlidebar.value = PlayerMaxHp;
+     
     }
 
 
     public void PlayerSliderbar(float Ap)
     { 
          Player_HpSlidebar.value -= Ap;
-    
+       
     }
 
 
     //_________________________________________________________
 
+    [Header("-MonsterHp-")]
     //__________________MonsterHp_______________________________
 
     public Slider Monster_HpSlidebar;
@@ -244,26 +249,20 @@ public class UImanger : MonoBehaviour
 
     //_________________________________________________________
 
-
     //__________________Active_______________________________
 
-    public void OnClickButtonActive(GameObject gameObject)
+    public void OnClickButtonActive(GameObject targetObject)
     {
-
-        if (gameObject.active == false)
+        // GameObject가 비활성화 상태이면 활성화하고, 활성화 상태이면 비활성화
+        if (!targetObject.activeSelf)
         {
-            gameObject.SetActive(true);
-
+            targetObject.SetActive(true);
         }
         else
         {
-            gameObject.SetActive(false);
+            targetObject.SetActive(false);
         }
-    
     }
-
-
-
 
     //_________________________________________________________
 

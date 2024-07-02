@@ -391,7 +391,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb887fcebac86d24d997a301cffbac40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
+  closeAttackRange: 15
+  mediumAttackRange: 15
+  attackInterval: 5
+  health: 10000
 --- !u!195 &2389365015514304794
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -596,6 +599,7 @@ GameObject:
   - component: {fileID: 13753596}
   - component: {fileID: 190186344016946851}
   - component: {fileID: 9038680572021177680}
+  - component: {fileID: 1331753688773713851}
   m_Layer: 0
   m_Name: DragonMesh
   m_TagString: Untagged
@@ -611,8 +615,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 114264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0042358, y: 2.15, z: 0.48}
-  m_LocalScale: {x: 0.0027456998, y: 0.0033181151, z: 0.0049085}
+  m_LocalPosition: {x: -0, y: -0.78, z: 4.22}
+  m_LocalScale: {x: 0.0027456998, y: 0.012191087, z: 0.008119898}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 480112}
@@ -812,6 +816,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &1331753688773713851
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114264}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 100
+  m_Height: 712
+  m_Direction: 2
+  m_Center: {x: 0.5895963, y: 224.39542, z: -606.77484}
 --- !u!1 &115070
 GameObject:
   m_ObjectHideFlags: 0
@@ -2648,6 +2666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 497486}
+  - component: {fileID: 2186822349625908251}
   m_Layer: 0
   m_Name: Spine1
   m_TagString: Untagged
@@ -2671,6 +2690,20 @@ Transform:
   m_Father: {fileID: 456520}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -4.9582852e-15, y: 1.1621254e-15, z: -28.698849}
+--- !u!136 &2186822349625908251
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190888}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 127.7
+  m_Height: 537.2
+  m_Direction: 0
+  m_Center: {x: -49.8, y: -10.6, z: 0}
 --- !u!1 &190974
 GameObject:
   m_ObjectHideFlags: 0

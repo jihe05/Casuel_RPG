@@ -10,6 +10,9 @@ TagManager:
   - Guide
   - Monster
   - BosEvent
+  - Boss
+  - BossPoint
+  - King
   layers:
   - Default
   - TransparentFX

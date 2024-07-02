@@ -28,14 +28,10 @@ public class Move : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(123);
         DontDestroyOnLoad(gameObject);
         characterController = GetComponent<CharacterController>();
         monstermove = GetComponent<Monstermove>();
     }
-
-   
-
 
     private void Start()
     {
@@ -122,11 +118,14 @@ public class Move : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+           
             if (collision.collider.CompareTag("Monster"))
             {
-                
-                PlayerManager.instance.PlayerTrgger();
-
+                PlayerManager.instance.PlayerMonsterTrgger();
+            }
+            if (collision.collider.CompareTag("Boss"))
+            {
+                PlayerManager.instance.PlayerBossTrgger();
             }
         }
     }
@@ -141,10 +140,25 @@ public class Move : MonoBehaviour
             characterController.enabled = false;
             SceneManager.LoadScene("Bosmap");
         }
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (other.CompareTag("Boss"))
+            {
+                PlayerManager.instance.PlayerBossTrgger();
+            }
+        }
+        if(other.CompareTag("Guide"))
+        {
+            EventManager.Instans.TalkePanelActive();
+        }
+        if (other.CompareTag("King"))
+        {
+            EventManager.Instans.TalkePanelDestroy();
+        }
     }
 
-    // 씬이 로드된 후 호출
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        // 씬이 로드된 후 호출
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Bosmap")
         {

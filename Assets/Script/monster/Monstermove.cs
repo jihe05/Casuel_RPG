@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+enum State
+{
+    IDLE,
+    CHASE,
+    ATTACK,
+    KILLED
+}
 public class Monstermove : MonoBehaviour
 {
     public Transform Target;
@@ -15,14 +22,7 @@ public class Monstermove : MonoBehaviour
     float MonsterAp = 100;
     public float lostDistance = 0;
 
-    enum State
-    {
-        IDLE,
-        CHASE,
-        ATTACK,
-        KILLED
-    }
-
+   
     State state;
 
     private void Awake()
