@@ -8,9 +8,11 @@ public class Tutorial : MonoBehaviour
 {
     public Text tutorialTxtName;
     public Text tutorialTxt;
+    public Image characterImage;
     
     public string[] names;
     public string[] dialogues;
+    Dictionary<string, Sprite> characterSprites;
 
     public int talkNum;
     private bool skipTyping;
@@ -19,9 +21,31 @@ public class Tutorial : MonoBehaviour
     public Collider King_Collider;
     public Collider Guide_Collider;
 
+    public Sprite[] sprites;
+
+    private void Awake()
+    {
+        characterSprites = new Dictionary<string, Sprite>();
+      
+    }
+
     private void OnEnable()
     {
         StartTalk(dialogues, names);
+    }
+
+    public void SetCharacterImage(string characterName, Sprite sprite)
+    {
+        if (!characterSprites.ContainsKey(characterName))
+        {
+            characterSprites.Add(characterName, sprite);
+
+        }
+        else
+        {
+            characterSprites[characterName] = sprite;
+        }
+
     }
 
 
@@ -31,6 +55,17 @@ public class Tutorial : MonoBehaviour
        tutorialTxt.text = null;
         tutorialTxtName.text = name;
         skipTyping = false;
+
+        SetCharacterImage("안내자", sprites[0]);
+        SetCharacterImage("왕", sprites[1]);
+        SetCharacterImage("여왕", sprites[2]);
+        SetCharacterImage("용사", sprites[3]);
+        
+
+        if (characterSprites.TryGetValue(name, out Sprite sprite))
+        {
+            characterImage.sprite = sprite;
+        }
 
         for (int i = 0; i < talk.Length; i++)
         {
@@ -54,6 +89,7 @@ public class Tutorial : MonoBehaviour
         dialogues = _talks;
         names = name;
         gameObject.SetActive(true);
+
         //첫 대사 타이핑
         typingCoroutine=StartCoroutine(Typing(dialogues[talkNum] , names[talkNum]));
     }
@@ -71,7 +107,7 @@ public class Tutorial : MonoBehaviour
             King_Collider.enabled = false;
             return;
         }
-        if (talkNum == 2) // 안내자와의 대화가 끝나는 조건
+        if (talkNum == 3) // 안내자와의 대화가 끝나는 조건
         {
             EndTalk();
             Guide_Collider.enabled = false;

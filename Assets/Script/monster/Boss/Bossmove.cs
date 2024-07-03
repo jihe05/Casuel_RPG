@@ -20,12 +20,13 @@ enum BossState
 
 public class Bossmove : MonoBehaviour
 {
+    public static Bossmove Instance;
+
     Animator animator;
     NavMeshAgent navMesh;
     Move player;
     Transform Target;
     float distanceToPlayer;
-
 
     [Header("Range")]
     public float closeAttackRange = 15f;
@@ -43,13 +44,17 @@ public class Bossmove : MonoBehaviour
         player = FindObjectOfType<Move>();
         animator = GetComponent<Animator>();
         navMesh = GetComponent<NavMeshAgent>();
-
         
+        Instance = this;
+
+
     }
 
     private void Start()
     {
         state = BossState.IDLE;
+      
+
     }
 
     private void Update()
@@ -152,15 +157,24 @@ public class Bossmove : MonoBehaviour
             }
             else // 30% È®·ü·Î Basic Attack
             {
+              
                 ChangeState(BossState.BASICATTACK);
+                
             }
         }
         else if (distanceToPlayer > closeAttackRange)
         {
             ChangeState(BossState.WALK);
+           
         }
 
 
+
+    }
+
+    public void PlayerAttack()
+    {
+        PlayerManager.instance.PlayerUpdateHp(Ap);
 
     }
 
@@ -271,4 +285,10 @@ public class Bossmove : MonoBehaviour
            
         }
     }
+
+    
+
+
+
+
 }

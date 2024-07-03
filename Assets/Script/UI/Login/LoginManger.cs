@@ -15,20 +15,21 @@ public class LoginManger : MonoBehaviour
     public InputField Singup_idInput;
     public InputField Singup_numberInput;
 
+    [Header("Button")]
     public GameObject LoginPanel;
     public GameObject SingupPanel;
+    public GameObject MainPanel;
 
     public Text Login_errorText;
     public Text Singup_errorText;
 
     private Dictionary<string, string> Dic_userData = new Dictionary<string, string>();
 
-   
-
     public void SignUp()
-    { 
-      string id = Login_idInput.text;
-        string number = Login_numberInput.text;
+    {
+
+        string id = Singup_idInput.text;
+        string number = Singup_numberInput.text;
 
         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(number))
         {
@@ -48,10 +49,11 @@ public class LoginManger : MonoBehaviour
 
     public void Login()
     {
-        string id = Singup_idInput.text;
-        string numger = Singup_numberInput.text;
+      
+        string id = Login_idInput.text;
+        string number = Login_numberInput.text;
 
-        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(numger))
+        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(number))
         {
             Login_errorText.text = "아이디와 비밀번호를 입력해주세요.";
             return;
@@ -59,9 +61,10 @@ public class LoginManger : MonoBehaviour
 
         if (Dic_userData.TryGetValue(id, out string storesNumber))
         {
-            if (numger == storesNumber)
+            if (number == storesNumber)
             {
                 Login_errorText.text = "로그인 성공";
+                Invoke("GameStart", 0.5f);
                
             }
             else
@@ -91,7 +94,7 @@ public class LoginManger : MonoBehaviour
 
     public void SignupTextButton()
     {
-        SingupPanel.gameObject.SetActive(true);
+       SingupPanel.gameObject.SetActive(true);
        LoginPanel.gameObject.SetActive(false);
         
     }
@@ -102,5 +105,10 @@ public class LoginManger : MonoBehaviour
         LoginPanel.gameObject.SetActive(true);
     }
 
+    public void GameStart()
+    {
+        MainPanel.gameObject.SetActive(false);
+
+    }
 
 }

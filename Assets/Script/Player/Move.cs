@@ -93,14 +93,15 @@ public class Move : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 verticalVelocity = jumpForce;
+
                 animator_Player.SetBool("Jump", true);
-              
+             
             }
-          
+            animator_Player.SetBool("Jump", false);
         }
         else
         {
-            animator_Player.SetBool("Jump", false);
+           
             verticalVelocity += gravity * Time.deltaTime;   
         }
 
@@ -127,6 +128,7 @@ public class Move : MonoBehaviour
             {
                 PlayerManager.instance.PlayerBossTrgger();
             }
+            
         }
     }
 
@@ -142,6 +144,7 @@ public class Move : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
+            //보스를 때렸을때
             if (other.CompareTag("Boss"))
             {
                 PlayerManager.instance.PlayerBossTrgger();
@@ -155,10 +158,15 @@ public class Move : MonoBehaviour
         {
             EventManager.Instans.TalkePanelDestroy();
         }
+        if (other.CompareTag("BosAttack"))
+        {
+            Bossmove.Instance.PlayerAttack();
+        }
+
     }
 
-        // 씬이 로드된 후 호출
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    // 씬이 로드된 후 호출
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Bosmap")
         {
@@ -175,7 +183,7 @@ public class Move : MonoBehaviour
         camera.clearFlags = CameraClearFlags.SolidColor;
         camera.backgroundColor = Color.black;
         characterController.enabled = true;
-        Debug.Log(transform.position);
+        
     }
 
 }

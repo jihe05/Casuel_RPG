@@ -13,6 +13,7 @@ TagManager:
   - Boss
   - BossPoint
   - King
+  - BosAttack
   layers:
   - Default
   - TransparentFX

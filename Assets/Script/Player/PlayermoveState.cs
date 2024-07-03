@@ -122,7 +122,7 @@ public class WalkState : IPlayerState
 
     public void ExitState()
     {
-        _playerMove.animator_Player.SetBool("isMove", false);
+     
     }
 
 
@@ -155,14 +155,16 @@ public class JumpState : IPlayerState
         // 점프 및 이동 처리
         _playerMove.PlayerMove(direction);
 
-        if (_playerMove.characterController.isGrounded)
+        if (!_playerMove.characterController.isGrounded)
+        {
+            return;
+        }
+        else
         {
             _playerMove.ChangeState(new IdleState(_playerMove));
         }
-       
-        
-    }
 
+    }
     public void ExitState()
     {
         _playerMove.animator_Player.SetBool("Jump", false);
@@ -170,12 +172,13 @@ public class JumpState : IPlayerState
     }
 }
 
+
 //공격 상태 
 public class AtKState : IPlayerState
 {
 
     private readonly Move _playerMove;
-  
+
 
 
     public AtKState(Move playerMove)
@@ -185,15 +188,14 @@ public class AtKState : IPlayerState
     public void EnterState()
     {
         _playerMove.animator_Player.SetTrigger("Attack");
-       
     }
 
-   
+
     public void ExtcuteOnUpdate()
     {
         _playerMove.PlayerMove(Vector3.zero);
 
-        if (Input.GetMouseButtonUp(0))
+        if (!Input.GetMouseButtonDown(0))
         {
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {
@@ -202,21 +204,22 @@ public class AtKState : IPlayerState
             else
             {
                 _playerMove.ChangeState(new IdleState(_playerMove));
-              
+
             }
-            
+
         }
-     
+
 
 
     }
 
     public void ExitState()
     {
-        
+
     }
 
-    
+
 
 
 }
+

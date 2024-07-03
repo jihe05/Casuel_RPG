@@ -11,6 +11,8 @@ public class UImanger : MonoBehaviour
 
     private void Awake()
     {
+        
+               
         DontDestroyOnLoad(gameObject);
         Instance = this;
         StartCoin();

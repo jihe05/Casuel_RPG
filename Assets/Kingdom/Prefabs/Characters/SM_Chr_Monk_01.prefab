@@ -3649,9 +3649,10 @@ GameObject:
   - component: {fileID: 95063371146250644}
   - component: {fileID: 576904272}
   - component: {fileID: 4781701228528063791}
+  - component: {fileID: 1765679092752600239}
   m_Layer: 0
   m_Name: SM_Chr_Monk_01
-  m_TagString: Untagged
+  m_TagString: Guide
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3703,8 +3704,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807343888332558}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 9d545e43681431348908eab98e78aa45, type: 3}
-  m_Controller: {fileID: 9100000, guid: d5ed51efd55d50448b90542c2b7239a5, type: 2}
+  m_Avatar: {fileID: 9000000, guid: f75b9948cb8c2274ea2f8cd63510d8dc, type: 3}
+  m_Controller: {fileID: 9100000, guid: 2be64f57d7d213648aa9b2e5e8e0a39b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -3742,6 +3743,23 @@ CapsuleCollider:
   m_Height: 2.17
   m_Direction: 1
   m_Center: {x: 0, y: 0.84, z: 0}
+--- !u!320 &1765679092752600239
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807343888332558}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: f468a2b258c1f69469c61a5a45cf5e14, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings: []
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &1832872647797020
 GameObject:
   m_ObjectHideFlags: 0
