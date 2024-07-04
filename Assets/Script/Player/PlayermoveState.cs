@@ -36,8 +36,10 @@ public class IdleState : IPlayerState
     public void ExtcuteOnUpdate()
     {
 
-       // _playerMove.handleJump();
-
+        // _playerMove.handleJump();
+        if (_playerMove == null)
+        { return; }
+        else
         _playerMove.PlayerMove(Vector3.zero);
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))

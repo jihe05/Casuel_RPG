@@ -29,6 +29,7 @@ namespace Inventory.UI
         private void Start()
         {
             gameObject.transform.localScale = Vector3.one;
+            Debug.Log($"Start {ItemImage}");
         }
 
         private void Awake()
@@ -40,24 +41,28 @@ namespace Inventory.UI
         //아이템 데이터를 초기화하며 슬롯을 비움
         public void ResetData()
         {
-            ItemImage.gameObject.SetActive(false);
+            Debug.Log("1" + ItemImage);
+           ItemImage.gameObject.SetActive(false);
+          
             empty = true;
         }
 
         //아이템 데이터를 설정하여 슬롯을 채움
         public void setData(Sprite sprite, int quantity)
         {
+           
             ItemImage.gameObject.SetActive(true);
             ItemImage.sprite = sprite;
             CountText.text = quantity + "";
             empty = false;
-
+            Debug.Log("2" + ItemImage);
         }
 
 
         //아이템 테투리를 비활성화
         public void Deselect()
         {
+            Debug.Log("3" + ItemImage);
             borderImage.enabled = false;
         }
 
@@ -89,6 +94,7 @@ namespace Inventory.UI
         //드래그 시작
         public void OnBeginDrag(PointerEventData eventData)
         {
+            Debug.Log("4" + ItemImage);
             if (empty)
                 return;
             //비어있지 않은 경우에만 이벤트 실행

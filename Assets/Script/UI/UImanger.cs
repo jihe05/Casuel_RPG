@@ -268,5 +268,33 @@ public class UImanger : MonoBehaviour
 
     //_________________________________________________________
 
+    //__________________SettingButtonActive_______________________________
+
+    public GameObject SoundPanel;
+    public GameObject Graphicspanel;
+    public GameObject ControlPanel;
+
+
+    public void OnClickSettingButton(GameObject butonPanle)
+    {
+        //활서화면 냅두고 
+        if (butonPanle.activeSelf)
+        {
+            return;
+        }
+        else
+        {
+            //아니면 다 비활성화 
+            SoundPanel.SetActive(false);
+            Graphicspanel.SetActive(false);
+            ControlPanel.SetActive(false);
+
+            butonPanle.SetActive(true);
+        }
+
+    }
+
+    //_________________________________________________________
+
 }
 

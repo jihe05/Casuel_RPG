@@ -77,6 +77,7 @@ namespace Ivnentory.UI
             foreach (var item in _listOfUIItme)
             {
                 item.ResetData();//데이터 초기화
+                Debug.Log(item);
                 item.Deselect();//테두리 비활성화 
             }
         }
@@ -105,6 +106,7 @@ namespace Ivnentory.UI
             {
                 //아이템의 이미지와 수량을 업데이트
                 _listOfUIItme[itemIndex].setData(itemImage, itemQuantity);
+                Debug.Log("1" + itemImage);
             }
         }
 
