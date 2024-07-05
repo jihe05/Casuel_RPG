@@ -38,9 +38,15 @@ namespace Ivnentory.UI
         //currentlyDraggedItemIndex : 현재 드래그 중인 아이템 인덱스
         private int currentlyDraggedItemIndex = -1;
 
+
+        private void Start()
+        {
+            Hide();
+        }
         private void Awake()
         {
-        
+            Debug.Log("활성화 ");
+            Show();
             MousFolloer.Toggle(false);
             itemUIDescription.ResetDescription();
         }

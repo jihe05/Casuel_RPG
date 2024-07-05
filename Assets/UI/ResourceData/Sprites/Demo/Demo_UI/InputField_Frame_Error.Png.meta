@@ -108,22 +108,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: txt_field_error_0
+      name: InputField_Frame_Error_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 44
-        height: 114
+        x: 2
+        y: 2
+        width: 40
+        height: 110
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 22, y: 57, z: 22, w: 57}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c09d263f149c4f298cf6931edd4962f
-      internalID: 21300000
+      spriteID: c2b05d670d665fe4ebd91989de9dba33
+      internalID: -1593584457
       vertices: []
       indices: 
       edges: []
@@ -139,7 +139,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      txt_field_error_0: 21300000
+      InputField_Frame_Error_0: -1593584457
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

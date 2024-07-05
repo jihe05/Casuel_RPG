@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 6
   mission_desc: "\uBAAC\uC2A4\uD130 10\uB9C8\uB9AC\uC7A1\uAE30"
-  goal: 10
+  goal: 1
   reward_id: 1006
   reward_amount: 3000
   btn_state: 1

@@ -34,7 +34,7 @@ public class Bossmove : MonoBehaviour
     public float attackInterval = 5f;
     public float Hp = 100000f;
     public float Ap = 500;
-    private bool flyAttackUsed = false;
+ 
 
     BossState state;
     float nextAttaclTime;
@@ -47,13 +47,12 @@ public class Bossmove : MonoBehaviour
         
         Instance = this;
 
-
     }
 
     private void Start()
     {
         state = BossState.IDLE;
-      
+        LookPlayer();
 
     }
 
@@ -64,22 +63,17 @@ public class Bossmove : MonoBehaviour
         if (Target == null)
             return;
 
-        distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        // 목표를 계속 추적
-        navMesh.SetDestination(Target.position);
-        // 목표를 바라보도록 회전
-        Vector3 direction = (Target.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-
+        
 
         switch (state)
         {
-          case BossState.IDLE:
+            case BossState.IDLE:
                 IdleSate();
+                LookPlayer();
                 break;
             case BossState.WALK:
                 WalkState();
+                LookPlayer();
                 break;
             case BossState.FLYATTACK:
                 FlyAttackState();
@@ -109,6 +103,18 @@ public class Bossmove : MonoBehaviour
         }
 
 
+    }
+
+    private void LookPlayer()
+    {
+        if (Target == null) return;
+        distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        // 목표를 계속 추적
+        navMesh.SetDestination(Target.position);
+        // 목표를 바라보도록 회전
+        Vector3 direction = (Target.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
     private void ChangeState(BossState newState)
@@ -144,8 +150,6 @@ public class Bossmove : MonoBehaviour
 
     public void PerformAttack()
     {
-        
-     
         //플레이어와의 거리가 10이하일때
         if (distanceToPlayer <= closeAttackRange)
         {
@@ -239,8 +243,8 @@ public class Bossmove : MonoBehaviour
  
     public void DieState()
     {
-        animator.Play("Die");
-        Destroy(gameObject, 2f);
+        ChangeState(BossState.DIE);
+        Destroy(gameObject , 2f);
         
     }
 
@@ -249,21 +253,20 @@ public class Bossmove : MonoBehaviour
     {
         if (!other.CompareTag("Player"))
         {
-           
             return;
         }
         else
         {
             Target = other.transform;
             navMesh.SetDestination(Target.position);
+            UImanger.Instance.SowHpBa();
             ChangeState(BossState.WALK);
         }
     }
 
-    public void UpdateHp(float damage)
+    public void BossUpdateHp(float damage)
     {
-       
-
+        Debug.Log("들어옴");
         Hp -= damage;
 
         if (Hp <= 0)
@@ -271,22 +274,23 @@ public class Bossmove : MonoBehaviour
             ChangeState(BossState.DIE);
         }
         // 체력이 절반 이하일 때 Fly Attack 실행
-        else if (Hp <= 50 && !flyAttackUsed)
+        else if (Hp <= 500)
         {
-            flyAttackUsed = true;
+            animator.Play("Fly");
             ChangeState(BossState.FLYATTACK);
+            Debug.Log(((int)BossState.FLYATTACK));
         }
         else
         {
-          
              animator.Play("Defend");
              ChangeState(BossState.DEFEND);
             
-           
         }
-    }
 
-    
+        UImanger.Instance.BossSliderbar(Ap);
+    }
+  
+
 
 
 

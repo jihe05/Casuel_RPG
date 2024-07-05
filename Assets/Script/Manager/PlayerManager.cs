@@ -37,11 +37,11 @@ public class PlayerManager : MonoBehaviour
     {
         monstermove.MonsterUpdateHp(Player_Ap);
     }
+
     public void PlayerBossTrgger()
     {
-      
         Bossmove = FindObjectOfType<Bossmove>();
-        Bossmove.UpdateHp(Player_Ap);
+        Bossmove.BossUpdateHp(Player_Ap);
     }
 
 

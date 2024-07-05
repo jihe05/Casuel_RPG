@@ -41,7 +41,7 @@ namespace Inventory.UI
         //아이템 데이터를 초기화하며 슬롯을 비움
         public void ResetData()
         {
-            Debug.Log("1" + ItemImage);
+           
            ItemImage.gameObject.SetActive(false);
           
             empty = true;
@@ -55,14 +55,14 @@ namespace Inventory.UI
             ItemImage.sprite = sprite;
             CountText.text = quantity + "";
             empty = false;
-            Debug.Log("2" + ItemImage);
+           
         }
 
 
         //아이템 테투리를 비활성화
         public void Deselect()
         {
-            Debug.Log("3" + ItemImage);
+           
             borderImage.enabled = false;
         }
 

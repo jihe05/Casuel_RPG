@@ -7,17 +7,18 @@ using UnityEngine.UI;
 public class UImanger : MonoBehaviour
 {
     public static UImanger Instance { get; private set; }
-
+ 
 
     private void Awake()
     {
-        
-               
         DontDestroyOnLoad(gameObject);
         Instance = this;
         StartCoin();
         PlayerHpData();
         MonsterHpData();
+        BossHpData();
+        BossBa.gameObject.SetActive(false);
+
     }
 
    
@@ -45,27 +46,22 @@ public class UImanger : MonoBehaviour
             _coin = Coin;
             Text_playercoin.text = _coin.ToString("N0");
 
-           
             InventoryUpdate(itemImage);
            
         }
         else
         {
             return;
-
         }
       
-
     }
 
     public void CoinAndImage(int _coin)
     {
-     
        Coin += _coin;
-     
         Text_playercoin.text = Coin.ToString("N0");
-
     }
+
 
     //_________________________________________________________
 
@@ -251,6 +247,35 @@ public class UImanger : MonoBehaviour
 
     //_________________________________________________________
 
+    [Header("-Boss-")]
+    //__________________MonsterHp_______________________________
+
+    public GameObject BossBa;
+    public Slider Boss_HpSlidebar;
+    public float BossMaxHp = 100000;
+
+    public void SowHpBa()
+    {
+        BossBa.gameObject.SetActive(true);
+    }
+
+    private void BossHpData()
+    {
+        Boss_HpSlidebar.minValue = 0f;
+        Boss_HpSlidebar.maxValue = BossMaxHp;
+        Boss_HpSlidebar.value = BossMaxHp;
+    }
+
+    public void BossSliderbar(float Ap)
+    {
+        Boss_HpSlidebar.value -= Ap;
+
+    }
+
+    //_________________________________________________________
+
+
+  
     //__________________Active_______________________________
 
     public void OnClickButtonActive(GameObject targetObject)
@@ -268,6 +293,8 @@ public class UImanger : MonoBehaviour
 
     //_________________________________________________________
 
+
+    [Header("-SettingButtonActive-")]
     //__________________SettingButtonActive_______________________________
 
     public GameObject SoundPanel;
@@ -295,6 +322,8 @@ public class UImanger : MonoBehaviour
     }
 
     //_________________________________________________________
+
+
 
 }
 

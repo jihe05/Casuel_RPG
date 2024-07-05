@@ -13,7 +13,6 @@ public class Move : MonoBehaviour
     private int count =0;
    
     private float verticalVelocity;//수직속도
-  
 
     public CharacterController characterController;
 
@@ -82,28 +81,29 @@ public class Move : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             move *= 2;
-        }
 
-        if (characterController.isGrounded)
-        {
-            if (verticalVelocity < 0)
+        }
+            if (characterController.isGrounded)
             {
-                verticalVelocity = 0f;
-            }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                verticalVelocity = jumpForce;
+                if (verticalVelocity < 0)
+                {
+                    verticalVelocity = 0f;
+                }
+                if(Input.GetKeyDown(KeyCode.Space))
+                {
+                    verticalVelocity = jumpForce;
 
-                animator_Player.SetBool("Jump", true);
-             
+                    animator_Player.SetBool("Jump", true);
+
+                }
+                animator_Player.SetBool("Jump", false);
             }
-            animator_Player.SetBool("Jump", false);
-        }
-        else
-        {
-           
-            verticalVelocity += gravity * Time.deltaTime;   
-        }
+            else
+            {
+
+                verticalVelocity += gravity * Time.deltaTime;
+            }
+        
 
         move.y = verticalVelocity;
         characterController.Move(move * Time.deltaTime);
@@ -183,7 +183,8 @@ public class Move : MonoBehaviour
         camera.clearFlags = CameraClearFlags.SolidColor;
         camera.backgroundColor = Color.black;
         characterController.enabled = true;
-        
+
+
     }
 
 }

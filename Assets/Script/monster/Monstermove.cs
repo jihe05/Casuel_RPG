@@ -162,6 +162,7 @@ public class Monstermove : MonoBehaviour
         yield return new WaitForSeconds(1.0f); 
         Destroy(gameObject); // 몬스터 삭제
          UImanger.Instance.CoinAndImage(500);
+        DataManager.Instance.CompleteMission(6);
 
     }
 

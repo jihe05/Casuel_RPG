@@ -9,7 +9,7 @@ public class Tutorial : MonoBehaviour
     public Text tutorialTxtName;
     public Text tutorialTxt;
     public Image characterImage;
-    
+  
     public string[] names;
     public string[] dialogues;
     Dictionary<string, Sprite> characterSprites;
@@ -105,10 +105,12 @@ public class Tutorial : MonoBehaviour
         {
             EndTalk();
             King_Collider.enabled = false;
+            DataManager.Instance.CompleteMission(1);
             return;
         }
         if (talkNum == 3) // 안내자와의 대화가 끝나는 조건
         {
+           
             EndTalk();
             Guide_Collider.enabled = false;
             return;
@@ -116,6 +118,8 @@ public class Tutorial : MonoBehaviour
         //다음 대사 타이핑
         typingCoroutine =StartCoroutine(Typing(dialogues[talkNum], names[talkNum]));
     }
+
+    
 
     //대화 종료 
     private void EndTalk()
@@ -129,11 +133,12 @@ public class Tutorial : MonoBehaviour
     }
 
     public void SkipTyping()
-    { 
-      if (typingCoroutine != null)
-      {
-         skipTyping = true;
-      }
+    {
+        tutorialTxt.text = null;
+        if (typingCoroutine != null)
+        {
+           skipTyping = true;
+        }
     }
 
     
