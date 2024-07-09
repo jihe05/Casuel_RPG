@@ -1,8 +1,6 @@
-using System;
-using Unity.VisualScripting;
-using UnityEditor.VersionControl;
+
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
+
 using UnityEngine.SceneManagement;
 
 public class Move : MonoBehaviour
@@ -162,6 +160,9 @@ public class Move : MonoBehaviour
         {
             Bossmove.Instance.PlayerAttack();
         }
+        else
+            return;
+
 
     }
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MissionData_CollectKing
   m_EditorClassIdentifier: 
   id: 1
-  mission_desc: "\uC655\uACFC \uCDA4\uCD94\uAE30"
+  mission_desc: "\uC655\uACFC \uB300\uD654\uD558\uAE30"
   goal: 1
   reward_id: 1001
   reward_amount: 500
