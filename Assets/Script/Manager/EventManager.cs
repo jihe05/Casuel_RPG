@@ -9,6 +9,13 @@ public class EventManager : MonoBehaviour
 
     public GameObject Obj_Chat;
 
+    public GameObject treasurBox_Open;
+    public GameObject treasurBox_Close;
+    public GameObject EventBox;
+    public GameObject firstMission;
+    public GameObject TimeLine;
+    public GameObject EventCollider;
+
     private void Awake()
     {
         Instans = this;
@@ -25,6 +32,36 @@ public class EventManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
     }
 
+    public void TreasurBox()
+    {
+        treasurBox_Open.SetActive(false);
+        treasurBox_Close.SetActive(true);
+        DataManager.Instance.CompleteMission(9);
+        UImanger.Instance.CoinAndImage(10000);
+    }
 
+    public void TreasurBoxSetActive()
+    {
+        EventBox.gameObject.SetActive(false);
+
+    }
+
+    public void ColiderFalse()
+    {
+        firstMission.SetActive(false);
+    }
+
+    public void GuidFlyActive()
+    {
+        if (TimeLine.activeSelf == true)
+        {
+            TimeLine.SetActive(false);
+        }
+        else
+        {
+            TimeLine.SetActive(true);
+        }
+
+    }
 
 }

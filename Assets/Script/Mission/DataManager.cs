@@ -22,7 +22,6 @@ public class DataManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
             InitializeDictionaries();
             InitializeMissionInfos();
             uiListItems = new List<UIListItem>(); // 리스트 초기화
@@ -56,7 +55,7 @@ public class DataManager : MonoBehaviour
             dicMissionRewardDatas.Add(reward.id, reward);
         }
 
-        Debug.LogFormat("Load completed! Missions: {0}, Rewards: {1}", dicMissionDatas.Count, dicMissionRewardDatas.Count);
+        // Debug.LogFormat("Load completed! Missions: {0}, Rewards: {1}", dicMissionDatas.Count, dicMissionRewardDatas.Count);
     }
 
     private void InitializeMissionInfos()
@@ -95,7 +94,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-  
+
     private MissionInfo FindMissionInfoById(int missionId)
     {
         return missionInfos.Find(m => m.id == missionId);
@@ -117,7 +116,7 @@ public class DataManager : MonoBehaviour
     }
 
 
-    
+
 
 
 }

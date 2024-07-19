@@ -1,15 +1,14 @@
-
 using UnityEngine;
-
 using UnityEngine.SceneManagement;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class Move : MonoBehaviour
 {
     public float moveSpeed = 10f;
     public float jumpForce = 10f;
     public float gravity = -23f;
-    private int count =0;
-   
+    private int count = 0;
+
     private float verticalVelocity;//수직속도
 
     public CharacterController characterController;
@@ -18,7 +17,7 @@ public class Move : MonoBehaviour
 
     Monstermove monstermove;
 
-    public Camera camera;    
+    public Camera Playercamera;
 
     private IPlayerState currentState;
 
@@ -55,11 +54,10 @@ public class Move : MonoBehaviour
             count++;
         else
             count = 0;
-        
+
         animator_Player.SetInteger("AttackCount", count);
 
     }
-
 
     public void ChangeState(IPlayerState newState)
     {
@@ -73,7 +71,7 @@ public class Move : MonoBehaviour
 
     public void PlayerMove(Vector3 direction)
     {
-       
+
         Vector3 move = direction * moveSpeed;
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -81,27 +79,27 @@ public class Move : MonoBehaviour
             move *= 2;
 
         }
-            if (characterController.isGrounded)
+        if (characterController.isGrounded)
+        {
+            if (verticalVelocity < 0)
             {
-                if (verticalVelocity < 0)
-                {
-                    verticalVelocity = 0f;
-                }
-                if(Input.GetKeyDown(KeyCode.Space))
-                {
-                    verticalVelocity = jumpForce;
-
-                    animator_Player.SetBool("Jump", true);
-
-                }
-                animator_Player.SetBool("Jump", false);
+                verticalVelocity = 0f;
             }
-            else
+            if (Input.GetKeyDown(KeyCode.Space))
             {
+                verticalVelocity = jumpForce;
 
-                verticalVelocity += gravity * Time.deltaTime;
+                animator_Player.SetBool("Jump", true);
+
             }
-        
+            animator_Player.SetBool("Jump", false);
+        }
+        else
+        {
+
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+
 
         move.y = verticalVelocity;
         characterController.Move(move * Time.deltaTime);
@@ -113,11 +111,29 @@ public class Move : MonoBehaviour
 
     }
 
+
+    public void playerLevelUp()
+    {
+        Debug.Log("playerLevelUp");
+        ChangeState(new LevelUP(this));
+
+        Invoke("LevelUpEnd", 2f);
+
+    }
+
+    public void LevelUpEnd()
+    {
+
+        gravity = -23;
+        ChangeState(new IdleState(this));
+
+    }
+
     private void OnCollisionStay(Collision collision)
     {
         if (Input.GetMouseButtonDown(0))
         {
-           
+
             if (collision.collider.CompareTag("Monster"))
             {
                 PlayerManager.instance.PlayerMonsterTrgger();
@@ -126,13 +142,23 @@ public class Move : MonoBehaviour
             {
                 PlayerManager.instance.PlayerBossTrgger();
             }
-            
+
         }
+
+        if (collision.collider.CompareTag("EventCollider"))
+        {
+            UImanger.Instance.EventGuidCollider();
+
+
+        }
+
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
+
+
         if (other.CompareTag("BosEvent"))
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -148,9 +174,10 @@ public class Move : MonoBehaviour
                 PlayerManager.instance.PlayerBossTrgger();
             }
         }
-        if(other.CompareTag("Guide"))
+        if (other.CompareTag("Guide"))
         {
             EventManager.Instans.TalkePanelActive();
+            EventManager.Instans.ColiderFalse();
         }
         if (other.CompareTag("King"))
         {
@@ -160,8 +187,13 @@ public class Move : MonoBehaviour
         {
             Bossmove.Instance.PlayerAttack();
         }
-        else
-            return;
+
+        if (other.gameObject.CompareTag("EnventBox"))
+        {
+
+            UImanger.Instance.EventButton();
+        }
+
 
 
     }
@@ -181,8 +213,8 @@ public class Move : MonoBehaviour
     {
         transform.position = new Vector3(38f, -12f, 144.5f);
         transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-        camera.clearFlags = CameraClearFlags.SolidColor;
-        camera.backgroundColor = Color.black;
+        Playercamera.clearFlags = CameraClearFlags.Skybox;
+        Playercamera.backgroundColor = Color.black;
         characterController.enabled = true;
 
 

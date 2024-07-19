@@ -7,15 +7,15 @@ using UnityEngine.InputSystem.LowLevel;
 
 //보스 STATE(대기, 걷기, 하늘에서 공격,막기, 일반공격, 물기, 맞음, 죽음 )
 enum BossState
-{ 
-      IDLE,
-      WALK,
-      FLYATTACK,
-      CLAWATTACK,
-      BASICATTACK,
-      DEFEND,
-      DIE
-     
+{
+    IDLE,
+    WALK,
+    FLYATTACK,
+    CLAWATTACK,
+    BASICATTACK,
+    DEFEND,
+    DIE
+
 }
 
 public class Bossmove : MonoBehaviour
@@ -28,23 +28,32 @@ public class Bossmove : MonoBehaviour
     Transform Target;
     float distanceToPlayer;
 
+
     [Header("Range")]
     public float closeAttackRange = 15f;
     public float mediumAttackRange = 15f;
     public float attackInterval = 5f;
-    public float Hp = 100000f;
+    public float Hp = 10000f;
     public float Ap = 500;
- 
+    private float nextAttackTime;
+    public ParticleSystem Fire;
+    AnimatorClipInfo[] clipinfo;
 
     BossState state;
     float nextAttaclTime;
 
     private void Awake()
     {
+        if (Fire == null)
+        {
+            return;
+        }
+        Fire.gameObject.SetActive(false);
         player = FindObjectOfType<Move>();
         animator = GetComponent<Animator>();
         navMesh = GetComponent<NavMeshAgent>();
-        
+
+
         Instance = this;
 
     }
@@ -58,12 +67,24 @@ public class Bossmove : MonoBehaviour
 
     private void Update()
     {
+
         if (Target != null)
             Target = player.transform;
         if (Target == null)
             return;
 
-        
+        clipinfo = animator.GetCurrentAnimatorClipInfo(0);
+
+        if (clipinfo.Length > 0)
+        {
+            string clipname = clipinfo[0].clip.name;
+
+            if (clipname == "Fly Flame Attack")
+            {
+                Invoke("FireAttack", 1f);
+            }
+        }
+
 
         switch (state)
         {
@@ -119,6 +140,7 @@ public class Bossmove : MonoBehaviour
 
     private void ChangeState(BossState newState)
     {
+        Debug.Log(((int)newState));
         state = newState;
         animator.SetInteger("state", (int)newState);
     }
@@ -145,7 +167,7 @@ public class Bossmove : MonoBehaviour
             navMesh.SetDestination(Target.position);
         }
 
-       
+
     }
 
     public void PerformAttack()
@@ -159,20 +181,19 @@ public class Bossmove : MonoBehaviour
             {
                 ChangeState(BossState.CLAWATTACK);
             }
-            else // 30% 확률로 Basic Attack
+            else // 40% 확률로 Basic Attack
             {
-              
+
                 ChangeState(BossState.BASICATTACK);
-                
+
             }
+
         }
         else if (distanceToPlayer > closeAttackRange)
         {
             ChangeState(BossState.WALK);
-           
+
         }
-
-
 
     }
 
@@ -190,7 +211,7 @@ public class Bossmove : MonoBehaviour
             if (state == BossState.BASICATTACK)
             {
                 PlayerManager.instance.PlayerUpdateHp(Ap);
-            
+
             }
 
         }
@@ -200,11 +221,19 @@ public class Bossmove : MonoBehaviour
 
     public void FlyAttackState()
     {
-        if (Time.time >= nextAttaclTime)
-        { 
-            nextAttaclTime = Time.time + attackInterval;
-            ChangeState(BossState.WALK);
+
+        if (Time.time >= nextAttackTime)
+        {
+            nextAttackTime = Time.time + attackInterval;
+            PerformAttack(); // FlyAttack 상태 후 다른 공격 상태로 전환
+            Fire.gameObject.SetActive(false);
         }
+    }
+
+    public void FireAttack()
+    {
+        Fire.gameObject.SetActive(true);
+
     }
 
     public void ClawattackState()
@@ -214,7 +243,7 @@ public class Bossmove : MonoBehaviour
             nextAttaclTime = Time.time + attackInterval;
             ChangeState(BossState.WALK);
         }
-       
+
 
     }
 
@@ -225,7 +254,7 @@ public class Bossmove : MonoBehaviour
             nextAttaclTime = Time.time + attackInterval;
             ChangeState(BossState.WALK);
         }
-      
+
     }
 
     public void BasicAttackState()
@@ -240,12 +269,19 @@ public class Bossmove : MonoBehaviour
 
     }
 
- 
+
     public void DieState()
     {
+        Debug.Log("죽음");
         ChangeState(BossState.DIE);
-        Destroy(gameObject , 2f);
-        
+        Invoke("DieStatefalse", 2);
+
+    }
+    public void DieStatefalse()
+    {
+        DataManager.Instance.CompleteMission(8);
+        gameObject.SetActive(false);
+        UImanger.Instance.EndingpaenlActive();
     }
 
 
@@ -276,20 +312,20 @@ public class Bossmove : MonoBehaviour
         // 체력이 절반 이하일 때 Fly Attack 실행
         else if (Hp <= 500)
         {
-            animator.Play("Fly");
+            Debug.Log("날아");
             ChangeState(BossState.FLYATTACK);
-            Debug.Log(((int)BossState.FLYATTACK));
+
         }
         else
         {
-             animator.Play("Defend");
-             ChangeState(BossState.DEFEND);
-            
+            animator.Play("Defend");
+            ChangeState(BossState.DEFEND);
+
         }
 
-        UImanger.Instance.BossSliderbar(Ap);
+        UImanger.Instance.BossSligerBarHp(Hp);
     }
-  
+
 
 
 

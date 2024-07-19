@@ -19,7 +19,7 @@ public class UIListItem : MonoBehaviour
     // 초기화
     public void Init(MissionInfo info)
     {
-       
+
         this.info = info;
 
         var data = DataManager.Instance.dicMissionDatas[this.info.id];
@@ -44,7 +44,7 @@ public class UIListItem : MonoBehaviour
     // 미션 상태를 업데이트 하는 메서드
     public void UpdateProgress(int progress)
     {
-        Debug.Log("6"+progress);
+        Debug.Log("6" + progress);
         info.count = progress;
         missionProgressSlider.value = progress;
         UpdateUI();
@@ -56,7 +56,7 @@ public class UIListItem : MonoBehaviour
 
         if (info.count >= missionProgressSlider.maxValue)
         {
-            Debug.Log("1234");
+
             dontImage.gameObject.SetActive(false);
             completButton.gameObject.SetActive(true);
         }
@@ -73,6 +73,7 @@ public class UIListItem : MonoBehaviour
         {
             checkImage.gameObject.SetActive(true);
             completButton.gameObject.SetActive(false);
+            PlayerManager.instance.PlayerLevelUpUpdate();
         }
         else
         {
@@ -85,8 +86,9 @@ public class UIListItem : MonoBehaviour
     {
         info.state = 1;
         ApplyMissionReward();
-       DataManager.Instance.missionNews.SetActive(false);
+        DataManager.Instance.missionNews.SetActive(false);
         ClickButton();
+
     }
 
     public void ApplyMissionReward()

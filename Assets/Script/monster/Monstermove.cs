@@ -1,7 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
+
+
 
 enum State
 {
@@ -16,15 +18,15 @@ public class Monstermove : MonoBehaviour
     NavMeshAgent nmAgent;
     Animator anim;
     public GameObject Particle;
-    public GameObject Slime;
+    private Slider HpSlider;
 
-    float MonsterHP = 100;
-    float MonsterAp = 100;
+    public float MonsterHP = 100;
+    public float MonsterAp = 100;
     public float lostDistance = 0;
 
-   
-    State state;
 
+    State state;
+    
     private void Awake()
     {
         nmAgent = GetComponent<NavMeshAgent>();
@@ -35,6 +37,10 @@ public class Monstermove : MonoBehaviour
     {
         state = State.IDLE;
         StartCoroutine(StateMachine());
+
+        // HP 바 생성 및 초기화
+        UImanger.Instance.MonsterHpData(gameObject);
+        HpSlider = GetComponentInChildren<Slider>();
     }
 
     IEnumerator StateMachine()
@@ -42,7 +48,7 @@ public class Monstermove : MonoBehaviour
         while (MonsterHP > 0)
         {
             yield return StartCoroutine(state.ToString());
-           
+
         }
 
         // HP가 0 이하일 때 KILLED 상태로 전환
@@ -55,7 +61,7 @@ public class Monstermove : MonoBehaviour
 
     IEnumerator IDLE()
     {
-       
+
         var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
         if (!curAnimStateInfo.IsName("Idle"))
@@ -73,12 +79,12 @@ public class Monstermove : MonoBehaviour
 
     IEnumerator CHASE()
     {
-       
+
         var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
         if (!curAnimStateInfo.IsName("Walk"))
         {
-           
+
             anim.Play("Walk", 0, 0);
             yield return null;
         }
@@ -94,7 +100,7 @@ public class Monstermove : MonoBehaviour
             }
             else if (nmAgent.remainingDistance < lostDistance)
             {
-              
+
                 Target = null;
                 nmAgent.SetDestination(transform.position);
                 ChangeState(State.IDLE); // 목표를 잃어버리면 대기 상태로 변경
@@ -107,7 +113,7 @@ public class Monstermove : MonoBehaviour
 
     IEnumerator ATTACK()
     {
-      
+
         var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
         if (!curAnimStateInfo.IsName("Attack"))
@@ -130,7 +136,7 @@ public class Monstermove : MonoBehaviour
         // 거리가 멀어지면 추적 상태로 변경
         if (nmAgent.remainingDistance > nmAgent.stoppingDistance)
         {
-           
+
             ChangeState(State.CHASE);
         }
         else
@@ -142,12 +148,13 @@ public class Monstermove : MonoBehaviour
 
     IEnumerator KILLED()
     {
-       
+
         var curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
         if (!curAnimStateInfo.IsName("Die"))
         {
             anim.Play("Die", 0, 0); // 죽음 애니메이션 실행
+            Particle.SetActive(true);
         }
 
         // 죽음 애니메이션이 끝날 때까지 대기
@@ -155,14 +162,14 @@ public class Monstermove : MonoBehaviour
         {
             yield return null;
             curAnimStateInfo = anim.GetCurrentAnimatorStateInfo(0);
-          
+
         }
-        Slime.SetActive(false);
-        Particle.SetActive(true);
-        yield return new WaitForSeconds(1.0f); 
+
+        yield return new WaitForSeconds(1.0f);
         Destroy(gameObject); // 몬스터 삭제
-         UImanger.Instance.CoinAndImage(500);
+        UImanger.Instance.CoinAndImage(500);
         DataManager.Instance.CompleteMission(6);
+        Destroy(transform.gameObject);//Hp바 삭제
 
     }
 
@@ -201,17 +208,19 @@ public class Monstermove : MonoBehaviour
 
         if (MonsterHP == 0 && state != State.KILLED)
         {
-            
             ChangeState(State.KILLED);
         }
+
     }
 
+    //데미지 받을때 호출 
     public void MonsterUpdateHp(float Ap)
     {
-      
         MonsterHP -= Ap;
-      
-        UImanger.Instance.MonsterSliderbar(Ap);
+        if (HpSlider != null)
+        {
+            UImanger.Instance.MonsterSliderbar(HpSlider, Ap); // HP 바 업데이트
+        }
     }
 
 }

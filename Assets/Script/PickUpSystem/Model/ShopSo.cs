@@ -23,8 +23,7 @@ public class ShopSo : ScriptableObject
 
     public int AddItem(ItemSo item, int coin)
     {
-        for (int i = 0; i < shopitmes.Count; 
-            i++)
+        for (int i = 0; i < shopitmes.Count; i++)
         {
             shopitmes[i] = new ShopInvenItem
             {

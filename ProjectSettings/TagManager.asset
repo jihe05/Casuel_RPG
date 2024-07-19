@@ -13,6 +13,10 @@ TagManager:
   - Boss
   - BossPoint
   - King
+  - F
+  - BosAttack
+  - EnventBox
+  - EventCollider
   layers:
   - Default
   - TransparentFX
