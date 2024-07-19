@@ -55,8 +55,6 @@ public class ShopSo : ScriptableObject
     
     }
 
-  
-
 }
 
 //(특성) 인스펙터 창에서 필드를 설정 할 수 있도록 해줌

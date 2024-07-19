@@ -62,6 +62,7 @@ namespace Ivnentory
                shopData.AddItem(item);
             }
 
+
         }
 
         //인벤토리 UI를 현재 인벤토리 상태로 업데이이트하는 메서드 
@@ -211,11 +212,7 @@ namespace Ivnentory
                 }
 
             }
-            else 
-            {
-
-                ShopUI.Hide();
-            }
+           
         
         }
 

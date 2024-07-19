@@ -79,16 +79,15 @@ public class UImanger : MonoBehaviour
 
     private void InventoryUpdate(Sprite itemImage)
     {
-
         Item item = itemImage.GetComponent<Item>();
 
-
+        Debug.Log("item : " + item);
         if (item != null)
         {
-
             int reminder = inventoryData.AddItem(item.InventoryItem, item.Quantity);
 
             item.Quantity = reminder;
+            
 
         }
         else

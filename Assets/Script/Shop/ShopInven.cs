@@ -26,7 +26,6 @@ public class ShopInven : MonoBehaviour
 
     private void Awake()
     {
-        Hide();
         Goj_Stats.SetActive(false);
         uIShopDescription.ResetShopDescription();
 
@@ -81,11 +80,6 @@ public class ShopInven : MonoBehaviour
     }
 
 
-    //비활성화 상태
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-        //ResetDraggedItem();//드래그 종료 메서드
-    }
+    
 
 }

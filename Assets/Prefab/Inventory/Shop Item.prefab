@@ -115,7 +115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.3177, y: -70.5}
+  m_AnchoredPosition: {x: 0, y: -70}
   m_SizeDelta: {x: 100, y: 37.0897}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &776041403280128138
@@ -217,7 +217,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 58771849310370070}
         m_TargetAssemblyTypeName: ShopItem, Assembly-CSharp
-        m_MethodName: ItePriceButtonClick
+        m_MethodName: ItemPriceButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -318,9 +318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546cb412a824931429f72aca0fb2c4be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Itemimage: {fileID: 1648987600104845837}
+  Itemimage: {fileID: 5894789924072638928}
   ItemPrice: {fileID: 7682158311082947112}
-  <InventoryItem>k__BackingField: {fileID: 11400000, guid: a49171581f33e624898687a293ecdb86, type: 2}
   <Quantity>k__BackingField: 4
 --- !u!1 &5611538433804914066
 GameObject:
@@ -332,7 +331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2781481981123522386}
   - component: {fileID: 3903472522907855001}
-  - component: {fileID: 1648987600104845837}
+  - component: {fileID: 5894789924072638928}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -368,7 +367,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5611538433804914066}
   m_CullTransparentMesh: 1
---- !u!114 &1648987600104845837
+--- !u!114 &5894789924072638928
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
