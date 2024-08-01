@@ -1,6 +1,9 @@
 using Inventory.Model;
 using Inventory.UI;
+using Ivnentory;
+using Ivnentory.UI;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,12 +16,15 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     private Text ItemPrice; // 아이템 가격
 
-    [SerializeField]
-    private ShopSo shopSo; // ShopSo 인스턴스 참조
-
     // 수량은 1개
     [field: SerializeField]
     public int Quantity { get; set; } = 1;
+
+    public InventorySo inventorySo;
+
+    public ItemSo inventoryItem { get; private set; }
+
+    public InventoryController InventoryController { get; set; }
 
     // 클릭, 드랍 이벤트
     public event Action<ShopItem> OnItemClicked, InItemDroppedOn;
@@ -27,11 +33,13 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
     {
         // 크기 초기화
         gameObject.transform.localScale = Vector3.one;
+        InventoryController = FindObjectOfType<InventoryController>();
     }
 
-    public void SetItemData(Sprite sprite, int itePrice)
+    public void SetItemData(ItemSo itemSo, int itePrice)
     {
-        Itemimage.sprite = sprite;
+        inventoryItem = itemSo;
+        Itemimage.sprite = itemSo.ItemImage;
         ItemPrice.text = itePrice.ToString("N0");
     }
 
@@ -49,24 +57,27 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
         InItemDroppedOn.Invoke(this);
     }
 
+
     public void ItemPriceButtonClick()
     {
         int coin = int.Parse(ItemPrice.text);
-        Sprite sprite = Itemimage.sprite;
-        Debug.Log(shopSo.GetItemBySprite(sprite));
+
+        UImanger.Instance.BayCoinAndImage(coin);
 
 
-        // 해당 이미지를 가진 아이템을 가져오기
-        ItemSo item = shopSo.GetItemBySprite(sprite);
-
-        
-        if (item != null)
+        if (InventoryController != null)
         {
-            UImanger.Instance.BayCoinAndImage(coin, sprite);
+            InventoryController.AddItemInventory(inventoryItem, Quantity);
+
+
         }
         else
-        {
-            Debug.LogError("아이템을 찾을 수 없습니다.");
-        }
+            Debug.Log("널.");
+
+       
     }
+   
+
+  
+
 }

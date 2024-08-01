@@ -61,6 +61,7 @@ public class LoginManger : MonoBehaviour
             if (number == storesNumber)
             {
                 Login_errorText.text = "로그인 성공";
+                UImanger.Instance.PlyerName(id);
                 Invoke("GameStart", 0.5f);
                
             }

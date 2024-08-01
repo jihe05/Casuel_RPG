@@ -19,7 +19,7 @@ public class ScrollviewTest : MonoBehaviour
             var data = pair.Value;
             var info = new MissionInfo(data.id, 0, 0, 0);
             listItem.Init(info);
-            // Debug.Log("UIListItem created for Mission ID: " + data.id);
+           
         }
 
 

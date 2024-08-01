@@ -21,6 +21,8 @@ public class Move : MonoBehaviour
 
     private IPlayerState currentState;
 
+    public ParticleSystem particle;
+
 
     private void Awake()
     {

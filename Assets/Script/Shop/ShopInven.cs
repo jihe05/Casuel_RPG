@@ -1,3 +1,4 @@
+using Inventory.Model;
 using Inventory.UI;
 using System;
 using System.Collections;
@@ -19,7 +20,7 @@ public class ShopInven : MonoBehaviour
     private GameObject Goj_Stats;
 
     //인벤토리 UI항목 리스트
-     private List<ShopItem> _listOfUIItme = new List<ShopItem>();
+    private List<ShopItem> _listOfUIItme = new List<ShopItem>();
 
     //이벤트(설명 요청시)
     public event Action<int> OnStartEnter;
@@ -31,7 +32,7 @@ public class ShopInven : MonoBehaviour
 
     }
 
-  
+
 
     //프리팹 생성
     public void InitShopUI()
@@ -49,16 +50,16 @@ public class ShopInven : MonoBehaviour
             shopItem.OnItemClicked += HandleItemSlelction;
 
         }
-    
+
     }
 
 
-    public void UpdateData(int itemIndex, Sprite itemImage, int itemCoin)
+    public void UpdateData(KeyValuePair<int, ShopInvenItem> item)
     {
-        if (_listOfUIItme.Count > itemIndex)
+        if (_listOfUIItme.Count > item.Key)
         {
             //아이템의 가격과 이미지 업데이트
-            _listOfUIItme[itemIndex].SetItemData(itemImage, itemCoin);
+            _listOfUIItme[item.Key].SetItemData(item.Value.shopItem, item.Value.coin);
         }
     }
 
@@ -78,8 +79,5 @@ public class ShopInven : MonoBehaviour
         gameObject.SetActive(true);
         //ResetSelection();
     }
-
-
-    
 
 }

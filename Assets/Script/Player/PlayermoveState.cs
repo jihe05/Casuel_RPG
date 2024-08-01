@@ -190,12 +190,14 @@ public class AtKState : IPlayerState
     public void EnterState()
     {
         _playerMove.animator_Player.SetTrigger("Attack");
+        _playerMove.particle.Play();
     }
 
 
     public void ExtcuteOnUpdate()
     {
         _playerMove.PlayerMove(Vector3.zero);
+        _playerMove.particle.Stop();
 
         if (!Input.GetMouseButtonDown(0))
         {

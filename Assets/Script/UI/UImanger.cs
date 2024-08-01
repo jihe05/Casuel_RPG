@@ -1,7 +1,9 @@
 using Inventory.Model;
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 
 public class UImanger : MonoBehaviour
@@ -36,7 +38,7 @@ public class UImanger : MonoBehaviour
 
     }
 
-    public void BayCoinAndImage(int _coin, Sprite itemImage)
+    public void BayCoinAndImage(int _coin)
     {
         if (_coin < Coin && Coin != 0)
         {
@@ -44,7 +46,7 @@ public class UImanger : MonoBehaviour
             _coin = Coin;
             Text_playercoin.text = _coin.ToString("N0");
 
-            InventoryUpdate(itemImage);
+           
 
         }
         else
@@ -73,28 +75,6 @@ public class UImanger : MonoBehaviour
     [Header("-Inventory-")]
     //_____________________Inventory___________________________
 
-
-    [SerializeField]
-    private InventorySo inventoryData;
-
-    private void InventoryUpdate(Sprite itemImage)
-    {
-        Item item = itemImage.GetComponent<Item>();
-
-        Debug.Log("item : " + item);
-        if (item != null)
-        {
-            int reminder = inventoryData.AddItem(item.InventoryItem, item.Quantity);
-
-            item.Quantity = reminder;
-            
-
-        }
-        else
-        {
-            Debug.Log("null");
-        }
-    }
     //____________________________________________________________
 
 
@@ -257,7 +237,7 @@ public class UImanger : MonoBehaviour
 
     public GameObject BossBa;
     public Slider Boss_HpSlidebar;
-    public float BossMaxHp = 0;
+    public float BossMaxHp = 100000;
 
     public void SowHpBa()
     {
@@ -270,7 +250,7 @@ public class UImanger : MonoBehaviour
         Boss_HpSlidebar.maxValue = BossMaxHp;
         Boss_HpSlidebar.value = BossMaxHp;
 
-       
+        Debug.Log(Boss_HpSlidebar.value);
 
     }
 
@@ -365,6 +345,7 @@ public class UImanger : MonoBehaviour
     }
 
 
+    [Header("Endingpanel")]
     //_________________________________________________________
 
     public GameObject Endingpanel;
@@ -376,6 +357,7 @@ public class UImanger : MonoBehaviour
 
     }
 
+    [Header("EventGuidUI")]
     //_________________________________________________________
 
     public GameObject EventGuidUI;
@@ -398,5 +380,22 @@ public class UImanger : MonoBehaviour
         EventGuidUI.SetActive(false);
 
     }
+
+
+    [Header("Playername")]
+    //__________PlayerName___________________
+
+    public Text Playername;
+
+    public void PlyerName(string id)
+    {
+        Playername.text = id;
+    }
+
+
+
+
+    //__________ItemAdd______________________
+   
 }
 

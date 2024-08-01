@@ -15,12 +15,12 @@ MonoBehaviour:
   inventoryItems:
   - quantity: 10
     item: {fileID: 11400000, guid: 57a6cc0a8d539684e8f94839dbbc8c83, type: 2}
-  - quantity: 20
-    item: {fileID: 11400000, guid: 5bae84a89a8b1754f860ba8b2238f7a8, type: 2}
-  - quantity: 4
-    item: {fileID: 11400000, guid: c1b89ddcfd5773d4e9d5979d0426b37e, type: 2}
-  - quantity: 7
-    item: {fileID: 11400000, guid: a49171581f33e624898687a293ecdb86, type: 2}
+  - quantity: 0
+    item: {fileID: 0}
+  - quantity: 0
+    item: {fileID: 0}
+  - quantity: 0
+    item: {fileID: 0}
   - quantity: 0
     item: {fileID: 0}
   - quantity: 0

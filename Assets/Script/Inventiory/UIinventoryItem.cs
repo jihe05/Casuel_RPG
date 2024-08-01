@@ -29,7 +29,6 @@ namespace Inventory.UI
         private void Start()
         {
             gameObject.transform.localScale = Vector3.one;
-            Debug.Log($"Start {ItemImage}");
         }
 
         private void Awake()
@@ -41,8 +40,12 @@ namespace Inventory.UI
         //아이템 데이터를 초기화하며 슬롯을 비움
         public void ResetData()
         {
-           
-           ItemImage.gameObject.SetActive(false);
+            if (ItemImage != null)
+            {
+                ItemImage.gameObject.SetActive(false);
+            }
+            else
+                return;
           
             empty = true;
         }
@@ -50,10 +53,9 @@ namespace Inventory.UI
         //아이템 데이터를 설정하여 슬롯을 채움
         public void setData(Sprite sprite, int quantity)
         {
-           
             ItemImage.gameObject.SetActive(true);
             ItemImage.sprite = sprite;
-            CountText.text = quantity + "";
+            CountText.text = quantity.ToString();
             empty = false;
            
         }
@@ -62,7 +64,11 @@ namespace Inventory.UI
         //아이템 테투리를 비활성화
         public void Deselect()
         {
-           
+            if (borderImage == null)
+            {
+                Debug.Log("borderImage : null");
+            }
+            else
             borderImage.enabled = false;
         }
 

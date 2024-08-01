@@ -46,7 +46,7 @@ public class PlayerManager : MonoBehaviour
     public void PlayerBossTrgger()
     {
         Bossmove = FindObjectOfType<Bossmove>();
-        Bossmove.BossUpdateHp(Player_Ap);
+        Bossmove.BossUpdateHp(    );
     }
 
     public void PlayerLevelUpUpdate()

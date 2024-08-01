@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4936,7 +4936,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9818,7 +9818,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -14700,7 +14700,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -19481,7 +19481,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 75375bb6651b4c84995a0dbbc490cc11, type: 2}
+  - {fileID: 2100000, guid: 70dcf2a0afa97b444aa4a54fe4ac2fbe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19582,7 +19582,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:

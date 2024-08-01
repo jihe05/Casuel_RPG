@@ -83,7 +83,7 @@ namespace Ivnentory
            
             foreach (var item in ShopState)
             {
-                ShopUI.UpdateData(item.Key, item.Value.shopItem.ItemImage, item.Value.coin);
+                ShopUI.UpdateData(item);
             }
         }
 
@@ -200,20 +200,31 @@ namespace Ivnentory
         {
             if (ShopUI.isActiveAndEnabled == false)
             {
-               
+
                 ShopUI.Show();
 
                 foreach (var item in shopData.GetCurrentShopstate())
                 {
-                  
-                   
-                    ShopUI.UpdateData(item.Key, item.Value.shopItem.ItemImage, item.Value.coin);
+                    ShopUI.UpdateData(item);
 
                 }
 
             }
+            else
+                return;
            
         
+        }
+
+        public void AddItemInventory(ItemSo item, int quantity)
+        {
+            int reminder = InventoryData.AddItem(item, quantity);
+
+            if (reminder > 0)
+            {
+               Debug.Log($"Could not add {reminder} items to the inventory.");
+            }
+           
         }
 
 

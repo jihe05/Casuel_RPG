@@ -44,7 +44,6 @@ public class UIListItem : MonoBehaviour
     // 미션 상태를 업데이트 하는 메서드
     public void UpdateProgress(int progress)
     {
-        Debug.Log("6" + progress);
         info.count = progress;
         missionProgressSlider.value = progress;
         UpdateUI();

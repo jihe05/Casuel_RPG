@@ -62,6 +62,7 @@ public class Bossmove : MonoBehaviour
     {
         state = BossState.IDLE;
         LookPlayer();
+      UImanger.Instance.BossSliderbar(Hp);
 
     }
 
@@ -302,8 +303,10 @@ public class Bossmove : MonoBehaviour
 
     public void BossUpdateHp(float damage)
     {
-        Debug.Log("µé¾î¿È");
+       
         Hp -= damage;
+
+        Debug.Log("µé¾î¿È : " + Hp);
 
         if (Hp <= 0)
         {

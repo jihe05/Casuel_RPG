@@ -9,7 +9,7 @@ public class ShopSo : ScriptableObject
     //데이터 추가
     [SerializeField]
     private List<ShopInvenItem> shopitmes;
-
+     
     //인벤토리 크기 
     [field: SerializeField]
     public int Size { get; private set; } = 8;

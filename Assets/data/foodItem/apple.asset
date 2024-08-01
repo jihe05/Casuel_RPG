@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3e50609566aa140ad3a6918b29109b, type: 3}
   m_Name: apple
   m_EditorClassIdentifier: 
-  <IsStackable>k__BackingField: 1
+  <IsStackable>k__BackingField: 0
   <MaxStackSize>k__BackingField: 60
   <Name>k__BackingField: "\uC0AC\uACFC"
   <Description>k__BackingField: "\uB2EC\uB2EC\uD558\uACE0 \uB9DB\uC788\uB294 \uC0AC\uACFC\uAC00

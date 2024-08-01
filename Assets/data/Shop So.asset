@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopitmes:
   - coin: 200
-    shopItem: {fileID: 11400000, guid: c1b89ddcfd5773d4e9d5979d0426b37e, type: 2}
-  - coin: 42
     shopItem: {fileID: 11400000, guid: 57a6cc0a8d539684e8f94839dbbc8c83, type: 2}
   - coin: 200
     shopItem: {fileID: 11400000, guid: 5bae84a89a8b1754f860ba8b2238f7a8, type: 2}
-  - coin: 5
-    shopItem: {fileID: 11400000, guid: c1b89ddcfd5773d4e9d5979d0426b37e, type: 2}
-  - coin: 452
-    shopItem: {fileID: 11400000, guid: a49171581f33e624898687a293ecdb86, type: 2}
-  - coin: 52
-    shopItem: {fileID: 11400000, guid: 57a6cc0a8d539684e8f94839dbbc8c83, type: 2}
   - coin: 42
-    shopItem: {fileID: 11400000, guid: 5bae84a89a8b1754f860ba8b2238f7a8, type: 2}
-  - coin: 542
+    shopItem: {fileID: 11400000, guid: c1b89ddcfd5773d4e9d5979d0426b37e, type: 2}
+  - coin: 5
     shopItem: {fileID: 11400000, guid: a49171581f33e624898687a293ecdb86, type: 2}
+  - coin: 452
+    shopItem: {fileID: 11400000, guid: 320632f33a9f80a41b61fcd52da5c7b9, type: 2}
+  - coin: 52
+    shopItem: {fileID: 11400000, guid: fb79fa62049fc6d49a2ccfa3ad372233, type: 2}
+  - coin: 42
+    shopItem: {fileID: 11400000, guid: 4b9fd867fb53ff14a92257b886fe19d2, type: 2}
+  - coin: 542
+    shopItem: {fileID: 11400000, guid: e16598f1ed174064ebc7b5d29ed83abf, type: 2}
   <Size>k__BackingField: 8

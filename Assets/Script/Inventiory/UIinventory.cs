@@ -1,3 +1,4 @@
+using Inventory.Model;
 using Inventory.UI;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,11 @@ namespace Ivnentory.UI
         [SerializeField]
         private UIInventoryDescription itemUIDescription;
 
+
         //마우스 움직임
         [SerializeField]
         private ItemMousFolloer MousFolloer;
+
 
         //인벤토리 UI항목 리스트
         List<UIinventoryItem> _listOfUIItme = new List<UIinventoryItem>();
@@ -45,8 +48,6 @@ namespace Ivnentory.UI
         }
         private void Awake()
         {
-            Debug.Log("활성화 ");
-            Show();
             MousFolloer.Toggle(false);
             itemUIDescription.ResetDescription();
         }
@@ -112,7 +113,7 @@ namespace Ivnentory.UI
             {
                 //아이템의 이미지와 수량을 업데이트
                 _listOfUIItme[itemIndex].setData(itemImage, itemQuantity);
-                Debug.Log("1" + itemImage);
+               
             }
         }
 
@@ -219,5 +220,7 @@ namespace Ivnentory.UI
         }
 
         
+         
+
     }
 }

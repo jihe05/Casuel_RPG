@@ -19,10 +19,12 @@ namespace Inventory.Model
         [field: SerializeField]
         public int Size { get; private set; } = 10;
 
+       // private const int MaxSize = 50;
+
         public event Action<Dictionary<int, InventoryItem>> OnInventoryUpdated;
 
 
-        //인벤토리를 초기화하는 메소드
+        //인벤토리를 초기화하는 메소드m  
         public void Initialize()
         {
             inventoryItems = new List<InventoryItem>();
@@ -40,7 +42,7 @@ namespace Inventory.Model
             AddItem(item.item, item.quantity);
         }
 
-        //아이템을 추가하는 메서드
+
         public int AddItem(ItemSo item, int quantity)
         {
             for (int i = 0; i < inventoryItems.Count; i++)
@@ -51,111 +53,34 @@ namespace Inventory.Model
                     {
                         item = item,
                         quantity = quantity
-
                     };
-                    return quantity;
+                    InformAboutChange();
+                    return 0;
                 }
             }
-            return quantity;
 
-            /*
-               if (item.IsStackable == false)
-            { 
-               for (int i = 0; i < inventoryItems.Count; i++)
-                {
-                    if (IsInventoryFull())
-                        return quantity;
-                    while (quantity > 0 && IsInventoryFull() == false)
-                    { 
-                    
-                    }
-                    return quantity;
-                }
-            
-            }
-            quantity = AddStakableItem(item, quantity);
-            InformAboutChange();
-            return quantity;
-             */
+            //if (Size < MaxSize)
+            //{
+            //    ExpandInventory(Math.Min(Size + 10, MaxSize));
+            //    return AddItem(item, quantity);
+            //}
 
-        }
-
-        /*
-        //주어진 아이템을 첫 번째 빈 슬롯에 추가하는 메서드 
-        private int AddItemToFirstFreeSlot(ItemSo item, int quantity)
-        {
-            //newitem 생성
-            InventoryItem newItem = new InventoryItem
-            {
-                item = item,
-                quantity = quantity
-            };
-
-            //인벤토리의 모든 슬롯 확인
-            for (int i = 0; i < inventoryItems.Count; i++)
-            {
-                //빈슬롯을 찾으면 
-                if (inventoryItems[i].IsEmpty)
-                {
-                    //아이템 추가 
-                    inventoryItems[i]= newItem;
-                    return quantity;//추가된 수량 반환
-                }
-            }
-            return 0;
-        }
-        */
-        /*
-        //인벤토리가 가득 찼느지 여부 확인
-        private bool IsInventoryFull()
-            //빈슬롯리 없으면 true 있으면 false
-         => inventoryItems.Where(item => item.IsEmpty).Any()== false;
-
-        //스택 가능한 아이템을 인벤토리에 추가
-        private int AddStackedleItem(ItemSo item, int quantity)
-        {
-            //인벤토리의 모든 슬롯을 확인
-            for (int i = 0; i < inventoryItems.Count; i++)
-            {
-                //빈슬롯은 건너뜀
-                if (inventoryItems[i].IsEmpty)
-                    continue;
-                //동일한 아잍메을 찾으면 
-                if (inventoryItems[i].item.ID == item.ID)
-                {
-                    //추가 가능한 최대 수량 확인 
-                    int amountPossibleToTake =
-                         inventoryItems[i].item.MaxStackSize - inventoryItems[i].quantity;
-
-                    //추가할 수 있는 수량보다 남은 수량이 많으면 
-                    if (quantity > amountPossibleToTake)
-                    {
-                        //슬롯을 최대치로 챙움
-                        inventoryItems[i] = inventoryItems[i]
-                            .ChangeQyantity(inventoryItems[i].item.MaxStackSize);
-                        //남은 수량 감소 
-                        quantity -= amountPossibleToTake;
-                    }
-                    else
-                    {
-                        //슬롯 채우고 남은 수량 반환
-                        inventoryItems[i] = inventoryItems[i]
-                            .ChangeQyantity(inventoryItems[i].quantity + quantity);
-                        InformAboutChange();
-                        return 0;
-                    }
-                }
-            }
-            //빈 슬롯에 남은 슬롯 추가 
-            while (quantity > 0 && IsInventoryFull() == false)
-            {
-                int newQuantity = Mathf.Clamp(quantity, 0, item.MaxStackSize);
-                quantity -= newQuantity;
-                AddItemToFirstFreeSlot(item, newQuantity);
-            }
             return quantity;
         }
-        */
+
+        //private void ExpandInventory(int newSize)
+        //{
+        //    if (newSize > Size)
+        //    {
+        //        Size = newSize;
+        //        for (int i = inventoryItems.Count; i < Size; i++)
+        //        {
+        //            inventoryItems.Add(InventoryItem.GetEmptyItem());
+        //        }
+        //        InformAboutChange();
+        //    }
+        //}
+
 
         //현재 인벤토리 상태를 딕셔너리 형태로 반환하는 메서드
         public Dictionary<int, InventoryItem> GetCurrentInventorystate()
