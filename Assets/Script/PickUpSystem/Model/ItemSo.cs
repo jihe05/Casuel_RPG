@@ -43,7 +43,7 @@ namespace Inventory.Model
         public string ItemHp { get; set; }
 
         [field: SerializeField]
-        public string ItemXp { get; set; }
+        public string ItemHg { get; set; }
 
         [field: SerializeField]
         public string ItemStamina { get; set; }

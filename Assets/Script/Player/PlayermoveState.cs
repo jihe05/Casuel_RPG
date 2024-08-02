@@ -114,6 +114,7 @@ public class WalkState : IPlayerState
             _playerMove.ChangeState(new IdleState(_playerMove));
         }
 
+        UImanger.Instance.PlayerSliderbarHgUse(0.005f);
 
         // 이동 로직 호출
         _playerMove.PlayerMove(direction);

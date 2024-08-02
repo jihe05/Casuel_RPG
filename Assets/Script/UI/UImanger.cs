@@ -13,10 +13,11 @@ public class UImanger : MonoBehaviour
 
     private void Awake()
     {
-
         Instance = this;
         StartCoin();
         PlayerHpData();
+        PlayerHGData();
+        PlayerStaminaData();
         BossBa.gameObject.SetActive(false);
 
     }
@@ -73,7 +74,25 @@ public class UImanger : MonoBehaviour
 
 
     [Header("-Inventory-")]
-    //_____________________Inventory___________________________
+    //_________________________________________________________
+
+    public GameObject ItemUseButton;
+
+    public void InventoryOnButtonUseTrue()
+    {
+        ItemUseButton.SetActive(true);
+     
+    }
+
+    public void InventoryOnButtonUseFalse()
+    {
+        
+            ItemUseButton.SetActive(false);
+
+    }
+
+
+
 
     //____________________________________________________________
 
@@ -199,12 +218,71 @@ public class UImanger : MonoBehaviour
     }
 
 
-    public void PlayerSliderbar(float Ap)
+    public void PlayerSliderbarDamege(float Ap)
     {
         Player_HpSlidebar.value -= Ap;
 
     }
 
+
+    public void PlayerSliderbarHp(float Hp)
+    {
+        Player_HpSlidebar.value += Hp;
+
+    }
+
+    [Header("-playerHg-")]
+    //__________________playerHg_______________________________
+    public Slider Player_HgSlider;
+    public float PlayerMaxHg = 20f;
+
+    private void PlayerHGData()
+    {
+        Player_HgSlider.minValue = 0f;
+        Player_HgSlider.maxValue = PlayerMaxHg;
+        Player_HgSlider.value = PlayerMaxHg;
+
+    }
+
+    public void PlayerSliderbarHgUse(float Hg)
+    {
+        
+        Player_HgSlider.value -= Hg;
+    }
+
+  
+    public void PlayerSliderbarHg(int Hg)
+    {
+        Player_HgSlider.value += Hg;
+    }
+
+
+
+
+    [Header("-playerStamina-")]
+    //__________________playerStamina_______________________________
+
+    public Slider Player_StaminaSlider;
+    public float PlayerMaxHStamina = 30f;
+
+    private void PlayerStaminaData()
+    {
+        Player_StaminaSlider.minValue = 0f;
+        Player_StaminaSlider.maxValue = PlayerMaxHStamina;
+        Player_StaminaSlider.value = PlayerMaxHStamina;
+
+    }
+
+    public void PlayerSliderbarStamina(int Stamina)
+    {
+      
+    }
+
+
+    public void PlayerSliderbarStaminaUse(int Stamina)
+    {
+
+    }
 
     //_________________________________________________________
 
@@ -393,9 +471,9 @@ public class UImanger : MonoBehaviour
     }
 
 
-
-
     //__________ItemAdd______________________
-   
+
+
+
 }
 

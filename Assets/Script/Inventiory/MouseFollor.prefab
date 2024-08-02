@@ -98,6 +98,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ItemUI
       objectReference: {fileID: 0}
+    - target: {fileID: 8446871590876969208, guid: 168312b1b381a204dbe65251f3858797, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9129297804644464087, guid: 168312b1b381a204dbe65251f3858797, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

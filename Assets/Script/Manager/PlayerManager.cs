@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,8 @@ public class PlayerManager : MonoBehaviour
     Bossmove Bossmove;
 
     public float Player_Hp = 10000;
-    public float Player_Ap = 20;
+    public float Player_Hg = 20;
+    public float Player_Stamina = 30;
 
     public int Player_Level = 1;
 
@@ -35,18 +37,18 @@ public class PlayerManager : MonoBehaviour
     {
         Player_Hp -= Ap;
         PlayerPrefs.SetFloat("Player_Hp", Player_Hp);
-        UImanger.Instance.PlayerSliderbar(Ap);
+        UImanger.Instance.PlayerSliderbarHp(Ap);
     }
 
     public void PlayerMonsterTrgger()
     {
-        monstermove.MonsterUpdateHp(Player_Ap);
+        monstermove.MonsterUpdateHp(Player_Hg);
     }
 
     public void PlayerBossTrgger()
     {
         Bossmove = FindObjectOfType<Bossmove>();
-        Bossmove.BossUpdateHp(    );
+        Bossmove.BossUpdateHp(Player_Hg);
     }
 
     public void PlayerLevelUpUpdate()
@@ -66,5 +68,28 @@ public class PlayerManager : MonoBehaviour
     {
         move.enabled = true;
 
+    }
+
+    public void UseHp(string currentItemHp)
+    {
+        Player_Hp += int.Parse(currentItemHp);
+
+        UImanger.Instance.PlayerSliderbarHp(int.Parse(currentItemHp));
+
+    }
+
+    public void UseHg(string currentItemHg)
+    {
+        Player_Hg += int.Parse(currentItemHg);
+        Debug.Log("Player_Hg :" + Player_Hg);
+
+        UImanger.Instance.PlayerSliderbarHg(int.Parse(currentItemHg));
+    }
+
+    public void UseStamina(string currentItemStamina)
+    {
+        Player_Stamina += int.Parse(currentItemStamina);
+
+        UImanger.Instance.PlayerSliderbarStamina(int.Parse(currentItemStamina));
     }
 }

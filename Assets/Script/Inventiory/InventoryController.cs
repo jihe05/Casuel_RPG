@@ -148,7 +148,7 @@ namespace Ivnentory
             //아니면 아이템의 정보를 가져와 
             ItemSo item = inventoryItme.item;
             //설명 표시
-            InventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.name, item.Description , item.ItemHp, item.ItemXp, item.ItemStamina);
+            InventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.name, item.Description , item.ItemHp, item.ItemHg, item.ItemStamina);
 
 
         }

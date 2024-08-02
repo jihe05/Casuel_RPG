@@ -69,7 +69,6 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
         {
             InventoryController.AddItemInventory(inventoryItem, Quantity);
 
-
         }
         else
             Debug.Log("³Î.");

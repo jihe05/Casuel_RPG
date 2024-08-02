@@ -59,27 +59,9 @@ namespace Inventory.Model
                 }
             }
 
-            //if (Size < MaxSize)
-            //{
-            //    ExpandInventory(Math.Min(Size + 10, MaxSize));
-            //    return AddItem(item, quantity);
-            //}
 
             return quantity;
         }
-
-        //private void ExpandInventory(int newSize)
-        //{
-        //    if (newSize > Size)
-        //    {
-        //        Size = newSize;
-        //        for (int i = inventoryItems.Count; i < Size; i++)
-        //        {
-        //            inventoryItems.Add(InventoryItem.GetEmptyItem());
-        //        }
-        //        InformAboutChange();
-        //    }
-        //}
 
 
         //현재 인벤토리 상태를 딕셔너리 형태로 반환하는 메서드

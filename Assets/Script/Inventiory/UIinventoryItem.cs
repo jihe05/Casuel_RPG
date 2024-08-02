@@ -64,18 +64,15 @@ namespace Inventory.UI
         //아이템 테투리를 비활성화
         public void Deselect()
         {
-            if (borderImage == null)
-            {
-                Debug.Log("borderImage : null");
-            }
-            else
             borderImage.enabled = false;
+            UImanger.Instance.InventoryOnButtonUseFalse();
         }
 
         //아이템 테두리를 활성화
         public void Select()
         {
             borderImage.enabled = true;
+            UImanger.Instance.InventoryOnButtonUseTrue();
         }
 
 

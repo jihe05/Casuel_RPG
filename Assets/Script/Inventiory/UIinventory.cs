@@ -27,6 +27,9 @@ namespace Ivnentory.UI
         [SerializeField]
         private ItemMousFolloer MousFolloer;
 
+        private string currentItemHp;
+        private string currentItemHg;
+        private string currentItemStamina;
 
         //인벤토리 UI항목 리스트
         List<UIinventoryItem> _listOfUIItme = new List<UIinventoryItem>();
@@ -90,17 +93,22 @@ namespace Ivnentory.UI
         }
 
         //아이템 설명 업데이트
-        internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, string itemHp, string itemXp, string itemStamina)
+        internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, string itemHp, string itemHg, string itemStamina)
         {
             //아이템 설명UI 업데이트
             itemUIDescription.SetDescription(itemImage, name, description);
-            itemUIDescription.SetEfficacy(name, itemHp , itemXp, itemStamina);
+            itemUIDescription.SetEfficacy(name, itemHp , itemHg, itemStamina);
 
             //모든 아이템 테두리 비활성화 메서드 호출
             DeselecAllItes();
 
             //지정된 아이템의 테두리 활성화 
             _listOfUIItme[itemIndex].Select();
+
+            currentItemHp = itemHp;
+            currentItemHg = itemHg;
+            currentItemStamina = itemStamina;
+
         }
 
      
@@ -219,7 +227,14 @@ namespace Ivnentory.UI
             ResetDraggedItem();//드래그 종료 메서드
         }
 
-        
+        public void OnUseBottonClik()
+        {
+            PlayerManager.instance.UseHp(currentItemHp);
+            PlayerManager.instance.UseHg(currentItemHg);
+            PlayerManager.instance.UseStamina(currentItemStamina);
+
+        }
+
          
 
     }

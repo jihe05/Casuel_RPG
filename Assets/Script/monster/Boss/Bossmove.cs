@@ -124,6 +124,10 @@ public class Bossmove : MonoBehaviour
             ChangeState(BossState.DIE);
         }
 
+        if (Input.GetKey(KeyCode.Q))
+        {
+            Fly();
+        }
 
     }
 
@@ -317,7 +321,6 @@ public class Bossmove : MonoBehaviour
         {
             Debug.Log("³¯¾Æ");
             ChangeState(BossState.FLYATTACK);
-
         }
         else
         {
@@ -327,6 +330,12 @@ public class Bossmove : MonoBehaviour
         }
 
         UImanger.Instance.BossSligerBarHp(Hp);
+    }
+
+    public void Fly()
+    {
+        ChangeState(BossState.FLYATTACK);
+
     }
 
 
