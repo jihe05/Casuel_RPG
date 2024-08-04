@@ -73,23 +73,19 @@ public class PlayerManager : MonoBehaviour
     public void UseHp(string currentItemHp)
     {
         Player_Hp += int.Parse(currentItemHp);
-
         UImanger.Instance.PlayerSliderbarHp(int.Parse(currentItemHp));
-
     }
 
     public void UseHg(string currentItemHg)
     {
         Player_Hg += int.Parse(currentItemHg);
-        Debug.Log("Player_Hg :" + Player_Hg);
-
+        Debug.Log("Player_Hg: " + Player_Hg);
         UImanger.Instance.PlayerSliderbarHg(int.Parse(currentItemHg));
     }
 
     public void UseStamina(string currentItemStamina)
     {
         Player_Stamina += int.Parse(currentItemStamina);
-
         UImanger.Instance.PlayerSliderbarStamina(int.Parse(currentItemStamina));
     }
 }

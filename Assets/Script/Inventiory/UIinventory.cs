@@ -93,7 +93,7 @@ namespace Ivnentory.UI
         }
 
         //아이템 설명 업데이트
-        internal void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, string itemHp, string itemHg, string itemStamina)
+        public void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, string itemHp, string itemHg, string itemStamina)
         {
             //아이템 설명UI 업데이트
             itemUIDescription.SetDescription(itemImage, name, description);
@@ -229,9 +229,9 @@ namespace Ivnentory.UI
 
         public void OnUseBottonClik()
         {
-            PlayerManager.instance.UseHp(currentItemHp);
-            PlayerManager.instance.UseHg(currentItemHg);
-            PlayerManager.instance.UseStamina(currentItemStamina);
+            PlayerManager.instance.UseHp(string.IsNullOrEmpty(currentItemHp) ? "0" : currentItemHp);
+            PlayerManager.instance.UseHg(string.IsNullOrEmpty(currentItemHg) ? "0" : currentItemHg);
+            PlayerManager.instance.UseStamina(string.IsNullOrEmpty(currentItemStamina) ? "0" : currentItemStamina);
 
         }
 
