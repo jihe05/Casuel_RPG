@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Cinemachine.DocumentationSortingAttribute;
@@ -17,11 +18,19 @@ public class Move : MonoBehaviour
 
     Monstermove monstermove;
 
-    public Camera Playercamera;
+    public Camera playercamera;
 
     private IPlayerState currentState;
 
     public ParticleSystem particle;
+
+    Rigidbody Rgb;
+
+    public AudioSource soldSound;
+
+    public AudioSource MoveSound;
+
+    public AudioClip[] MoveClips;
 
 
     private void Awake()
@@ -29,21 +38,23 @@ public class Move : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         characterController = GetComponent<CharacterController>();
         monstermove = GetComponent<Monstermove>();
+        Rgb= GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
+        Rgb.useGravity = true;
         ChangeState(new IdleState(this));
     }
 
     private void Update()
     {
-
         currentState?.ExtcuteOnUpdate();
 
         // 마우스 클릭 시 공격 상태로 전환
         if (Input.GetMouseButtonDown(0) && !(currentState is AtKState))
         {
+            soldSound.Play();
             ChangeState(new AtKState(this));
             PlayerAttackCount();
         }
@@ -208,6 +219,7 @@ public class Move : MonoBehaviour
             // 여기서 씬이 완전히 로드된 후 오브젝트의 위치와 회전을 설정
             Invoke("SetPlayerPositionAndRotation", 0.01f);
             SceneManager.sceneLoaded -= OnSceneLoaded; // 이벤트 핸들러 제거
+            BGM.instance.BosMapBGM();
         }
     }
 
@@ -215,8 +227,8 @@ public class Move : MonoBehaviour
     {
         transform.position = new Vector3(38f, -12f, 144.5f);
         transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-        Playercamera.clearFlags = CameraClearFlags.Skybox;
-        Playercamera.backgroundColor = Color.black;
+        playercamera.clearFlags = CameraClearFlags.Skybox;
+        playercamera.backgroundColor = Color.black;
         characterController.enabled = true;
 
 

@@ -23,6 +23,8 @@ public class UImanger : MonoBehaviour
     }
 
 
+    
+
     //___________________Coin_________________________
 
 

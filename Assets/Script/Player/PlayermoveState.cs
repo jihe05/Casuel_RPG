@@ -119,6 +119,8 @@ public class WalkState : IPlayerState
         // 이동 로직 호출
         _playerMove.PlayerMove(direction);
 
+        _playerMove.MoveSound.clip = _playerMove.MoveClips[0];
+
 
     }
 
@@ -166,6 +168,9 @@ public class JumpState : IPlayerState
         {
             _playerMove.ChangeState(new IdleState(_playerMove));
         }
+
+        _playerMove.MoveSound.clip = _playerMove.MoveClips[1];
+        _playerMove.MoveSound.Play();
 
     }
     public void ExitState()

@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class Soundmanager : MonoBehaviour
 {
+
+    /*
     public Slider masterVolumeSlider;//마스터 볼륨
     public Slider musicVolumeSlider;//뮤직 볼륨
     public Slider sfxVolumeSlider;
@@ -69,5 +71,10 @@ public class Soundmanager : MonoBehaviour
         // 이 부분은 외부 라이브러리나 시스템 설정을 통해 구현해야 합니다.
         Debug.Log("Audio output device changed to: " + audioOutputDeviceDropdown.options[index].text);
     }
+    */
+
+    
+
+
 }
 
