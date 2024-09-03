@@ -76,10 +76,10 @@ public class PlayerManager : MonoBehaviour
         UImanger.Instance.PlayerSliderbarHp(int.Parse(currentItemHp));
     }
 
+    
     public void UseHg(string currentItemHg)
     {
         Player_Hg += int.Parse(currentItemHg);
-        Debug.Log("Player_Hg: " + Player_Hg);
         UImanger.Instance.PlayerSliderbarHg(int.Parse(currentItemHg));
     }
 

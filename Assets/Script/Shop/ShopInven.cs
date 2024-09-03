@@ -13,11 +13,6 @@ public class ShopInven : MonoBehaviour
     [SerializeField]
     private RectTransform contentPanel;
 
-    [SerializeField]
-    private UIShopDescription uIShopDescription;
-
-    [SerializeField]
-    private GameObject Goj_Stats;
 
     //인벤토리 UI항목 리스트
     private List<ShopItem> _listOfUIItme = new List<ShopItem>();
@@ -25,15 +20,7 @@ public class ShopInven : MonoBehaviour
     //이벤트(설명 요청시)
     public event Action<int> OnStartEnter;
 
-    private void Awake()
-    {
-        Goj_Stats.SetActive(false);
-        uIShopDescription.ResetShopDescription();
-
-    }
-
-
-
+   
     //프리팹 생성
     public void InitShopUI()
     {

@@ -1,9 +1,6 @@
 using Inventory.Model;
-using Inventory.UI;
 using Ivnentory;
-using Ivnentory.UI;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,6 +12,9 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
 
     [SerializeField]
     private Text ItemPrice; // 아이템 가격
+
+    [SerializeField]
+    private GameObject DataPanel;
 
     // 수량은 1개
     [field: SerializeField]
@@ -76,7 +76,14 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
        
     }
    
-
-  
+    public void Test_OnMouseEnter()
+    {
+        DataPanel.SetActive(true);
+        UIShopDescription.instance.SetShopEfficacy(inventoryItem.Name, inventoryItem.ItemHp, inventoryItem.ItemHg, inventoryItem.ItemStamina);
+    }
+    public void Test_OnMouseExit()
+    {
+        DataPanel.SetActive(false);
+    }
 
 }

@@ -12,9 +12,6 @@ namespace Inventory.UI
         private Image ItemImage;
 
         [SerializeField]
-        private TextMeshProUGUI CountText;
-
-        [SerializeField]
         private Image borderImage;//Å×µÎ¸®
 
 
@@ -55,7 +52,6 @@ namespace Inventory.UI
         {
             ItemImage.gameObject.SetActive(true);
             ItemImage.sprite = sprite;
-            CountText.text = quantity.ToString();
             empty = false;
            
         }

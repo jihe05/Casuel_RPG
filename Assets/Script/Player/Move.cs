@@ -200,7 +200,7 @@ public class Move : MonoBehaviour
         {
             Bossmove.Instance.PlayerAttack();
         }
-
+       
         if (other.gameObject.CompareTag("EnventBox"))
         {
 

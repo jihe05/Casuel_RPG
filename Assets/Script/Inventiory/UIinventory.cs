@@ -1,4 +1,3 @@
-using Inventory.Model;
 using Inventory.UI;
 using System;
 using System.Collections.Generic;
@@ -232,7 +231,6 @@ namespace Ivnentory.UI
             PlayerManager.instance.UseHp(string.IsNullOrEmpty(currentItemHp) ? "0" : currentItemHp);
             PlayerManager.instance.UseHg(string.IsNullOrEmpty(currentItemHg) ? "0" : currentItemHg);
             PlayerManager.instance.UseStamina(string.IsNullOrEmpty(currentItemStamina) ? "0" : currentItemStamina);
-
         }
 
          

@@ -46,9 +46,9 @@ namespace Inventory.UI
         }
 
         //상점 설명 참조
-        public void SetEfficacy(string itemName, string itemHp, string itemXp, string itemStamina)
+        public void SetEfficacy(string itemName, string itemHp, string itemHg, string itemStamina)
         {
-            stats.text = $"itemHp : {itemHp} \n itemXp : {itemXp} \n itemStamina : {itemStamina}";
+            stats.text = $"itemHp : {itemHp} \n itemHg : {itemHg} \n itemStamina : {itemStamina}";
 
         }
 

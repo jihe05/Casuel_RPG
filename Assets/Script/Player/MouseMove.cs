@@ -9,17 +9,15 @@ public class MouseMove : MonoBehaviour
 
     public Transform plauyerObj;
 
- 
-
-    public void Update()
+    public void FixedUpdate()
     {
 
         if (Input.GetMouseButton(1))
         {
             transform.rotation = Quaternion.identity;
 
-            float mouseX = Input.GetAxis("Mouse X") * mouseSpeed * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSpeed * Time.deltaTime;
+            float mouseX = Input.GetAxis("Mouse X") * mouseSpeed * Time.fixedDeltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSpeed * Time.fixedDeltaTime;
 
 
             transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);

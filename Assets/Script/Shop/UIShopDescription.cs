@@ -1,3 +1,4 @@
+using Inventory.Model;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,17 +6,17 @@ using UnityEngine.UI;
 
 public class UIShopDescription : MonoBehaviour
 {
-    
-    [SerializeField]
-    private Text title;//아이템 이름
+    public static UIShopDescription instance;
+
+    public Text title;//아이템 이름
 
     //아이템 효능
-    [SerializeField]
-    private Text stats;
+    public Text stats;
 
 
     public void Awake()
     {
+        instance = this;
         ResetShopDescription();
     }
 
@@ -24,7 +25,6 @@ public class UIShopDescription : MonoBehaviour
     {
         title.text = string.Empty;
         stats.text = string.Empty;
-
     }
 
     //설명 참조
@@ -35,11 +35,11 @@ public class UIShopDescription : MonoBehaviour
     }
 
     //상점 설명 참조
-    public void SetShopEfficacy(string itemName, string itemHp, string itemXp, string itemStamina)
+    public void SetShopEfficacy(string itemName, string itemHp, string itemHg, string itemStamina)
     {
-
+        Debug.Log(itemHg);
         title.text = itemName;
-        stats.text = $"itemHp : {itemHp} \n itemXp : {itemXp} \n itemStamina : {itemStamina}";
+        stats.text = $"itemHp : {itemHp} \n itemHg : {itemHg} \n itemStamina : {itemStamina}";
 
     }
 }

@@ -10,6 +10,8 @@ public class UImanger : MonoBehaviour
 {
     public static UImanger Instance { get; private set; }
 
+    [SerializeField] GameObject ShopItmeData;
+
 
     private void Awake()
     {
@@ -236,7 +238,7 @@ public class UImanger : MonoBehaviour
     [Header("-playerHg-")]
     //__________________playerHg_______________________________
     public Slider Player_HgSlider;
-    public float PlayerMaxHg = 20f;
+    public float PlayerMaxHg = 50f;
 
     private void PlayerHGData()
     {
@@ -330,7 +332,6 @@ public class UImanger : MonoBehaviour
         Boss_HpSlidebar.maxValue = BossMaxHp;
         Boss_HpSlidebar.value = BossMaxHp;
 
-        Debug.Log(Boss_HpSlidebar.value);
 
     }
 

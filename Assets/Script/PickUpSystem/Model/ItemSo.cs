@@ -18,10 +18,6 @@ namespace Inventory.Model
         //아이템의 고유 ID를 반환 
         public int ID => GetInstanceID();
 
-        //아이템의 최대 크기
-        [field: SerializeField]
-        public int MaxStackSize { get; set; } = 1;
-
         //아이템의 이름
         [field: SerializeField]
         public string Name { get; set; }
