@@ -18,8 +18,6 @@ public class Move : MonoBehaviour
 
     Monstermove monstermove;
 
-    public Camera playercamera;
-
     private IPlayerState currentState;
 
     public ParticleSystem particle;
@@ -227,8 +225,6 @@ public class Move : MonoBehaviour
     {
         transform.position = new Vector3(38f, -12f, 144.5f);
         transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-        playercamera.clearFlags = CameraClearFlags.Skybox;
-        playercamera.backgroundColor = Color.black;
         characterController.enabled = true;
 
 
