@@ -45,7 +45,6 @@ public class Move : MonoBehaviour
         ChangeState(new IdleState(this));
     }
 
-
     private void Update()
     {
         currentState?.ExecuteOnUpdate();
@@ -100,12 +99,11 @@ public class Move : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 verticalVelocity = jumpForce;
+
                 animator_Player.SetBool("Jump", true);
+
             }
-            else
-            {
-                animator_Player.SetBool("Jump", false);
-            }
+            animator_Player.SetBool("Jump", false);
         }
         else
         {
