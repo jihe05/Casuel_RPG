@@ -36,7 +36,6 @@ public class BGM : MonoBehaviour
         }
         else if (mainPanel.activeSelf == true)
         {
-            Debug.Log(bgmSource.clip);
             PlayBGM(titleClip);
         }
         else if (bgmSource.clip == bosMapClip && mainPanel.activeSelf == false)

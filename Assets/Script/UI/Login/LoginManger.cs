@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +22,14 @@ public class LoginManger : MonoBehaviour
     public Text Singup_errorText;
 
     private Dictionary<string, string> Dic_userData = new Dictionary<string, string>();
+    private const string UserListKey = "UserList";  // 유저 목록을 저장할 키
 
+    private void Start()
+    {
+        LoadUserData();
+    }
+
+    
     public void SignUp()
     {
 
@@ -41,9 +49,11 @@ public class LoginManger : MonoBehaviour
 
         Dic_userData.Add(id, number);
         Singup_errorText.text = "화원가입이 완료되었습니다.";
+        SaveUserData(id, number);//데이터 저장 메서드
       
     }
 
+    
     public void Login()
     {
       
@@ -67,14 +77,12 @@ public class LoginManger : MonoBehaviour
             }
             else
             {
-
                 Login_errorText.text = "잘못된 번호입니다";
             }
 
         }
         else
         {
-
             Login_errorText.text = "존재하지 않는 아이디입니다.";
         }
     }
@@ -109,4 +117,38 @@ public class LoginManger : MonoBehaviour
 
     }
 
+    private void SaveUserData(string id, string number)
+    {
+        PlayerPrefs.SetString(id, number);
+
+        // 유저 목록 업데이트
+        string userList = PlayerPrefs.GetString(UserListKey, "");
+        if (!userList.Contains(id))
+        {
+            userList += id + ";";  // 아이디 목록에 추가
+            PlayerPrefs.SetString(UserListKey, userList);
+        }
+
+        PlayerPrefs.Save();  // 데이터 저장
+    }
+
+
+
+    // 데이터를 불러오는 함수
+    private void LoadUserData()
+    {
+        // 저장된 유저 목록을 불러옴
+        string userList = PlayerPrefs.GetString(UserListKey, "");
+        string[] users = userList.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+        // 각 유저의 아이디와 비밀번호를 불러와서 Dic_userData에 저장
+        foreach (string id in users)
+        {
+            if (PlayerPrefs.HasKey(id))
+            {
+                string number = PlayerPrefs.GetString(id);
+                Dic_userData[id] = number;
+            }
+        }
+    }
 }

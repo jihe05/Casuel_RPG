@@ -46,6 +46,8 @@ namespace Ivnentory.UI
 
         private void Start()
         {
+            gameObject.SetActive(false);
+
             Hide();
         }
         private void Awake()

@@ -45,9 +45,10 @@ public class Move : MonoBehaviour
         ChangeState(new IdleState(this));
     }
 
+
     private void Update()
     {
-        currentState?.ExtcuteOnUpdate();
+        currentState?.ExecuteOnUpdate();
 
         // 마우스 클릭 시 공격 상태로 전환
         if (Input.GetMouseButtonDown(0) && !(currentState is AtKState))
@@ -99,11 +100,12 @@ public class Move : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 verticalVelocity = jumpForce;
-
                 animator_Player.SetBool("Jump", true);
-
             }
-            animator_Player.SetBool("Jump", false);
+            else
+            {
+                animator_Player.SetBool("Jump", false);
+            }
         }
         else
         {

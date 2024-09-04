@@ -7,13 +7,13 @@ public interface IPlayerState
 {
     void EnterState();
     void ExitState();
-    void ExtcuteOnUpdate();
+    void ExecuteOnUpdate();
 
 
 }
 
 
-//플레이어의 대기 상태 
+//플레이어의 대기 상태
 public class IdleState : IPlayerState
 {
 
@@ -33,7 +33,7 @@ public class IdleState : IPlayerState
     }
 
 
-    public void ExtcuteOnUpdate()
+    public void ExecuteOnUpdate()
     {
 
         // _playerMove.handleJump();
@@ -80,7 +80,7 @@ public class WalkState : IPlayerState
 
     }
 
-    public void ExtcuteOnUpdate()
+    public void ExecuteOnUpdate()
     {
         Vector3 direction = Vector3.zero;
 
@@ -153,26 +153,40 @@ public class JumpState : IPlayerState
 
     }
 
-    public void ExtcuteOnUpdate()
+    public void ExecuteOnUpdate()
     {
         Vector3 direction = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            direction += _playerMove.transform.forward;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            direction += -_playerMove.transform.forward;
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            direction += -_playerMove.transform.right;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            direction += _playerMove.transform.right;
+        }
 
         // 점프 및 이동 처리
         _playerMove.PlayerMove(direction);
 
-        if (!_playerMove.characterController.isGrounded)
-        {
-            return;
-        }
-        else
+        if (_playerMove.characterController.isGrounded)
         {
             _playerMove.ChangeState(new IdleState(_playerMove));
         }
 
         _playerMove.MoveSound.clip = _playerMove.MoveClips[1];
         _playerMove.MoveSound.Play();
-
     }
+
+
     public void ExitState()
     {
         _playerMove.animator_Player.SetBool("Jump", false);
@@ -200,26 +214,28 @@ public class AtKState : IPlayerState
     }
 
 
-    public void ExtcuteOnUpdate()
+    public void ExecuteOnUpdate()
     {
         _playerMove.PlayerMove(Vector3.zero);
         _playerMove.particle.Stop();
 
         if (!Input.GetMouseButtonDown(0))
         {
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-            {
-                _playerMove.ChangeState(new WalkState(_playerMove));
-            }
-            else
-            {
-                _playerMove.ChangeState(new IdleState(_playerMove));
+            AnimatorStateInfo animStateInfo = _playerMove.animator_Player.GetCurrentAnimatorStateInfo(0);
 
+            // Attack 애니메이션이 완료되었는지 확인
+            if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime >= 1.0f)
+            {
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+                {
+                    _playerMove.ChangeState(new WalkState(_playerMove));
+                }
+                else
+                {
+                    _playerMove.ChangeState(new IdleState(_playerMove));
+                }
             }
-
         }
-
-
 
     }
 
@@ -251,7 +267,7 @@ public class LevelUP : IPlayerState
     }
 
 
-    public void ExtcuteOnUpdate()
+    public void ExecuteOnUpdate()
     {
         Debug.Log("중력 조절");
         _playerMove.PlayerMove(Vector3.zero);

@@ -10,8 +10,6 @@ public class UImanger : MonoBehaviour
 {
     public static UImanger Instance { get; private set; }
 
-    [SerializeField] GameObject ShopItmeData;
-
 
     private void Awake()
     {
@@ -476,7 +474,14 @@ public class UImanger : MonoBehaviour
 
     //__________ItemAdd______________________
 
-
+    public void Eixt_OnClickButton()
+    {    
+      #if UNITY_EDITOR
+          UnityEditor.EditorApplication.isPlaying = false;  // 에디터에서 게임 종료
+      #else
+          Application.Quit();  // 빌드된 애플리케이션에서는 실제 종료
+      #endif
+    }
 
 }
 
