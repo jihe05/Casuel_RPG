@@ -17,13 +17,9 @@ public class UImanger : MonoBehaviour
         StartCoin();
         PlayerHpData();
         PlayerHGData();
-        PlayerStaminaData();
         BossBa.gameObject.SetActive(false);
 
     }
-
-
-    
 
     //___________________Coin_________________________
 
@@ -261,30 +257,7 @@ public class UImanger : MonoBehaviour
 
 
 
-    [Header("-playerStamina-")]
-    //__________________playerStamina_______________________________
-
-    public Slider Player_StaminaSlider;
-    public float PlayerMaxHStamina = 30f;
-
-    private void PlayerStaminaData()
-    {
-        Player_StaminaSlider.minValue = 0f;
-        Player_StaminaSlider.maxValue = PlayerMaxHStamina;
-        Player_StaminaSlider.value = PlayerMaxHStamina;
-
-    }
-
-    public void PlayerSliderbarStamina(int Stamina)
-    {
-      
-    }
-
-
-    public void PlayerSliderbarStaminaUse(int Stamina)
-    {
-
-    }
+ 
 
     //_________________________________________________________
 
@@ -483,5 +456,6 @@ public class UImanger : MonoBehaviour
       #endif
     }
 
+   
 }
 

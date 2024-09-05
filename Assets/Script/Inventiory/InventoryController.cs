@@ -70,7 +70,7 @@ namespace Ivnentory
             //이벤토리 상태를 반복하여 각 아잍메 데이터를 UI에 업데이트
             foreach (var item in inventoruState)
             {
-                InventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);   
+                InventoryUI.UpdateData(item.Key, item.Value.item.ItemImage);   
             }
         }
 
@@ -115,7 +115,7 @@ namespace Ivnentory
                 return;
 
             //드래그 아이템 이미지 설정
-            InventoryUI.CreateDraggedItem(inventoryItem.item.ItemImage, inventoryItem.quantity);
+            InventoryUI.CreateDraggedItem(inventoryItem.item.ItemImage);
         }
 
       
@@ -145,7 +145,7 @@ namespace Ivnentory
             //아니면 아이템의 정보를 가져와 
             ItemSo item = inventoryItme.item;
             //설명 표시
-            InventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.name, item.Description , item.ItemHp, item.ItemHg, item.ItemStamina);
+            InventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.name, item.Description , item.ItemHp, item.ItemHg);
 
 
         }
@@ -182,7 +182,7 @@ namespace Ivnentory
                 foreach (var item in InventoryData.GetCurrentInventorystate())
                 {
                     //이벤토리 UI에 데이터 업데이트(인벤스롯의 인덱스, 인벤 아이템 이미지, 인벤 아이템 수량)
-                    InventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
+                    InventoryUI.UpdateData(item.Key, item.Value.item.ItemImage);
                 }
 
             }
@@ -213,9 +213,9 @@ namespace Ivnentory
         
         }
 
-        public void AddItemInventory(ItemSo item, int quantity)
+        public void AddItemInventory(ItemSo item)
         {
-            int reminder = InventoryData.AddItem(item, quantity);
+            int reminder = InventoryData.AddItem(item);
 
             if (reminder > 0)
             {

@@ -13,7 +13,7 @@ public interface IPlayerState
 }
 
 
-//플레이어의 대기 상태
+//플레이어의 대기 상태 
 public class IdleState : IPlayerState
 {
 
@@ -186,7 +186,6 @@ public class JumpState : IPlayerState
         _playerMove.MoveSound.Play();
     }
 
-
     public void ExitState()
     {
         _playerMove.animator_Player.SetBool("Jump", false);
@@ -214,6 +213,7 @@ public class AtKState : IPlayerState
     }
 
 
+
     public void ExecuteOnUpdate()
     {
         _playerMove.PlayerMove(Vector3.zero);
@@ -221,21 +221,19 @@ public class AtKState : IPlayerState
 
         if (!Input.GetMouseButtonDown(0))
         {
-            AnimatorStateInfo animStateInfo = _playerMove.animator_Player.GetCurrentAnimatorStateInfo(0);
-
-            // Attack 애니메이션이 완료되었는지 확인
-            if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime >= 1.0f)
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {
-                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-                {
-                    _playerMove.ChangeState(new WalkState(_playerMove));
-                }
-                else
-                {
-                    _playerMove.ChangeState(new IdleState(_playerMove));
-                }
+                _playerMove.ChangeState(new WalkState(_playerMove));
             }
+            else
+            {
+                _playerMove.ChangeState(new IdleState(_playerMove));
+
+            }
+
         }
+
+
 
     }
 

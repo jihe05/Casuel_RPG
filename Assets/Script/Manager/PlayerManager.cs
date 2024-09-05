@@ -17,7 +17,6 @@ public class PlayerManager : MonoBehaviour
 
     public float Player_Hp = 10000;
     public float Player_Hg = 20;
-    public float Player_Stamina = 30;
 
     public int Player_Level = 1;
 
@@ -76,16 +75,11 @@ public class PlayerManager : MonoBehaviour
         UImanger.Instance.PlayerSliderbarHp(int.Parse(currentItemHp));
     }
 
-    
+
     public void UseHg(string currentItemHg)
     {
         Player_Hg += int.Parse(currentItemHg);
         UImanger.Instance.PlayerSliderbarHg(int.Parse(currentItemHg));
     }
 
-    public void UseStamina(string currentItemStamina)
-    {
-        Player_Stamina += int.Parse(currentItemStamina);
-        UImanger.Instance.PlayerSliderbarStamina(int.Parse(currentItemStamina));
-    }
 }

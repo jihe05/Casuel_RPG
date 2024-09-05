@@ -8,10 +8,6 @@ public class Item : MonoBehaviour
     [field: SerializeField]
     public ItemSo InventoryItem { get; private set; }
 
-    //개수는 1개
-    [field: SerializeField]
-    public int Quantity { get; set; } = 1;
-
 
     private void Start()
     {

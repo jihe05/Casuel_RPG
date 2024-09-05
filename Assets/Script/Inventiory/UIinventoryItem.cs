@@ -48,7 +48,7 @@ namespace Inventory.UI
         }
 
         //아이템 데이터를 설정하여 슬롯을 채움
-        public void setData(Sprite sprite, int quantity)
+        public void setData(Sprite sprite)
         {
             ItemImage.gameObject.SetActive(true);
             ItemImage.sprite = sprite;

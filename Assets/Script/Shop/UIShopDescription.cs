@@ -35,11 +35,10 @@ public class UIShopDescription : MonoBehaviour
     }
 
     //상점 설명 참조
-    public void SetShopEfficacy(string itemName, string itemHp, string itemHg, string itemStamina)
+    public void SetShopEfficacy(string itemName, string itemHp, string itemHg)
     {
-        Debug.Log(itemHg);
         title.text = itemName;
-        stats.text = $"itemHp : {itemHp} \n itemHg : {itemHg} \n itemStamina : {itemStamina}";
+        stats.text = $"itemHp : {itemHp} \n itemHg : {itemHg}";
 
     }
 }

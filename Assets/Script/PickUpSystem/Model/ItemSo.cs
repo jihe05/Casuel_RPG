@@ -11,10 +11,6 @@ namespace Inventory.Model
     {
         // : 자동구현 속성을 가지게 된 SerializeField
 
-        //아이템 스택 가능 여부
-        [field: SerializeField]
-        public bool IsStackable { get; set; }
-
         //아이템의 고유 ID를 반환 
         public int ID => GetInstanceID();
 
@@ -41,8 +37,6 @@ namespace Inventory.Model
         [field: SerializeField]
         public string ItemHg { get; set; }
 
-        [field: SerializeField]
-        public string ItemStamina { get; set; }
 
 
 

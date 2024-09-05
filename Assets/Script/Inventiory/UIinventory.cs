@@ -1,3 +1,4 @@
+using Inventory.Model;
 using Inventory.UI;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,6 @@ namespace Ivnentory.UI
 
         private string currentItemHp;
         private string currentItemHg;
-        private string currentItemStamina;
 
         //인벤토리 UI항목 리스트
         List<UIinventoryItem> _listOfUIItme = new List<UIinventoryItem>();
@@ -43,6 +43,7 @@ namespace Ivnentory.UI
         //currentlyDraggedItemIndex : 현재 드래그 중인 아이템 인덱스
         private int currentlyDraggedItemIndex = -1;
 
+        int ItemIndex;
 
         private void Start()
         {
@@ -94,11 +95,11 @@ namespace Ivnentory.UI
         }
 
         //아이템 설명 업데이트
-        public void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, string itemHp, string itemHg, string itemStamina)
+        public void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, string itemHp, string itemHg)
         {
             //아이템 설명UI 업데이트
             itemUIDescription.SetDescription(itemImage, name, description);
-            itemUIDescription.SetEfficacy(name, itemHp , itemHg, itemStamina);
+            itemUIDescription.SetEfficacy(name, itemHp , itemHg);
 
             //모든 아이템 테두리 비활성화 메서드 호출
             DeselecAllItes();
@@ -108,7 +109,9 @@ namespace Ivnentory.UI
 
             currentItemHp = itemHp;
             currentItemHg = itemHg;
-            currentItemStamina = itemStamina;
+            ItemIndex = itemIndex;
+
+
 
         }
 
@@ -116,12 +119,12 @@ namespace Ivnentory.UI
 
 
         //인덱스의 위치한 아이템의 데이터를 업데이트 
-        public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
+        public void UpdateData(int itemIndex, Sprite itemImage)
         {
             if (_listOfUIItme.Count > itemIndex)
             {
                 //아이템의 이미지와 수량을 업데이트
-                _listOfUIItme[itemIndex].setData(itemImage, itemQuantity);
+                _listOfUIItme[itemIndex].setData(itemImage);
                
             }
         }
@@ -177,10 +180,10 @@ namespace Ivnentory.UI
         }
 
         //드래그 중인 상태일때 호출
-        public void CreateDraggedItem(Sprite sprite, int quantity)
+        public void CreateDraggedItem(Sprite sprite )
         {
             MousFolloer.Toggle(true);
-            MousFolloer.SetData(sprite, quantity);
+            MousFolloer.SetData(sprite);
         }
 
         //아이템 선택 처리
@@ -230,12 +233,40 @@ namespace Ivnentory.UI
 
         public void OnUseBottonClik()
         {
+            // 현재 선택된 아이템이 있는지 확인
+            if (ItemIndex >= 0 && ItemIndex < _listOfUIItme.Count)
+            {
+                // 아이템을 리스트에서 먼저 가져오기
+                UIinventoryItem itemToRemove = _listOfUIItme[ItemIndex];
+
+                // 게임 오브젝트 인스턴스가 있는지 확인 후 삭제
+                if (itemToRemove != null && itemToRemove.gameObject != null)
+                {
+                    Destroy(itemToRemove.gameObject); // 게임 오브젝트 인스턴스 삭제
+                }
+                else
+                {
+                    Debug.LogError("Item to remove does not have a valid GameObject.");
+                }
+
+                // 리스트에서 해당 아이템 제거
+                _listOfUIItme.RemoveAt(ItemIndex);
+
+                // 현재 아이템에 대한 설명 UI를 초기화
+                itemUIDescription.ResetDescription();
+
+                Debug.Log("Item removed successfully.");
+            }
+            else
+            {
+                Debug.LogError("Invalid item index or no item selected.");
+            }
+
+            // 현재 선택된 아이템의 HP와 HG를 플레이어에게 사용
             PlayerManager.instance.UseHp(string.IsNullOrEmpty(currentItemHp) ? "0" : currentItemHp);
             PlayerManager.instance.UseHg(string.IsNullOrEmpty(currentItemHg) ? "0" : currentItemHg);
-            PlayerManager.instance.UseStamina(string.IsNullOrEmpty(currentItemStamina) ? "0" : currentItemStamina);
         }
 
-         
 
     }
 }

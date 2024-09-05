@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations;
-using UnityEngine.InputSystem.LowLevel;
 
 //보스 STATE(대기, 걷기, 하늘에서 공격,막기, 일반공격, 물기, 맞음, 죽음 )
 enum BossState
@@ -145,7 +141,6 @@ public class Bossmove : MonoBehaviour
 
     private void ChangeState(BossState newState)
     {
-        Debug.Log(((int)newState));
         state = newState;
         animator.SetInteger("state", (int)newState);
     }

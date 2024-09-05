@@ -20,10 +20,10 @@ public class ItemMousFolloer : MonoBehaviour
     }
 
     
-    public void SetData(Sprite sprite, int quantity)
+    public void SetData(Sprite sprite)
     { 
         //아이템 데이터를 설정하여 슬롯을 채우는 함수 호출
-         Item.setData(sprite, quantity);
+         Item.setData(sprite);
     }
 
     private void Update()

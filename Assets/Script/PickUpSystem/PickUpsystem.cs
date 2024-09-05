@@ -7,11 +7,6 @@ public class PickUpsystem : MonoBehaviour
     [field: SerializeField]
     public ItemSo InventoryItem { get; private set; }
 
-    //개수는 1개
-    [field: SerializeField]
-    public int Quantity { get; set; } = 1;
-
-
     private void Start()
     {
         GetComponent<SpriteRenderer>().sprite = InventoryItem.ItemImage;
@@ -22,31 +17,6 @@ public class PickUpsystem : MonoBehaviour
         GetComponent<Collider>().enabled = false;
 
         Destroy(gameObject);
-
-    }
-
-
-    [SerializeField]
-    private InventorySo inventoryData;
-
-    private void OnTriggerEnter(Collider collision)
-    {
-        //받아온 아이템의 ItemSO의 전보를 가져옴
-        Item item = collision.GetComponent<Item>();
-
-        if (item != null)
-        {
-
-            int reminder = inventoryData.AddItem(InventoryItem, Quantity);
-            if (reminder == 0)
-                DestroyItem();
-
-            else
-                Quantity = reminder;
-
-        }
-
-
 
     }
 

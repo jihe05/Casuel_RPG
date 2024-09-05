@@ -12,7 +12,7 @@ public class ShopSo : ScriptableObject
      
     //인벤토리 크기 
     [field: SerializeField]
-    public int Size { get; private set; } = 8;
+    public int Size { get; private set; } = 21;
 
     public event Action<Dictionary<int, ShopInvenItem>> OnShopUpdata;
 
@@ -23,7 +23,7 @@ public class ShopSo : ScriptableObject
 
     public int AddItem(ItemSo item, int coin)
     {
-        for (int i = 0; i < shopitmes.Count; i++)
+        for (int i = -1; i < shopitmes.Count; i++)
         {
             shopitmes[i] = new ShopInvenItem
             {
@@ -33,8 +33,6 @@ public class ShopSo : ScriptableObject
             };
             return coin;
            
-        
-        
         }
         return coin;
 

@@ -1,7 +1,4 @@
-using Inventory.Model;
-using Inventory.UI;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,8 +8,7 @@ public class ShopInven : MonoBehaviour
     private ShopItem ShopItem_Prefab;
 
     [SerializeField]
-    private RectTransform contentPanel;
-
+    private RectTransform ContentPanel;
 
     //인벤토리 UI항목 리스트
     private List<ShopItem> _listOfUIItme = new List<ShopItem>();
@@ -20,16 +16,17 @@ public class ShopInven : MonoBehaviour
     //이벤트(설명 요청시)
     public event Action<int> OnStartEnter;
 
-   
+
+
     //프리팹 생성
     public void InitShopUI()
     {
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 21; i++)
         {
             ShopItem shopItem = Instantiate(ShopItem_Prefab, Vector3.zero, Quaternion.identity);
 
             //생성될 위치 
-            shopItem.transform.SetParent(contentPanel);
+            shopItem.transform.SetParent(ContentPanel);
 
             _listOfUIItme.Add(shopItem);
 
@@ -41,14 +38,15 @@ public class ShopInven : MonoBehaviour
     }
 
 
-    public void UpdateData(KeyValuePair<int, ShopInvenItem> item)
+    public void UpdateData(KeyValuePair<int, ShopInvenItem> shopItem)
     {
-        if (_listOfUIItme.Count > item.Key)
+        if (_listOfUIItme.Count > shopItem.Key)
         {
-            //아이템의 가격과 이미지 업데이트
-            _listOfUIItme[item.Key].SetItemData(item.Value.shopItem, item.Value.coin);
+            // 아이템의 가격과 이미지 업데이트
+            _listOfUIItme[shopItem.Key].SetItemData(shopItem.Value.shopItem, shopItem.Value.coin);
         }
     }
+
 
 
     public void HandleItemSlelction(ShopItem shopItemUI)
@@ -64,7 +62,6 @@ public class ShopInven : MonoBehaviour
     public void Show()
     {
         gameObject.SetActive(true);
-        //ResetSelection();
     }
 
 }

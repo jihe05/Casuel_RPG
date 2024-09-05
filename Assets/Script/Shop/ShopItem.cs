@@ -16,10 +16,6 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     private GameObject DataPanel;
 
-    // 수량은 1개
-    [field: SerializeField]
-    public int Quantity { get; set; } = 1;
-
     public InventorySo inventorySo;
 
     public ItemSo inventoryItem { get; private set; }
@@ -67,7 +63,7 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
 
         if (InventoryController != null)
         {
-            InventoryController.AddItemInventory(inventoryItem, Quantity);
+            InventoryController.AddItemInventory(inventoryItem);
 
         }
         else
@@ -79,7 +75,7 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
     public void Test_OnMouseEnter()
     {
         DataPanel.SetActive(true);
-        UIShopDescription.instance.SetShopEfficacy(inventoryItem.Name, inventoryItem.ItemHp, inventoryItem.ItemHg, inventoryItem.ItemStamina);
+        UIShopDescription.instance.SetShopEfficacy(inventoryItem.Name, inventoryItem.ItemHp, inventoryItem.ItemHg);
     }
     public void Test_OnMouseExit()
     {
