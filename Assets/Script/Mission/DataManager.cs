@@ -17,6 +17,7 @@ public class DataManager : MonoBehaviour
 
     public GameObject missionNews;
 
+
     private void Awake()
     {
         if (instance == null)
@@ -37,7 +38,13 @@ public class DataManager : MonoBehaviour
     public void CompleteMission(int missionId)
     {
         var missionData = DataManager.Instance.dicMissionDatas[missionId];
-        UpdateMissionProgress(missionId, missionData.goal); // 미션 완료
+
+        if (missionData.mission_progress == false)
+        {
+            UpdateMissionProgress(missionId, missionData.goal); // 미션 완료
+            EventManager.Instans.MissionAlarm(missionData.mission_desc);
+            missionData.mission_progress = true;
+        }
     }
 
     private void InitializeDictionaries()
@@ -80,7 +87,7 @@ public class DataManager : MonoBehaviour
                 missionNews.SetActive(true);
 
             }
-
+            
             // UIListItem을 찾아서 업데이트
             var listItem = FindUIListItemByMissionId(missionId);
             if (listItem != null)

@@ -1,6 +1,3 @@
-using Inventory.Model;
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +7,74 @@ public class UImanger : MonoBehaviour
 {
     public static UImanger Instance { get; private set; }
 
+    [Header("-Coin-")]
+    public Text text_playercoin;
+    public int coin = 10000;
+
+    [Header("-Inventory-")]
+    public GameObject itemUseButton;
+
+    [Header("-Camera-")]
+    public Camera selectcamera;
+    public Transform newParent;
+    public GameObject selectCharacterPanel;
+
+    [Header("-changePlayer-")]
+    public GameObject womanPlayer;
+    public GameObject manPlayer;
+
+
+    [Header("-playerHp-")]
+    public Slider player_HpSlidebar;
+    public float playerMaxHp = 10000;
+
+    [Header("-playerHg-")]
+    public Slider player_HgSlider;
+    public float playerMaxHg = 50f;
+
+
+    [Header("-MonsterHp-")]
+    public GameObject monster_HpSlidebarPrefab; // HP 바 프리팹
+    public float monsterMaxHp = 3000;
+  
+
+
+    [Header("-Boss-")]
+    public GameObject bossBa;
+    public Slider boss_HpSlidebar;
+    public float bossMaxHp;
+
+
+    [Header("-SettingButtonActive-")]
+    public GameObject soundPanel;
+    public GameObject graphicspanel;
+    public GameObject controlPanel;
+
+    [Header("-EventButton-")]
+    public GameObject event_Button;
+
+    [Header("LevelUp")]
+    public GameObject levelUP_Text;
+    public Text level;
+
+    [Header("Endingpanel")]
+    public GameObject endingpanel;
+
+    [Header("EventGuidUI")]
+    public GameObject eventGuidUI;
+
+    [Header("Playername")]
+    public Text playername;
+
+    [Header("ShopMasage")]
+    public Text shopMasage;
+
+    [Header("Missionpanel")]
+    public GameObject missionpanel;
+
+    [Header("coinmission")]
+    public Text coinT;
+    int count = 0;
 
     private void Awake()
     {
@@ -17,35 +82,32 @@ public class UImanger : MonoBehaviour
         StartCoin();
         PlayerHpData();
         PlayerHGData();
-        BossBa.gameObject.SetActive(false);
+        bossBa.gameObject.SetActive(false);
 
     }
 
-    //___________________Coin_________________________
-
-
-
-    [Header("-Coin-")]
-    public Text Text_playercoin;
-
-    public int Coin = 10000;
-
+    private void Update()
+    {
+        if (event_Button.activeSelf == true && Input.GetKeyDown(KeyCode.F))
+        {
+            EventManager.Instans.TreasurBox();
+            Invoke("SetActiveBox", 3f);
+        }
+    }
 
     public void StartCoin()
     {
-        Text_playercoin.text = Coin.ToString("N0");
+        text_playercoin.text = coin.ToString("N0");
 
     }
 
     public void BayCoinAndImage(int _coin)
     {
-        if (_coin < Coin && Coin != 0)
+        if (_coin < coin && coin != 0)
         {
-            Coin -= _coin;
-            _coin = Coin;
-            Text_playercoin.text = _coin.ToString("N0");
-
-           
+            coin -= _coin;
+            _coin = coin;
+            text_playercoin.text = _coin.ToString("N0");
 
         }
         else
@@ -57,58 +119,44 @@ public class UImanger : MonoBehaviour
 
     public void CoinAndImage(int _coin)
     {
-        Coin += _coin;
-        Text_playercoin.text = Coin.ToString("N0");
+        coin += _coin;
+        text_playercoin.text = coin.ToString("N0");
 
-        if (Coin > 99999)
+        if (coin >= 15000)
         {
-            Text_playercoin.text = Coin.ToString("99999+");
+            DataManager.Instance.CompleteMission(6);
+        }
+
+        if (coin > 99999)
+        {
+            text_playercoin.text = coin.ToString("99999+");
         }
     }
 
 
-    //_________________________________________________________
 
-
-
-    [Header("-Inventory-")]
-    //_________________________________________________________
-
-    public GameObject ItemUseButton;
 
     public void InventoryOnButtonUseTrue()
     {
-        ItemUseButton.SetActive(true);
+        itemUseButton.SetActive(true);
      
     }
 
     public void InventoryOnButtonUseFalse()
     {
-        
-            ItemUseButton.SetActive(false);
+       itemUseButton.SetActive(false);
 
     }
 
 
 
 
-    //____________________________________________________________
-
-
-
-    [Header("-Camera-")]
-    //_________________________Camera_____________________________
-
-
-    public Camera Selectcamera;
-    public Transform newParent;
-    public GameObject SelectCharacterPanel;
-
+    
     // 호출될 때마다 움직이기 시작
     public void MoveLeft()
     {
         // 현재 위치를 가져옵니다.
-        Vector3 currentPosition = Selectcamera.transform.position;
+        Vector3 currentPosition = selectcamera.transform.position;
 
         if (currentPosition.x <= -64)
             return;
@@ -119,7 +167,7 @@ public class UImanger : MonoBehaviour
 
 
         // 변경된 위치를 설정합니다.
-        Selectcamera.transform.position = currentPosition;
+        selectcamera.transform.position = currentPosition;
 
     }
 
@@ -128,7 +176,7 @@ public class UImanger : MonoBehaviour
     public void MoveRight()
     {
         // 현재 위치를 가져옵니다.
-        Vector3 currentPosition = Selectcamera.transform.position;
+        Vector3 currentPosition = selectcamera.transform.position;
 
         if (currentPosition.x >= -58)
             return;
@@ -137,7 +185,7 @@ public class UImanger : MonoBehaviour
             currentPosition.x += 2f;
 
         // 변경된 위치를 설정합니다.
-        Selectcamera.transform.position = currentPosition;
+        selectcamera.transform.position = currentPosition;
 
 
     }
@@ -147,7 +195,6 @@ public class UImanger : MonoBehaviour
         // 모든 MoveObject 스크립트를 가진 오브젝트를 찾고
         MoveObject[] moveObjects = FindObjectsOfType<MoveObject>();
 
-
         foreach (MoveObject moveObject in moveObjects)
         {
             // 카메라가 오브젝트를 비추고 있는지 확인
@@ -155,8 +202,7 @@ public class UImanger : MonoBehaviour
             {
                 // 오브젝트를 새로운 부모의 자식으로 이동
                 moveObject.MoveToNewParentButton(newParent);
-
-                SelectCharacterPanel.gameObject.SetActive(false);
+                selectCharacterPanel.gameObject.SetActive(false);
 
             }
         }
@@ -165,158 +211,134 @@ public class UImanger : MonoBehaviour
     // 오브젝트가 카메라 뷰포트 내에 있는지 확인
     private bool IsObjectVisible(Transform objectTransform)
     {
-        Vector3 viewportPosition = Selectcamera.WorldToViewportPoint(objectTransform.position);
+        Vector3 viewportPosition = selectcamera.WorldToViewportPoint(objectTransform.position);
         return viewportPosition.x >= 0 && viewportPosition.x <= 1 && viewportPosition.y >= 0 && viewportPosition.y <= 1 && viewportPosition.z > 0;
     }
 
 
-    //____________________________________________________________________
-
-    [Header("-changePlayer-")]
-    //_____________________changePlayer_________________________
-
-    public GameObject WomanPlayer;
-    public GameObject ManPlayer;
 
     public void MomanButton()
     {
-        if (ManPlayer.activeSelf == true)
+        if (manPlayer.activeSelf == true)
         {
-            ManPlayer.SetActive(false);
-            WomanPlayer.SetActive(true);
+            manPlayer.SetActive(false);
+            womanPlayer.SetActive(true);
         }
 
     }
 
     public void ManButton()
     {
-        if (WomanPlayer.activeSelf == true)
+        if (womanPlayer.activeSelf == true)
         {
-            WomanPlayer.SetActive(false);
-            ManPlayer.SetActive(true);
+            womanPlayer.SetActive(false);
+            manPlayer.SetActive(true);
         }
 
     }
 
 
-    //_________________________________________________________
-
-    [Header("-playerHp-")]
-    //__________________playerHp_______________________________
-
-    public Slider Player_HpSlidebar;
-    public float PlayerMaxHp = 10000;
 
     private void PlayerHpData()
     {
-        Player_HpSlidebar.minValue = 0f;
-        Player_HpSlidebar.maxValue = PlayerMaxHp;
-        Player_HpSlidebar.value = PlayerMaxHp;
+        player_HpSlidebar.minValue = 0f;
+        player_HpSlidebar.maxValue = playerMaxHp;
+        player_HpSlidebar.value = playerMaxHp;
 
     }
 
 
     public void PlayerSliderbarDamege(float Ap)
     {
-        Player_HpSlidebar.value -= Ap;
+        player_HpSlidebar.value -= Ap;
 
     }
 
 
-    public void PlayerSliderbarHp(float Hp)
+    public void PlayerSliderbarHp(float playerHp)
     {
-        Player_HpSlidebar.value += Hp;
+        player_HpSlidebar.value = playerHp;
 
     }
 
-    [Header("-playerHg-")]
-    //__________________playerHg_______________________________
-    public Slider Player_HgSlider;
-    public float PlayerMaxHg = 50f;
+    public void PlayerSliderbarAddHp(float playerHp)
+    {
+        player_HpSlidebar.value += playerHp;
+
+    }
+
 
     private void PlayerHGData()
     {
-        Player_HgSlider.minValue = 0f;
-        Player_HgSlider.maxValue = PlayerMaxHg;
-        Player_HgSlider.value = PlayerMaxHg;
+        player_HgSlider.minValue = 0f;
+        player_HgSlider.maxValue = playerMaxHg;
+        player_HgSlider.value = playerMaxHg;
 
     }
 
     public void PlayerSliderbarHgUse(float Hg)
     {
         
-        Player_HgSlider.value -= Hg;
+        player_HgSlider.value -= Hg;
     }
 
   
     public void PlayerSliderbarHg(int Hg)
     {
-        Player_HgSlider.value += Hg;
+        player_HgSlider.value += Hg;
     }
 
 
-
-
- 
-
-    //_________________________________________________________
-
-    [Header("-MonsterHp-")]
-    //__________________MonsterHp_______________________________
-
-    public GameObject Monster_HpSlidebarPrefab; // HP 바 프리팹
-
-    public float MonsterMaxHp = 100;
 
     public void MonsterHpData(GameObject monster)
     {
-        GameObject hpBarInstance = Instantiate(Monster_HpSlidebarPrefab, monster.transform);
+        GameObject hpBarInstance = Instantiate(monster_HpSlidebarPrefab, monster.transform);
         Slider slider = hpBarInstance.GetComponentInChildren<Slider>();
+
         slider.minValue = 0f;
-        slider.maxValue = MonsterMaxHp;
-        slider.value = MonsterMaxHp;
-        hpBarInstance.transform.localPosition = new Vector3(0, 1.0f, 0); // 적절한 높이로 설정
+        slider.maxValue = monsterMaxHp;
+        slider.value = monsterMaxHp;
+        hpBarInstance.transform.localPosition = new Vector3(0, 1.0f, 0);  //높이 설정
     }
 
-    public void MonsterSliderbar(Slider slider, float Ap)
+    public void MonsterSliderbar(Slider slider, float monsterHP)
     {
-        slider.value -= Ap;
+        slider.value = monsterHP;
     }
 
-    //_________________________________________________________
 
-    [Header("-Boss-")]
-    //__________________MonsterHp_______________________________
-
-    public GameObject BossBa;
-    public Slider Boss_HpSlidebar;
-    public float BossMaxHp = 100000;
-
-    public void SowHpBa()
+    public void ShowHpBa()
     {
-        BossBa.gameObject.SetActive(true);
+        bossBa.gameObject.SetActive(true);
     }
+
+    public void HideHpBa()
+    {
+        bossBa.gameObject.SetActive(false);
+    }
+
+
+    public void HpBa()
+    {
+        bossBa.gameObject.SetActive(true);
+    }
+
 
     public void BossSliderbar(float BossMaxHp)
     {
-        Boss_HpSlidebar.minValue = 0f;
-        Boss_HpSlidebar.maxValue = BossMaxHp;
-        Boss_HpSlidebar.value = BossMaxHp;
+        bossMaxHp = BossMaxHp;
+        boss_HpSlidebar.minValue = 0f;
+        boss_HpSlidebar.maxValue = bossMaxHp;
+        boss_HpSlidebar.value = bossMaxHp;
 
 
     }
 
-    public void BossSligerBarHp(float Ap)
+    public void BossSligerBarHp(float BoosAp)
     {
-        Boss_HpSlidebar.value -= Ap;
+        boss_HpSlidebar.value = BoosAp;
 
     }
-
-    //_________________________________________________________
-
-
-
-    //__________________Active_______________________________
 
     public void OnClickButtonActive(GameObject targetObject)
     {
@@ -331,15 +353,6 @@ public class UImanger : MonoBehaviour
         }
     }
 
-    //_________________________________________________________
-
-
-    [Header("-SettingButtonActive-")]
-    //__________________SettingButtonActive_______________________________
-
-    public GameObject SoundPanel;
-    public GameObject Graphicspanel;
-    public GameObject ControlPanel;
 
 
     public void OnClickSettingButton(GameObject butonPanle)
@@ -352,73 +365,66 @@ public class UImanger : MonoBehaviour
         else
         {
             //아니면 다 비활성화 
-            SoundPanel.SetActive(false);
-            Graphicspanel.SetActive(false);
-            ControlPanel.SetActive(false);
+            soundPanel.SetActive(false);
+            graphicspanel.SetActive(false);
+            controlPanel.SetActive(false);
 
             butonPanle.SetActive(true);
         }
 
     }
 
-    //_________________________________________________________
-
-    [Header("-EventButton-")]
-    //__________________EventButton_______________________________
-
-    public GameObject Event_Button;
+    
 
     //버튼 활성화 
     public void EventButton()
     {
-        Event_Button.SetActive(true);
-        Invoke("SetActiveBox", 5f);
+        event_Button.SetActive(true);
+
+        
+       
     }
 
     public void SetActiveBox()
     {
-        Event_Button.SetActive(false);
+        event_Button.SetActive(false);
         EventManager.Instans.TreasurBoxSetActive();
     }
 
-    //_________________________________________________________
 
-    [Header("LevelUp")]
-    //__________________LevelUp_______________________________
-
-    public GameObject LevelUP_Text;
-    public Text Level;
+    
 
     public void PlayerlevelUp(int level)
     {
-        Debug.Log("활성화 ");
-        LevelUP_Text.SetActive(true);
-        Level.text = level.ToString();
+        levelUP_Text.SetActive(true);
+        this.level.text = level.ToString();
+
+        Invoke("PlayerlevelUpfalse", 1);
+    }
+
+    public void PlayerlevelUpfalse()
+    {
+        levelUP_Text.SetActive(false);
+
     }
 
 
-    [Header("Endingpanel")]
-    //_________________________________________________________
 
-    public GameObject Endingpanel;
 
     public void EndingpaenlActive()
     {
-        Endingpanel.SetActive(true);
+        endingpanel.SetActive(true);
 
 
     }
 
-    [Header("EventGuidUI")]
-    //_________________________________________________________
-
-    public GameObject EventGuidUI;
+ 
 
     public void EventGuidCollider()
     {
-        if (EventGuidUI.activeSelf == false)
+        if (eventGuidUI.activeSelf == false)
         {
-            EventGuidUI.SetActive(true);
+            eventGuidUI.SetActive(true);
 
         }
         else
@@ -429,23 +435,31 @@ public class UImanger : MonoBehaviour
 
     public void DestroyUI()
     {
-        EventGuidUI.SetActive(false);
+        eventGuidUI.SetActive(false);
 
     }
-
-
-    [Header("Playername")]
-    //__________PlayerName___________________
-
-    public Text Playername;
 
     public void PlyerName(string id)
     {
-        Playername.text = id;
+        playername.text = id;
     }
 
+    public void ShopMasageTrue()
+    { 
+       shopMasage.enabled = true;
+        Invoke(nameof(ShopMasageFalse), 0.5f);
+    }
 
-    //__________ItemAdd______________________
+    public void ShopMasageFalse()
+    {
+        
+        shopMasage.enabled = false;
+    }
+
+    public void MissionActive()
+    {
+        missionpanel.SetActive(false);
+    }
 
     public void Eixt_OnClickButton()
     {    
@@ -456,6 +470,14 @@ public class UImanger : MonoBehaviour
       #endif
     }
 
-   
+    public void CoinCount()
+    {
+        count ++;
+
+        coinT.text = count.ToString();
+
+
+    }
+
 }
 

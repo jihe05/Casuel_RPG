@@ -18,15 +18,14 @@ public class Tutorial : MonoBehaviour
     private bool skipTyping;
     private Coroutine typingCoroutine;
 
-    public Collider King_Collider;
-    public Collider Guide_Collider;
+    public Collider king_Collider;
+    public Collider guide_Collider;
 
     public Sprite[] sprites;
 
     private void Awake()
-    {
+    { 
         characterSprites = new Dictionary<string, Sprite>();
-      
     }
 
     private void OnEnable()
@@ -39,7 +38,6 @@ public class Tutorial : MonoBehaviour
         if (!characterSprites.ContainsKey(characterName))
         {
             characterSprites.Add(characterName, sprite);
-
         }
         else
         {
@@ -47,7 +45,6 @@ public class Tutorial : MonoBehaviour
         }
 
     }
-
 
     //타이핑 Text 코루틴
     IEnumerator Typing(string talk , string name)
@@ -60,7 +57,7 @@ public class Tutorial : MonoBehaviour
         SetCharacterImage("왕", sprites[1]);
         SetCharacterImage("여왕", sprites[2]);
         SetCharacterImage("용사", sprites[3]);
-        
+
 
         if (characterSprites.TryGetValue(name, out Sprite sprite))
         {
@@ -104,22 +101,20 @@ public class Tutorial : MonoBehaviour
         if (talkNum == dialogues.Length)
         {
             EndTalk();
-            King_Collider.enabled = false;
+            king_Collider.enabled = false;
             DataManager.Instance.CompleteMission(1);
             return;
         }
         if (talkNum == 3) // 안내자와의 대화가 끝나는 조건
         {
-           
             EndTalk();
-            Guide_Collider.enabled = false;
+            guide_Collider.enabled = false;
             return;
         }
+       
         //다음 대사 타이핑
         typingCoroutine =StartCoroutine(Typing(dialogues[talkNum], names[talkNum]));
     }
-
-    
 
     //대화 종료 
     private void EndTalk()

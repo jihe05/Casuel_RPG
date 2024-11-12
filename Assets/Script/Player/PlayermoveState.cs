@@ -30,6 +30,7 @@ public class IdleState : IPlayerState
         _playerMove.animator_Player.SetBool("isMove", false);
         _playerMove.animator_Player.SetFloat("MoveX", 0);
         _playerMove.animator_Player.SetFloat("MoveY", 0);
+        _playerMove. animator_Player.SetBool("LevelUp", false);
     }
 
 
@@ -212,8 +213,6 @@ public class AtKState : IPlayerState
         _playerMove.particle.Play();
     }
 
-
-
     public void ExecuteOnUpdate()
     {
         _playerMove.PlayerMove(Vector3.zero);
@@ -261,20 +260,16 @@ public class LevelUP : IPlayerState
     }
     public void EnterState()
     {
-        _playerMove.animator_Player.Play("LevelUp");
+       
     }
 
 
     public void ExecuteOnUpdate()
     {
-        Debug.Log("중력 조절");
         _playerMove.PlayerMove(Vector3.zero);
         _playerMove.gravity = 1;
-
-        if (_playerMove.characterController.isGrounded)
-        {
-            _playerMove.ChangeState(new IdleState(_playerMove));
-        }
+        _playerMove.animator_Player.Play("LevelUp");
+        _playerMove.animator_Player.SetBool("LevelUp", true);
 
     }
 
@@ -282,7 +277,7 @@ public class LevelUP : IPlayerState
     {
         Debug.Log("끝");
 
-
+        _playerMove.animator_Player.Play("Defend");
     }
 
 

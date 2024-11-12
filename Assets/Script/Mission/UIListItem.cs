@@ -9,9 +9,9 @@ public class UIListItem : MonoBehaviour
     public Image imageName; // 미션아이콘
     public Text textName; // 미션 설명
     public Slider missionProgressSlider;
-    public Button completButton;
-    public Image checkImage;
-    public Image dontImage;
+    public GameObject clear;
+    public GameObject cliaim;
+    public GameObject dont;
 
     public MissionInfo info; // 미션 정보
 
@@ -55,13 +55,12 @@ public class UIListItem : MonoBehaviour
 
         if (info.count >= missionProgressSlider.maxValue)
         {
-
-            dontImage.gameObject.SetActive(false);
-            completButton.gameObject.SetActive(true);
+            dont.SetActive(false);
+            cliaim.SetActive(true);
         }
         else
         {
-            completButton.gameObject.SetActive(false);
+            cliaim.SetActive(false);
         }
     }
 
@@ -70,13 +69,13 @@ public class UIListItem : MonoBehaviour
         // 미션 완료한 경우
         if (info.state == 1)
         {
-            checkImage.gameObject.SetActive(true);
-            completButton.gameObject.SetActive(false);
+            clear.SetActive(true);
+            cliaim.SetActive(false);
             PlayerManager.instance.PlayerLevelUpUpdate();
         }
         else
         {
-            checkImage.gameObject.SetActive(false);
+            clear.SetActive(false);
         }
     }
 
@@ -86,8 +85,9 @@ public class UIListItem : MonoBehaviour
         info.state = 1;
         ApplyMissionReward();
         DataManager.Instance.missionNews.SetActive(false);
+        UImanger.Instance.MissionActive();
         ClickButton();
-
+      
     }
 
     public void ApplyMissionReward()

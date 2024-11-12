@@ -44,12 +44,13 @@ namespace Inventory.Model
         }
 
         // ItemSo를 추가하는 메서드
-        public int AddItem(ItemSo item)
+        public int AddItem(ItemSo item , int coin)
         {
             for (int i = 0; i < inventoryItems.Count; i++)
             {
                 if (inventoryItems[i].IsEmpty)
                 {
+                    UImanger.Instance.BayCoinAndImage(coin);
                     inventoryItems[i] = new InventoryItem
                     {
                         item = item,
@@ -57,7 +58,9 @@ namespace Inventory.Model
                     InformAboutChange();
                     return i; // 아이템이 추가된 인덱스를 반환
                 }
+                
             }
+            UImanger.Instance.ShopMasageTrue();
             return -1; // 인벤토리가 가득 찼을 경우 -1 반환
         }
 
@@ -92,6 +95,25 @@ namespace Inventory.Model
             // 인벤토리 상태가 변경되었음을 알림
             InformAboutChange();
         }
+
+        public void Removeitem(int itemIndex)
+        {
+            if (inventoryItems.Count > itemIndex)
+            {
+                if (inventoryItems[itemIndex].IsEmpty)
+                    return;
+
+                inventoryItems[itemIndex] = InventoryItem.GetEmptyItem();
+
+                InformAboutChange();
+            }
+            else
+            {
+                Debug.LogError("아이템 인덱스가 유효하지 않습니다.");
+            }
+
+        }
+
 
         // 인벤토리 상태 업데이트를 알리는 메서드
         private void InformAboutChange()

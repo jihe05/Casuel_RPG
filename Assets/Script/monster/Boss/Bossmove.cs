@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -26,17 +27,19 @@ public class Bossmove : MonoBehaviour
 
 
     [Header("Range")]
-    public float closeAttackRange = 15f;
-    public float mediumAttackRange = 15f;
-    public float attackInterval = 5f;
-    public float Hp = 10000f;
-    public float Ap = 500;
+    public float closeAttackRange;
+    public float mediumAttackRange;
+    public float attackInterval;
+    public float Hp;
+    public float Ap;
     private float nextAttackTime;
     public ParticleSystem Fire;
     AnimatorClipInfo[] clipinfo;
 
     BossState state;
     float nextAttaclTime;
+
+    [SerializeField] GameObject timeline;
 
     private void Awake()
     {
@@ -49,8 +52,13 @@ public class Bossmove : MonoBehaviour
         animator = GetComponent<Animator>();
         navMesh = GetComponent<NavMeshAgent>();
 
-
         Instance = this;
+
+         closeAttackRange = 15f;
+         mediumAttackRange = 15f;
+         attackInterval = 5f;
+         Hp = 10000f;
+         Ap = 500;
 
     }
 
@@ -115,10 +123,11 @@ public class Bossmove : MonoBehaviour
             return;
 
 
-        if (Hp == 0 && state != BossState.DIE)
+        if (Hp <= 0 && state != BossState.DIE)
         {
             ChangeState(BossState.DIE);
         }
+
 
         if (Input.GetKey(KeyCode.Q))
         {
@@ -141,7 +150,8 @@ public class Bossmove : MonoBehaviour
 
     private void ChangeState(BossState newState)
     {
-        state = newState;
+        Debug.Log(newState);
+             state = newState;
         animator.SetInteger("state", (int)newState);
     }
 
@@ -150,6 +160,7 @@ public class Bossmove : MonoBehaviour
         //플레이어가 멀리 떨어지면 WAlk
         if (distanceToPlayer < mediumAttackRange)
         {
+            Debug.Log("멀리 떨어짐");
             ChangeState(BossState.WALK);
         }
     }
@@ -177,7 +188,7 @@ public class Bossmove : MonoBehaviour
         {
             // 가까운 거리일 때 Claw Attack 또는 다른 공격 확률적으로 선택
             int randomValue = Random.Range(0, 100);
-            if (randomValue < 60) // 70% 확률로 Claw Attack
+            if (randomValue < 60) // 60% 확률로 Claw Attack
             {
                 ChangeState(BossState.CLAWATTACK);
             }
@@ -217,11 +228,15 @@ public class Bossmove : MonoBehaviour
         }
     }
 
+    public void StartFlyAttack()
+    {
+        nextAttackTime = Time.time + 0.3f;
 
+    }
 
     public void FlyAttackState()
     {
-
+        
         if (Time.time >= nextAttackTime)
         {
             nextAttackTime = Time.time + attackInterval;
@@ -269,34 +284,44 @@ public class Bossmove : MonoBehaviour
 
     }
 
-
     public void DieState()
     {
-        Debug.Log("죽음");
-        ChangeState(BossState.DIE);
-        Invoke("DieStatefalse", 2);
+        Debug.Log("보스죽음");
+        Invoke("DieStatefalse", 5);
 
     }
+
     public void DieStatefalse()
     {
-        DataManager.Instance.CompleteMission(8);
+        DataManager.Instance.CompleteMission(10);
         gameObject.SetActive(false);
+        UImanger.Instance.HideHpBa();
         UImanger.Instance.EndingpaenlActive();
     }
 
 
     public void OnTriggerStay(Collider other)
     {
-        if (!other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            return;
+            Debug.Log("맞음");
+            Target = other.transform;
+            navMesh.SetDestination(Target.position);
+            UImanger.Instance.ShowHpBa();
+
+            if (state == BossState.FLYATTACK)
+            {
+                return;
+            }
+            else
+            {
+                ChangeState(BossState.WALK);
+            }
+           
         }
         else
         {
-            Target = other.transform;
-            navMesh.SetDestination(Target.position);
-            UImanger.Instance.SowHpBa();
-            ChangeState(BossState.WALK);
+            return;
         }
     }
 
@@ -305,16 +330,13 @@ public class Bossmove : MonoBehaviour
        
         Hp -= damage;
 
-        Debug.Log("들어옴 : " + Hp);
-
-        if (Hp <= 0)
-        {
-            ChangeState(BossState.DIE);
-        }
+       
         // 체력이 절반 이하일 때 Fly Attack 실행
-        else if (Hp <= 500)
+        if (Hp <= 2000)
         {
+             StartFlyAttack();
             Debug.Log("날아");
+            animator.Play("Fly");
             ChangeState(BossState.FLYATTACK);
         }
         else
@@ -333,9 +355,16 @@ public class Bossmove : MonoBehaviour
 
     }
 
-
+    public void TimeLine()
+    {
+        timeline.SetActive(true);
+        
+    }
 
 
 
 
 }
+
+
+

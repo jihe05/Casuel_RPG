@@ -11,7 +11,12 @@ public class MissionData : ScriptableObject
     public int reward_amount; // 보상 수량
     public int btn_state; // 버튼 상태
     public string sprite_name; // 스프라이트 이름
-    
+    public bool mission_progress = false; //미션 진행 상태 
+    private void OnEnable()
+    {
+        mission_progress = false; // 미션 진행 상태 초기화
+    }
+
 }
 
 

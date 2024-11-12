@@ -58,12 +58,12 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
     {
         int coin = int.Parse(ItemPrice.text);
 
-        UImanger.Instance.BayCoinAndImage(coin);
+      
 
 
         if (InventoryController != null)
         {
-            InventoryController.AddItemInventory(inventoryItem);
+            InventoryController.AddItemInventory(inventoryItem , coin);
 
         }
         else

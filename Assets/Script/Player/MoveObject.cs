@@ -8,25 +8,18 @@ public class MoveObject : MonoBehaviour
     {
         // 부모를 변경합니다.
         transform.SetParent(newParent);
-
         Move move = GetComponentInParent<Move>();
 
-      
         transform.localScale = Vector3.one;
         transform.localPosition = Vector3.zero;
 
-     
         if (move != null)                                                                                                           
         {
             move.OnAnimatorPlayer(gameObject);
             newParent.GetComponent<Move>().enabled = true;
-         
         }
         else
-        {
-            Debug.Log("Move component is not found on the object.");
-        }
-
+            Debug.Log("오브젝트를 찾을 수 없습니다.");
     }
 
 

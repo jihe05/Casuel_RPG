@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,7 +23,7 @@ public class Move : MonoBehaviour
 
     public ParticleSystem particle;
 
-    Rigidbody Rgb;
+    [HideInInspector]  public Rigidbody Rgb;
 
     public AudioSource soldSound;
 
@@ -134,7 +135,7 @@ public class Move : MonoBehaviour
 
     public void LevelUpEnd()
     {
-
+        Debug.Log("IdleState");
         gravity = -23;
         ChangeState(new IdleState(this));
 
@@ -144,13 +145,13 @@ public class Move : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-
             if (collision.collider.CompareTag("Monster"))
             {
                 PlayerManager.instance.PlayerMonsterTrgger();
             }
             if (collision.collider.CompareTag("Boss"))
             {
+                Debug.Log("보스 때리기 : OnCollisionStay");
                 PlayerManager.instance.PlayerBossTrgger();
             }
 
@@ -177,18 +178,22 @@ public class Move : MonoBehaviour
             characterController.enabled = false;
             SceneManager.LoadScene("Bosmap");
         }
-        if (Input.GetMouseButtonDown(0))
+        if (other.CompareTag("Boss") && Input.GetMouseButtonDown(0))
         {
-            //보스를 때렸을때
-            if (other.CompareTag("Boss"))
-            {
+                Debug.Log("보스 때리기 : OnTriggerEnter");
                 PlayerManager.instance.PlayerBossTrgger();
-            }
         }
         if (other.CompareTag("Guide"))
         {
+          
             EventManager.Instans.TalkePanelActive();
             EventManager.Instans.ColiderFalse();
+
+        }
+        if (other.CompareTag("Princess"))
+        {
+            EventManager.Instans.Princes();
+
         }
         if (other.CompareTag("King"))
         {
@@ -199,12 +204,25 @@ public class Move : MonoBehaviour
             Bossmove.Instance.PlayerAttack();
         }
        
-        if (other.gameObject.CompareTag("EnventBox"))
+        if (other.CompareTag("EnventBox"))
         {
 
             UImanger.Instance.EventButton();
         }
 
+        if (other.CompareTag("Ball"))
+        {
+            DataManager.Instance.CompleteMission(9);
+        }
+
+        if (other.CompareTag("Timeline"))
+        {
+            EventManager.Instans.BosClider();
+        }
+        else
+        {
+            return;
+        }
 
 
     }

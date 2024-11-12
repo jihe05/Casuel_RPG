@@ -22,6 +22,8 @@ namespace Ivnentory
         public List<InventoryItem> InventoryItems = new List<InventoryItem>();
         public List<ShopInvenItem> ShopItems = new List<ShopInvenItem>();
 
+        bool shopOpen = false;
+
 
         private void Start()
         {
@@ -83,7 +85,7 @@ namespace Ivnentory
                 ShopUI.UpdateData(item);
             }
         }
-
+        //dfsf
 
         //UI를 준비하고 이벤트 핸들러 설정하는 메서드
         private void PrepareUI()
@@ -96,7 +98,6 @@ namespace Ivnentory
             InventoryUI.OnSwapItems += HandleSwapItems;
             InventoryUI.OnStartDragging += HandleDragging;
             InventoryUI.OnItemactionRequsted += HandleItemActionRequset;
-
             ShopUI.OnStartEnter += HandleShopEnter;
         }
 
@@ -162,7 +163,6 @@ namespace Ivnentory
 
         public void Update()
         {
-            
             if (Input.GetKeyDown(KeyCode.I))
             {
                 InventoyrOnAndOf();
@@ -213,9 +213,9 @@ namespace Ivnentory
         
         }
 
-        public void AddItemInventory(ItemSo item)
+        public void AddItemInventory(ItemSo item , int coin)
         {
-            int reminder = InventoryData.AddItem(item);
+            int reminder = InventoryData.AddItem(item , coin);
 
             if (reminder > 0)
             {
@@ -227,24 +227,37 @@ namespace Ivnentory
 
         public void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("WeaPon"))
+            if (other.CompareTag("WeaPon") && !shopOpen)
             {
-               ShopInvenOnAndOf();
+                shopOpen = true;
+                ShopInvenOnAndOf();
+                
             }
-
-            if (other.CompareTag("Food"))
+            else if (other.CompareTag("Food") && !shopOpen)
             {
+                shopOpen = true;
                 ShopInvenOnAndOf();
             }
-
-
-            if (other.CompareTag("Potion"))
+            else if (other.CompareTag("Potion") && !shopOpen)
             {
-               ShopInvenOnAndOf();
+                shopOpen = true;
+                ShopInvenOnAndOf();
+            }
+            else
+            {
+                shopOpen = false;
             }
 
 
         }
+
+        //버튼 클릭
+        public void OnUseBottonClik()
+        {
+            InventoryUI.UseBottonClik(InventoryData);
+
+        }
+
 
     }
 }

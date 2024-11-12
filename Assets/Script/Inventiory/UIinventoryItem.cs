@@ -1,3 +1,4 @@
+using Inventory.Model;
 using System;
 using TMPro;
 using UnityEngine;
@@ -47,14 +48,29 @@ namespace Inventory.UI
             empty = true;
         }
 
-        //아이템 데이터를 설정하여 슬롯을 채움
-        public void setData(Sprite sprite)
+        public void DestroyData()
         {
+            if (ItemImage != null)
+            {
+                ItemImage.gameObject.SetActive(false);
+                ItemImage.sprite = null;
+
+            }
+
+
+            empty = true;
+
+            
+        }
+
+         //아이템 데이터를 설정하여 슬롯을 채움
+         public void setData(Sprite sprite)
+         {
             ItemImage.gameObject.SetActive(true);
             ItemImage.sprite = sprite;
             empty = false;
            
-        }
+         }
 
 
         //아이템 테투리를 비활성화
@@ -93,7 +109,6 @@ namespace Inventory.UI
         //드래그 시작
         public void OnBeginDrag(PointerEventData eventData)
         {
-            Debug.Log("4" + ItemImage);
             if (empty)
                 return;
             //비어있지 않은 경우에만 이벤트 실행

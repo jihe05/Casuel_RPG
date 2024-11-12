@@ -20,8 +20,8 @@ public class Monstermove : MonoBehaviour
     public GameObject Particle;
     private Slider HpSlider;
 
-    public float MonsterHP = 100;
-    public float MonsterAp = 100;
+    public float MonsterHP;
+    public float MonsterAp;
     public float lostDistance = 0;
 
 
@@ -31,16 +31,23 @@ public class Monstermove : MonoBehaviour
     {
         nmAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+       
     }
 
     private void Start()
     {
+       MonsterHP = 3000;
+       MonsterAp = 200;
+
         state = State.IDLE;
         StartCoroutine(StateMachine());
 
         // HP 바 생성 및 초기화
         UImanger.Instance.MonsterHpData(gameObject);
+
         HpSlider = GetComponentInChildren<Slider>();
+      
+
     }
 
     IEnumerator StateMachine()
@@ -168,7 +175,7 @@ public class Monstermove : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject); // 몬스터 삭제
         UImanger.Instance.CoinAndImage(500);
-        DataManager.Instance.CompleteMission(6);
+        DataManager.Instance.CompleteMission(3);
         Destroy(transform.gameObject);//Hp바 삭제
 
     }
@@ -219,7 +226,7 @@ public class Monstermove : MonoBehaviour
         MonsterHP -= Ap;
         if (HpSlider != null)
         {
-            UImanger.Instance.MonsterSliderbar(HpSlider, Ap); // HP 바 업데이트
+            UImanger.Instance.MonsterSliderbar(HpSlider, MonsterHP); // HP 바 업데이트
         }
     }
 

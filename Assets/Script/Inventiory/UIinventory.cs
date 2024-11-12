@@ -85,11 +85,12 @@ namespace Ivnentory.UI
         //아이템 초기화 
         internal void ResetAllItem()
         {
+            Debug.Log("item");
             //모든 아이템의 
             foreach (var item in _listOfUIItme)
             {
                 item.ResetData();//데이터 초기화
-                Debug.Log(item);
+               
                 item.Deselect();//테두리 비활성화 
             }
         }
@@ -171,8 +172,10 @@ namespace Ivnentory.UI
         {
             //IndexOf : 처음으로 나타나는 인덱스 반환
             int index = _listOfUIItme.IndexOf(inventoryItemUI);
+
             if (index == -1)
                 return;
+
             currentlyDraggedItemIndex = index;
             //아이템 선택 처리 호출
             HandleItemSelection(inventoryItemUI);
@@ -231,40 +234,42 @@ namespace Ivnentory.UI
             ResetDraggedItem();//드래그 종료 메서드
         }
 
-        public void OnUseBottonClik()
+        public void UseBottonClik(InventorySo InventoryData)
         {
             // 현재 선택된 아이템이 있는지 확인
             if (ItemIndex >= 0 && ItemIndex < _listOfUIItme.Count)
             {
-                // 아이템을 리스트에서 먼저 가져오기
-                UIinventoryItem itemToRemove = _listOfUIItme[ItemIndex];
+                // 아이템을 리스트에서 가져오기
+                UIinventoryItem selectedItem = _listOfUIItme[ItemIndex];
 
-                // 게임 오브젝트 인스턴스가 있는지 확인 후 삭제
-                if (itemToRemove != null && itemToRemove.gameObject != null)
+                if (selectedItem != null)
                 {
-                    Destroy(itemToRemove.gameObject); // 게임 오브젝트 인스턴스 삭제
+                    DataManager.Instance.CompleteMission(2);
+                    Debug.Log("아이템을 사용하여 데이터를 초기화합니다.");
+
+                    // HP와 HG 사용
+                    PlayerManager.instance.UseHp(string.IsNullOrEmpty(currentItemHp) ? "0" : currentItemHp);
+                    PlayerManager.instance.UseHg(string.IsNullOrEmpty(currentItemHg) ? "0" : currentItemHg);
+
+                    // 현재 아이템 설명 UI 초기화
+                    itemUIDescription.ResetDescription();
+
+                    // 아이템 인덱스를 기준으로 인벤토리에서 제거
+                    InventoryData.Removeitem(ItemIndex);
+
+                    // UI에서도 아이템 제거
+                    selectedItem.DestroyData();
+
+                    // 선택된 아이템 인덱스를 초기화 (더 이상 선택된 아이템이 없음)
+                    ItemIndex = -1;
+
+                    Debug.Log("아이템이 성공적으로 사용되고 제거되었습니다.");
                 }
-                else
-                {
-                    Debug.LogError("Item to remove does not have a valid GameObject.");
-                }
-
-                // 리스트에서 해당 아이템 제거
-                _listOfUIItme.RemoveAt(ItemIndex);
-
-                // 현재 아이템에 대한 설명 UI를 초기화
-                itemUIDescription.ResetDescription();
-
-                Debug.Log("Item removed successfully.");
             }
             else
             {
-                Debug.LogError("Invalid item index or no item selected.");
+                Debug.LogError("선택된 아이템이 없거나 인덱스가 유효하지 않습니다.");
             }
-
-            // 현재 선택된 아이템의 HP와 HG를 플레이어에게 사용
-            PlayerManager.instance.UseHp(string.IsNullOrEmpty(currentItemHp) ? "0" : currentItemHp);
-            PlayerManager.instance.UseHg(string.IsNullOrEmpty(currentItemHg) ? "0" : currentItemHg);
         }
 
 
