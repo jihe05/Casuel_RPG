@@ -32,16 +32,23 @@ public class EventManager : MonoBehaviour
     {
         if (monster == null)
         {
-            if (coinPnaleEvent.activeSelf==false)
+            if (coinPnaleEvent == null)
             {
                 return;
             }
-            else
+            if (coinPnaleEvent.activeSelf == false)
+            {
+                return;
+            }
+            else if (coinPnaleEvent.activeSelf == true)
             {
                 coinEvent.SetActive(true);
                 coinPnaleEvent.SetActive(true);
                 Coinmission();
             }
+          
+
+           
             
         }
     }
