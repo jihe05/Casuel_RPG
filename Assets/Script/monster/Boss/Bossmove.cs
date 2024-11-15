@@ -20,11 +20,11 @@ public class Bossmove : MonoBehaviour
 
     [Header("Range")]
     [SerializeField] private Transform Target;
-    [SerializeField] private NavMeshAgent navMesh;
+    [SerializeField] private NavMeshAgent nmAgent;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject Fire;
     [SerializeField] private Slider HpSlider;
-    [SerializeField] private GameObject timeline;
+
 
     [SerializeField] private float Hp;
     [SerializeField] private float Ap;
@@ -43,7 +43,7 @@ public class Bossmove : MonoBehaviour
             return;
         }
         Fire.gameObject.SetActive(false);
-        navMesh = GetComponent<NavMeshAgent>();
+        nmAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
 
         Instance = this;
@@ -111,7 +111,7 @@ public class Bossmove : MonoBehaviour
 
         if (Target != null)
         {
-            navMesh.SetDestination(Target.position);
+            nmAgent.SetDestination(Target.position);
             distanceToPlayer = Vector3.Distance(transform.position, Target.position);
 
             if (distanceToPlayer <= closeAttackRange)
@@ -184,7 +184,7 @@ public class Bossmove : MonoBehaviour
         UImanger.Instance.EndingpaenlActive();
     }
 
-    public void PerformAttack()
+    void PerformAttack()
     {
         if (distanceToPlayer <= closeAttackRange)
         {
@@ -225,7 +225,7 @@ public class Bossmove : MonoBehaviour
         if (Target == null) return;
 
         // 목표를 계속 추적
-        navMesh.SetDestination(Target.position);
+        nmAgent.SetDestination(Target.position);
 
         if (Hp <= 0 && state != BossState.DIE)
         {
@@ -240,11 +240,5 @@ public class Bossmove : MonoBehaviour
         {
             PlayerManager.instance.PlayerUpdateHp(Ap);
         }
-    }
-
-    public void TimeLine()
-    {
-        timeline.SetActive(true);
-
     }
 }
