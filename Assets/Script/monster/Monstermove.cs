@@ -186,6 +186,8 @@ public class Monstermove : MonoBehaviour
         state = newState;
     }
 
+
+
     public void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Player"))

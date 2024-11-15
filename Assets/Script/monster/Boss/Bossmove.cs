@@ -1,8 +1,8 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
-//보스 STATE(대기, 걷기, 하늘에서 공격,막기, 일반공격, 물기, 맞음, 죽음 )
 enum BossState
 {
     IDLE,
@@ -12,34 +12,29 @@ enum BossState
     BASICATTACK,
     DEFEND,
     DIE
-
 }
 
 public class Bossmove : MonoBehaviour
 {
     public static Bossmove Instance;
 
-    Animator animator;
-    NavMeshAgent navMesh;
-    Move player;
-    Transform Target;
-    float distanceToPlayer;
-
-
     [Header("Range")]
-    public float closeAttackRange;
-    public float mediumAttackRange;
-    public float attackInterval;
-    public float Hp;
-    public float Ap;
+    [SerializeField] private Transform Target;
+    [SerializeField] private NavMeshAgent navMesh;
+    [SerializeField] private Animator animator;
+    [SerializeField] private GameObject Fire;
+    [SerializeField] private Slider HpSlider;
+    [SerializeField] private GameObject timeline;
+
+    [SerializeField] private float Hp;
+    [SerializeField] private float Ap;
+    [SerializeField] private float closeAttackRange;
+    [SerializeField] private float mediumAttackRange;
+    [SerializeField] float attackInterval;
     private float nextAttackTime;
-    public ParticleSystem Fire;
-    AnimatorClipInfo[] clipinfo;
+    private float distanceToPlayer;
 
-    BossState state;
-    float nextAttaclTime;
-
-    [SerializeField] GameObject timeline;
+    private BossState state;
 
     private void Awake()
     {
@@ -48,145 +43,151 @@ public class Bossmove : MonoBehaviour
             return;
         }
         Fire.gameObject.SetActive(false);
-        player = FindObjectOfType<Move>();
-        animator = GetComponent<Animator>();
         navMesh = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
 
         Instance = this;
 
-         closeAttackRange = 15f;
-         mediumAttackRange = 15f;
-         attackInterval = 5f;
-         Hp = 10000f;
-         Ap = 500;
-
+        // 기본 변수 값 설정
+        closeAttackRange = 15f;
+        mediumAttackRange = 15f;
+        attackInterval = 5f;
+        Hp = 10000f;
+        Ap = 500f;
     }
 
     private void Start()
     {
         state = BossState.IDLE;
-        LookPlayer();
-      UImanger.Instance.BossSliderbar(Hp);
+        StartCoroutine(StateMachine());
 
+        // HP 슬라이더 생성 및 초기화
+        UImanger.Instance.BossSliderbar(Hp);
+        HpSlider = GetComponentInChildren<Slider>();
     }
 
-    private void Update()
+    IEnumerator StateMachine()
     {
-
-        if (Target != null)
-            Target = player.transform;
-        if (Target == null)
-            return;
-
-        clipinfo = animator.GetCurrentAnimatorClipInfo(0);
-
-        if (clipinfo.Length > 0)
+        while (Hp > 0)
         {
-            string clipname = clipinfo[0].clip.name;
-
-            if (clipname == "Fly Flame Attack")
-            {
-                Invoke("FireAttack", 1f);
-            }
+            yield return StartCoroutine(state.ToString());
         }
 
-
-        switch (state)
-        {
-            case BossState.IDLE:
-                IdleSate();
-                LookPlayer();
-                break;
-            case BossState.WALK:
-                WalkState();
-                LookPlayer();
-                break;
-            case BossState.FLYATTACK:
-                FlyAttackState();
-                break;
-            case BossState.CLAWATTACK:
-                ClawattackState();
-                break;
-            case BossState.BASICATTACK:
-                BasicAttackState();
-                break;
-            case BossState.DEFEND:
-                DefendState();
-                break;
-            case BossState.DIE:
-                DieState();
-                break;
-
-        }
-
-        if (Target == null)
-            return;
-
-
-        if (Hp <= 0 && state != BossState.DIE)
+        // HP가 0 이하일 때 DIE 상태로 전환
+        if (Hp <= 0)
         {
             ChangeState(BossState.DIE);
+            yield return StartCoroutine(state.ToString());
         }
+    }
 
+    IEnumerator IDLE()
+    {
+        var curAnimStateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (Input.GetKey(KeyCode.Q))
+        if (!curAnimStateInfo.IsName("Idle"))
+            animator.Play("Idle", 0, 0);
+
+        // 플레이어를 바라보도록 회전
+        if (Target != null)
         {
-            Fly();
+            distanceToPlayer = Vector3.Distance(transform.position, Target.position);
+            Vector3 direction = (Target.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
 
-    }
-
-    private void LookPlayer()
-    {
-        if (Target == null) return;
-        distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        // 목표를 계속 추적
-        navMesh.SetDestination(Target.position);
-        // 목표를 바라보도록 회전
-        Vector3 direction = (Target.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-    }
-
-    private void ChangeState(BossState newState)
-    {
-        Debug.Log(newState);
-             state = newState;
-        animator.SetInteger("state", (int)newState);
-    }
-
-    public void IdleSate()
-    {
-        //플레이어가 멀리 떨어지면 WAlk
         if (distanceToPlayer < mediumAttackRange)
         {
-            Debug.Log("멀리 떨어짐");
             ChangeState(BossState.WALK);
         }
+
+        yield return null;
     }
 
-    public void WalkState()
+    IEnumerator WALK()
     {
         animator.CrossFade(BossState.WALK.ToString(), 0.1f);
 
-        if (distanceToPlayer <= 10)
-        {
-            PerformAttack();
-        }
-        else
+        if (Target != null)
         {
             navMesh.SetDestination(Target.position);
+            distanceToPlayer = Vector3.Distance(transform.position, Target.position);
+
+            if (distanceToPlayer <= closeAttackRange)
+            {
+                PerformAttack();
+                yield break;
+            }
+            else if (distanceToPlayer > mediumAttackRange)
+            {
+                ChangeState(BossState.IDLE);
+            }
         }
+        yield return null;
+    }
 
+    IEnumerator FLYATTACK()
+    {
+        // 비행 공격 상태에서만 Fire 공격 활성화
+        if (Time.time >= nextAttackTime)
+        {
+            nextAttackTime = Time.time + attackInterval;
+            Fire.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2f); // 공격 후 대기 시간
+            Fire.gameObject.SetActive(false);
+            ChangeState(BossState.WALK);
+        }
+        yield return null;
+    }
 
+    IEnumerator CLAWATTACK()
+    {
+        if (Time.time >= nextAttackTime)
+        {
+            nextAttackTime = Time.time + attackInterval;
+            // 애니메이션 및 공격 로직
+            ChangeState(BossState.WALK);
+        }
+        yield return null;
+    }
+
+    IEnumerator BASICATTACK()
+    {
+        if (Time.time >= nextAttackTime)
+        {
+            nextAttackTime = Time.time + attackInterval;
+            // 기본 공격 애니메이션 실행
+            ChangeState(BossState.WALK);
+        }
+        yield return null;
+    }
+
+    IEnumerator DEFEND()
+    {
+        if (Time.time >= nextAttackTime)
+        {
+            nextAttackTime = Time.time + attackInterval;
+            // 방어 애니메이션 실행
+            ChangeState(BossState.WALK);
+        }
+        yield return null;
+    }
+
+    IEnumerator DIE()
+    {
+        animator.Play("Die", 0, 0); // 죽음 애니메이션 실행
+        Fire.gameObject.SetActive(false);
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(false); // 죽으면 보스 삭제
+        UImanger.Instance.HideHpBa();
+        UImanger.Instance.EndingpaenlActive();
     }
 
     public void PerformAttack()
     {
-        //플레이어와의 거리가 10이하일때
         if (distanceToPlayer <= closeAttackRange)
         {
-            // 가까운 거리일 때 Claw Attack 또는 다른 공격 확률적으로 선택
             int randomValue = Random.Range(0, 100);
             if (randomValue < 60) // 60% 확률로 Claw Attack
             {
@@ -194,177 +195,56 @@ public class Bossmove : MonoBehaviour
             }
             else // 40% 확률로 Basic Attack
             {
-
                 ChangeState(BossState.BASICATTACK);
-
             }
-
-        }
-        else if (distanceToPlayer > closeAttackRange)
-        {
-            ChangeState(BossState.WALK);
-
-        }
-
-    }
-
-    public void PlayerAttack()
-    {
-        PlayerManager.instance.PlayerUpdateHp(Ap);
-
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.CompareTag("Player"))
-        {
-
-            if (state == BossState.BASICATTACK)
-            {
-                PlayerManager.instance.PlayerUpdateHp(Ap);
-
-            }
-
         }
     }
 
-    public void StartFlyAttack()
+    void ChangeState(BossState newState)
     {
-        nextAttackTime = Time.time + 0.3f;
-
-    }
-
-    public void FlyAttackState()
-    {
-        
-        if (Time.time >= nextAttackTime)
-        {
-            nextAttackTime = Time.time + attackInterval;
-            PerformAttack(); // FlyAttack 상태 후 다른 공격 상태로 전환
-            Fire.gameObject.SetActive(false);
-        }
-    }
-
-    public void FireAttack()
-    {
-        Fire.gameObject.SetActive(true);
-
-    }
-
-    public void ClawattackState()
-    {
-        if (Time.time >= nextAttaclTime)
-        {
-            nextAttaclTime = Time.time + attackInterval;
-            ChangeState(BossState.WALK);
-        }
-
-
-    }
-
-    public void DefendState()
-    {
-        if (Time.time >= nextAttaclTime)
-        {
-            nextAttaclTime = Time.time + attackInterval;
-            ChangeState(BossState.WALK);
-        }
-
-    }
-
-    public void BasicAttackState()
-    {
-        if (Time.time >= nextAttaclTime)
-        {
-            nextAttaclTime = Time.time + attackInterval;
-
-            ChangeState(BossState.WALK);
-
-        }
-
-    }
-
-    public void DieState()
-    {
-        Debug.Log("보스죽음");
-        Invoke("DieStatefalse", 5);
-
-    }
-
-    public void DieStatefalse()
-    {
-        DataManager.Instance.CompleteMission(10);
-        gameObject.SetActive(false);
-        UImanger.Instance.HideHpBa();
-        UImanger.Instance.EndingpaenlActive();
-    }
-
-
-    public void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("맞음");
-            Target = other.transform;
-            navMesh.SetDestination(Target.position);
-            UImanger.Instance.ShowHpBa();
-
-            if (state == BossState.FLYATTACK)
-            {
-                return;
-            }
-            else
-            {
-                ChangeState(BossState.WALK);
-            }
-           
-        }
-        else
-        {
-            return;
-        }
+        state = newState;
     }
 
     public void BossUpdateHp(float damage)
     {
-       
         Hp -= damage;
+        UImanger.Instance.BossSligerBarHp(Hp);
 
-       
-        // 체력이 절반 이하일 때 Fly Attack 실행
         if (Hp <= 2000)
         {
-             StartFlyAttack();
-            Debug.Log("날아");
-            animator.Play("Fly");
             ChangeState(BossState.FLYATTACK);
         }
         else
         {
-            animator.Play("Defend");
             ChangeState(BossState.DEFEND);
-
         }
-
-        UImanger.Instance.BossSligerBarHp(Hp);
     }
 
-    public void Fly()
+    private void Update()
     {
-        ChangeState(BossState.FLYATTACK);
+        if (Target == null) return;
 
+        // 목표를 계속 추적
+        navMesh.SetDestination(Target.position);
+
+        if (Hp <= 0 && state != BossState.DIE)
+        {
+            ChangeState(BossState.DIE);
+        }
+    }
+
+    // 충돌 처리
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+        {
+            PlayerManager.instance.PlayerUpdateHp(Ap);
+        }
     }
 
     public void TimeLine()
     {
         timeline.SetActive(true);
-        
+
     }
-
-
-
-
 }
-
-
-

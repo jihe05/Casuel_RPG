@@ -149,9 +149,6 @@ public class UImanger : MonoBehaviour
     }
 
 
-
-
-    
     // 호출될 때마다 움직이기 시작
     public void MoveLeft()
     {

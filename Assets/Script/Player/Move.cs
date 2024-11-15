@@ -201,7 +201,7 @@ public class Move : MonoBehaviour
         }
         if (other.CompareTag("BosAttack"))
         {
-            Bossmove.Instance.PlayerAttack();
+            Bossmove.Instance.PerformAttack();
         }
        
         if (other.CompareTag("EnventBox"))
